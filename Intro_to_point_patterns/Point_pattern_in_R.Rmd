@@ -15,6 +15,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, results="hide
 
 ------------------------------------------------------------------------
 
+> Data for this tutorial can be downloaded [here](https://github.com/mgimond/es214_support_tutorials/raw/main/Intro_to_point_patterns/bei.zip).
+
 # R vs RStudio
 
 
@@ -25,8 +27,6 @@ In this course, we will make use of RStudio to run R code. To access RStudio fro
 You are also free to install R and RStudio on your personal computers if you want to work on your own computer (this may be userful for those of you living downtown).
 
 For this exercise and subsequent R exercises in this course, **DO NOT** use the RStudio server (the web based RStudio) you may have used in other courses. The server uses an older version of R and may not allow you to successfully install packages needed in this course.
-
-
 
 
 # Setting up the R/RStudio environment
