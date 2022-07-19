@@ -172,3 +172,15 @@ What we are seeking is a small p-value (parameter `Pr(>Chi)` in the output). The
 The p-value for `Minc`, on the other hand, is higher with a value of `Pr = 0.247` indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.
 
 So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though it’s not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
+
+<hr style="height: 3px; background-color: #a7a7a7; border: none;">
+<table style="width:100%">
+<tr>
+<td align="left">
+<a href="../README.html" style="font-size:1.5em;">Back to ES214 R scripts
+</td> 
+<td align="right">
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+</td>
+<td align="right" style="width:150px">_Manny Gimond, 2022_</td></tr>
+</table>
