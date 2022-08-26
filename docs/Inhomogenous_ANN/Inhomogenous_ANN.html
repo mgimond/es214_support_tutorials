@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Manny Gimond">
+
+<title>ES214 R tutorials - ANN Hypothesis Testing: inhomogeneous case</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ES214 R tutorials</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../PPM/PPM_analysis.html">Poisson point process model</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN Hypothesis Testing: homogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" aria-current="page">ANN Hypothesis Testing: inhomogeneous case</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#load-and-prep-the-dataset" id="toc-load-and-prep-the-dataset" class="nav-link active" data-scroll-target="#load-and-prep-the-dataset">Load and prep the dataset</a></li>
+  <li><a href="#average-nearest-neighbor-analysis" id="toc-average-nearest-neighbor-analysis" class="nav-link" data-scroll-target="#average-nearest-neighbor-analysis">Average nearest neighbor analysis</a>
+  <ul class="collapse">
+  <li><a href="#is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" id="toc-is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" class="nav-link" data-scroll-target="#is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</a></li>
+  </ul></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final note</a></li>
+  <li><a href="#addendum" id="toc-addendum" class="nav-link" data-scroll-target="#addendum">Addendum</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ANN Hypothesis Testing: inhomogeneous case</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Manny Gimond </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
+<hr>
+<blockquote class="blockquote">
+<p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
+</blockquote>
+<hr>
+<section id="load-and-prep-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
+<p>In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function.</p>
+<p>As was noted in our PPM analysis of the population data, given its strongly skewed distribution we found it best to express it on a log scale as opposed to a linear scale. We’ll therefore adopt this log scale in this analysis too.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-1_80a89fc3a23c3344f5e8d0086b3de332">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Read state polygon data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>s  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>s  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in as.ppp.sf(s): only first attribute column is used for marks</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km     </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read population raster</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>img     <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"./pop_sqmile.img"</span>) <span class="co"># Creates a raster object</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>pop     <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)  <span class="co"># Convert r object to an im object</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>pop.km  <span class="ot">&lt;-</span> <span class="fu">rescale</span>(pop, <span class="dv">1000</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pop.km.log <span class="ot">&lt;-</span> <span class="fu">log</span>(pop.km)  <span class="co"># Log transform population data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="average-nearest-neighbor-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
+<p>First, we’ll compute the observed Walmart ANN statistic.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-2_7bc1f73f18ffddeddec39f2d9b13b778">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.29478</code></pre>
+</div>
+</div>
+<p>The observed average nearest neighbor is 13.29 km.</p>
+<section id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" class="level3">
+<h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</h3>
+<p>In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11-0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
+<p>If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while <strong>controlling</strong> for population distribution influence. We do this by instructing the <code>rpoint()</code> function to increase point placement probability at locations with high covariate values (i.e.&nbsp;a high population density area is more likely to receive a random point than a low density area).</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-3_83b51f4894eb7188660f00769212aea6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">999</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ann.het <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">f =</span> pop.km.log, <span class="at">win =</span> w.km) </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  ann.het[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The above loop is almost identical to that of the homogeneous case except with the addition of the <code>f = pop.km.log</code> argument which defines the intensity of the underlying process (<code>pop.km.log</code> represents the population density raster). The <code>rpoint</code> function rescales the raster values to a range of <code>[0,1]</code> where <code>1</code> designates maximum probability of a pixel receiving a point and <code>0</code> minimum (or no) probability of a pixel receiving a point. Note that this is still a random process in that each time the <code>rpoint</code> function is run, we’ll have a different point pattern. However, on average, more points will be located where the <code>pop.km.log</code> pixels have the highest values.</p>
+<p>Note that the <code>f =</code> parameter will supersede that of the <code>win =</code> parameter. In other words, if <code>pop.km.log</code> covers a different extent than <code>w.km</code>, the <code>rpoint()</code> function will generate random points within the <code>pop.km.log</code> extent instead of the <code>w.km</code> extent.</p>
+<p>The following map shows an example of how the Walmart store distribution <em>could</em> look like <em>if</em> dictated by population alone.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-4_e4419fe2b1a8e20e67565003e296bc3d">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now let’s plot the histogram of simulated ANN values:</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-5_91a83423c47dab43e5ef6a637d12ae78">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.het, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.het), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The histogram is displaying the range of expected ANN values when the placement of Walmart points are dictated by the population distribution.</p>
+<p>Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart may be more <em>dispersed</em> than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-6_0cffc04eb1b8d1b5a4f2b2ca791643df">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.het <span class="sc">&gt;</span> ann.p)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.135</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="final-note" class="level2">
+<h2 class="anchored" data-anchor-id="final-note">Final note</h2>
+<p>While the wording in the last paragraph may imply that it’s the <em>observed</em> ANN value that has shifted along the x-axis relative to the hypothesized distribution, it’s really the distribution that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km is constant under both analyses.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-7_635f8406f12be5e79e91e90d848afbee">
+
+</div>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-8_31f66d5e8a90f0dc229ef88203c84a07">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ann.hom <span class="ot">&lt;-</span> <span class="fu">vector</span>()   </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">win =</span> w.km)  </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ann.hom[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))    </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">hist</span>(ann.hom, <span class="at">breaks=</span><span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>,  </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in hist.default(ann.hom, breaks = 40, col = "bisque", main = NULL, :
+arguments 'col', 'main' are not made use of</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>h2 <span class="ot">&lt;-</span> <span class="fu">hist</span>(ann.het, <span class="at">breaks=</span><span class="dv">40</span>, <span class="at">col =</span> <span class="st">"green"</span>,  </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">main =</span> <span class="cn">NULL</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in hist.default(ann.het, breaks = 40, col = "green", main = NULL, :
+arguments 'col', 'main' are not made use of</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h1,  <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(ann.hom, ann.het, ann.het)),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Homogeneous (red) vs Inhomogeneous (Green)"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">0.5</span>), <span class="at">border =</span> <span class="st">"red"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"ANN (km)"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h2, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="fl">0.5</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">border =</span> <span class="st">"green"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="addendum" class="level2">
+<h2 class="anchored" data-anchor-id="addendum">Addendum</h2>
+<p>It’s good practice to indicate, in your analysis results, if you use a transformed version of the covariate since this can impact the outcome of the analysis. In the following example, the original linear version of the population raster is used.</p>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-9_826461237af1b014a7da745c1ca72d22">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ann.r <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">f =</span> pop.km, <span class="at">win =</span> w.km) </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  ann.r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-10_8cd2c03d2d19b4e4712ff34ae891e418">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.r, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.r), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-11_76756f6c4a87429398b53b9d50b9ea51">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.003</code></pre>
+</div>
+</div>
+<p>The outcome of this analysis is quite different from the one using the raw population density values. <strong>Both outcomes are perfectly valid</strong>, but they address slightly different questions: “When controlling for the population density distribution, are Walmart stores randomly distributed?” vs.&nbsp;“When controlling for the population density distribution <strong>as measured on a log scale</strong>, are Walmart stores randomly distributed?”</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+  </div>
+</footer>
+
+
+
+</body></html>

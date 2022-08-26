@@ -1,0 +1,8 @@
+---
+title: "This repo houses standalone R scripts used in Colby's  ES214 course"
+---
+
+- [Loading and visualizing spatial data in R](Getting_started_with_R/Getting_started_with_R.html)
+- [Poisson point process model](PPM/PPM_analysis.html)
+- [ANN Hypothesis Testing: homogeneous case](Homogenous_ANN/Homogenous_ANN.html)
+- [ANN Hypothesis Testing: inhomogeneous case](Inhomogenous_ANN/Inhomogenous_ANN.html)

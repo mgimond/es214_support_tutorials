@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Manny Gimond">
+
+<title>ES214 R tutorials - PPM: Exploring 1st order effects</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ES214 R tutorials</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../PPM/PPM_analysis.html" aria-current="page">Poisson point process model</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN Hypothesis Testing: homogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN Hypothesis Testing: inhomogeneous case</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#loading-the-data-into-r" id="toc-loading-the-data-into-r" class="nav-link active" data-scroll-target="#loading-the-data-into-r">Loading the data into R</a></li>
+  <li><a href="#modeling-point-density-as-a-function-of-two-competing-covariates-population-density-and-income." id="toc-modeling-point-density-as-a-function-of-two-competing-covariates-population-density-and-income." class="nav-link" data-scroll-target="#modeling-point-density-as-a-function-of-two-competing-covariates-population-density-and-income.">Modeling point density as a function of two competing covariates: population density and income.</a></li>
+  <li><a href="#plotting-the-competing-models" id="toc-plotting-the-competing-models" class="nav-link" data-scroll-target="#plotting-the-competing-models">Plotting the competing models</a></li>
+  <li><a href="#testing-for-covariate-effect" id="toc-testing-for-covariate-effect" class="nav-link" data-scroll-target="#testing-for-covariate-effect">Testing for covariate effect</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PPM: Exploring 1<sup>st</sup> order effects</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Manny Gimond </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
+<hr>
+<blockquote class="blockquote">
+<p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
+</blockquote>
+<hr>
+<section id="loading-the-data-into-r" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-data-into-r">Loading the data into R</h2>
+<p>Always remember to set the R session to the project folder where data are to be read from.</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-1_df4e89d59af591367b1524f8c3b46dfd">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that rgdal should also be installed on your computer</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># even though it's not explicitly called in the library function</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Read state polygon data</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>w    <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>p    <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in as.ppp.sf(s): only first attribute column is used for marks</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km)  <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read population density raster</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>img         <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"pop_sqmile.tif"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>pop         <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>pop.km      <span class="ot">&lt;-</span> <span class="fu">rescale</span>(pop, <span class="dv">1000</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pop.km.log  <span class="ot">&lt;-</span> <span class="fu">log</span>(pop.km)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Read median income raster</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>img    <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"median_income.tif"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>inc    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>inc.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(inc, <span class="dv">1000</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>inc.km[] <span class="ot">&lt;-</span> <span class="fu">as.double</span>(inc.km[]) <span class="co"># Convert integer income values to double values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You’ll note that we are converting the income raster from integer data type to double (<code>inc[] &lt;- as.double(inc[])</code>). This is done to satisfy the <code>effectfun()</code> function that will be used later in this workflow–that function does <em>not</em> accept integer rasters.</p>
+<p>You’ll also note in the above chunk of code that we are transforming population density values to logged values (<code>log(pop.km)</code>) because of the skewed nature of the population raster. This may help improve the model performance. Such transformation techniques are not uncommon in the field of statistics.</p>
+<p>A quick way to check the distribution of raster pixel values is to plot the histogram as follows:</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-2_e1160cfb14a979a1fa5b9cdcc42bf3ae">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot original raster values</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pop.km)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="288"></p>
+</div>
+</div>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-3_2ff6962c4b202a31e2da1bbcc0bf85dc">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot log-transformed raster values</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(pop.km.log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="288"></p>
+</div>
+</div>
+<p>Let’s plot each raster with the Walmart point overlay. We’ll use <code>R</code>’s base plotting environment.</p>
+<div class="cell" data-small.mar="true" data-hash="PPM_analysis_cache/html/unnamed-chunk-4_c501c5a71e9a44097c78937895219fad">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pop.km.log, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Population"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.5</span>), <span class="at">add=</span><span class="cn">TRUE</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inc.km, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Income"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.6</span>), <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="modeling-point-density-as-a-function-of-two-competing-covariates-population-density-and-income." class="level2">
+<h2 class="anchored" data-anchor-id="modeling-point-density-as-a-function-of-two-competing-covariates-population-density-and-income.">Modeling point density as a function of two competing covariates: population density and income.</h2>
+<p>We will first develop two different models that we think might define the Walmart’s point intensity. These models are defined by a couple of covariates: population distribution and income. These will be the alternate models that we’ll denote as <code>Mpop</code> and <code>Minc</code>. The models’ structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.</p>
+<p>We’ll also create the null model, <code>Mo</code>, where we’ll assume a spatially uniform (homogeneous) covariate. In other words, <code>Mo</code> will define the model where we the intensity of the process is the same across the entire study extent.</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-5_8cdff594f0f397efcbedb3e2b0bc6c06">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Mpop <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> pop.km.log) <span class="co"># Population model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Values of the covariate 'pop.km.log' were NA or undefined at 3.4% (17
+out of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q =
+p.km, trend = ~pop.km.log, data = NULL, interaction = NULL)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Minc <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> inc.km)     <span class="co"># Income model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
+of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
+trend = ~inc.km, data = NULL, interaction = NULL)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Mo   <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> <span class="dv">1</span>)          <span class="co"># Null model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s explore the model parameters. First, we’ll look at <code>Mpop</code>.</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-6_881d0cc4adce05c3bc5b554be549722f">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Mpop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nonstationary Poisson process
+
+Log intensity:  ~pop.km.log
+
+Fitted trend coefficients:
+(Intercept)  pop.km.log 
+ -10.111647    0.625803 
+
+              Estimate      S.E.     CI95.lo    CI95.hi Ztest       Zval
+(Intercept) -10.111647 0.7933272 -11.6665393 -8.5567540   *** -12.745872
+pop.km.log    0.625803 0.1127980   0.4047229  0.8468831   ***   5.547996
+Problem:
+ Values of the covariate 'pop.km.log' were NA or undefined at 3.4% (17 out of 
+504) of the quadrature points</code></pre>
+</div>
+</div>
+<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-10.1</code>) and the <strong>coefficient</strong> <code>pop.km.log</code> (whose value is around <code>0.63</code>). Using these values, we can construct the mathematical relationship (noting that we are using the logged population raster and not the original population raster values):</p>
+<p><span class="math display">\[
+Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
+\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−10.1}\)</span> which is very close to <code>0</code>. So for every unit increase of the <em>logged</em> population density (i.e.&nbsp;log of one person per square mile), there is a <span class="math inline">\(e^{0.63}\)</span> increase in Walmart intensity.</p>
+<p>Likewise, we can extract the parameters from the <code>Minc</code> model and construct its equation.</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-7_1441165cd2bee02f6ec5be684f29d1b9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nonstationary Poisson process
+
+Log intensity:  ~inc.km
+
+Fitted trend coefficients:
+  (Intercept)        inc.km 
+-5.576942e+00 -1.654792e-05 
+
+                 Estimate         S.E.       CI95.lo       CI95.hi Ztest
+(Intercept) -5.576942e+00 5.258426e-01 -6.607574e+00 -4.546309e+00   ***
+inc.km      -1.654792e-05 1.490546e-05 -4.576209e-05  1.266624e-05      
+                  Zval
+(Intercept) -10.605725
+inc.km       -1.110192
+Problem:
+ Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out of 504) 
+of the quadrature points</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+Walmart\ intensity(i) = e^{−5.58\ −1.66e^{−5}\ Income(i)}
+\]</span> Note the negative (decreasing) relationship between income distribution and Walmart density.</p>
+<p>Next, we’ll extract the null model results:</p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-8_0480d7a4cb30ad819a1dbb1c710708a8">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Mo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stationary Poisson process
+Intensity: 0.002086305
+             Estimate      S.E.   CI95.lo   CI95.hi Ztest      Zval
+log(lambda) -6.172361 0.1507557 -6.467836 -5.876885   *** -40.94281</code></pre>
+</div>
+</div>
+<p>This gives us the following equation for the homogeneous process:</p>
+<p><span class="math display">\[
+Walmart\ intensity(i) = e^{−6.17} = 0.00209
+\]</span></p>
+<p>which is nothing more than the number of stores per unit area (44 stores / 21,000km<sup>2</sup> = 0.00209).</p>
+</section>
+<section id="plotting-the-competing-models" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-the-competing-models">Plotting the competing models</h2>
+<div class="cell" data-small.mar="true" data-hash="PPM_analysis_cache/html/unnamed-chunk-9_2de8243173c7351f14e585c45f0a2354">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))  <span class="co"># This creates a two-pane plotting window</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km.log"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(OP) <span class="co"># This reverts our plot window back to a one-pane window</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Note the difference in relationships between the two models. In the first plot, we note an increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
+<p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
+<p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
+</section>
+<section id="testing-for-covariate-effect" class="level2">
+<h2 class="anchored" data-anchor-id="testing-for-covariate-effect">Testing for covariate effect</h2>
+<p>Now, let’s compare the non-homogeneous covariates to the null model using a technique called the <em>likelihood ratio</em> test. Remember that the null model assumes that the intensity is homogeneous across the entire study area; what we want to know is <em>“does the model with the covariate do a significantly better job in predicting Walmart densities than the null model?”</em></p>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-10_3b6a4f0beb17463d5342bad20a5671e4">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Values of the covariate 'pop.km.log' were NA or undefined at 3.4% (17
+out of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q =
+p.km, trend = ~pop.km.log, data = NULL, interaction = NULL,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Models were re-fitted after discarding quadrature points that were
+illegal under some of the models</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: ~1      Poisson
+Model 2: ~pop.km.log     Poisson
+  Npar Df Deviance  Pr(&gt;Chi)    
+1   18                          
+2   19  1   31.725 1.776e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-11_98fb275b8617777fdc7295b34979ee5d">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
+of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
+trend = ~inc.km, data = NULL, interaction = NULL,</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Models were re-fitted after discarding quadrature points that were
+illegal under some of the models</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: ~1      Poisson
+Model 2: ~inc.km     Poisson
+  Npar Df Deviance Pr(&gt;Chi)
+1   17                     
+2   18  1   1.3388   0.2473</code></pre>
+</div>
+</div>
+<p>What we are seeking is a small p-value (parameter <code>Pr(&gt;Chi)</code> in the output). The smaller the value, the more confident we are in stating that the covariate does a better job in predicting Walmart intensity than the null model. For example, the p-value for the <code>Mpop</code> model (<code>Pr(&gt;Chi) = 1.776e-08</code>) suggests that population density does a better job in predicting Walmart density than the null model <code>Mo</code>.</p>
+<p>The p-value for <code>Minc</code>, on the other hand, is higher with a value of <code>Pr = 0.247</code> indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.</p>
+<p>So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though it’s not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -1,0 +1,33 @@
+project:
+  type: website
+  output-dir: docs
+  
+website:
+  title: "ES214 R tutorials"
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Home"
+      - href: Getting_started_with_R/Getting_started_with_R.qmd
+        text: "Getting started with R"
+      - href: PPM/PPM_analysis.qmd
+        text: "Poisson point process model"
+      - href: Homogenous_ANN/Homogenous_ANN.qmd
+        text: "ANN Hypothesis Testing: homogeneous case"
+      - href: Inhomogenous_ANN/Inhomogenous_ANN.qmd
+        text: "ANN Hypothesis Testing: inhomogeneous case"
+  page-footer: 
+    right: "Creative Commons License, Manny Gimond, 2022" 
+
+
+
+format:
+  html:
+    theme:
+      - cosmo
+      - custom.scss
+    css: styles.css
+    toc: true
+
+execute:
+  cache: true

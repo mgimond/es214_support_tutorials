@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Manny Gimond">
+
+<title>ES214 R tutorials - Loading and visualizing data in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ES214 R tutorials</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../Getting_started_with_R/Getting_started_with_R.html" aria-current="page">Getting started with R</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../PPM/PPM_analysis.html">Poisson point process model</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN Hypothesis Testing: homogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN Hypothesis Testing: inhomogeneous case</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setting-up-the-r-environment" id="toc-setting-up-the-r-environment" class="nav-link active" data-scroll-target="#setting-up-the-r-environment">Setting up the R environment</a>
+  <ul class="collapse">
+  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages">Installing packages</a>
+  <ul class="collapse">
+  <li><a href="#option-1-command-line" id="toc-option-1-command-line" class="nav-link" data-scroll-target="#option-1-command-line">Option 1: Command line</a></li>
+  <li><a href="#option-2-rstudio-interface" id="toc-option-2-rstudio-interface" class="nav-link" data-scroll-target="#option-2-rstudio-interface">Option 2: RStudio interface</a></li>
+  </ul></li>
+  <li><a href="#opening-a-new-r-script" id="toc-opening-a-new-r-script" class="nav-link" data-scroll-target="#opening-a-new-r-script">Opening a new R script</a></li>
+  <li><a href="#setting-an-r-sessions-workspace" id="toc-setting-an-r-sessions-workspace" class="nav-link" data-scroll-target="#setting-an-r-sessions-workspace">Setting an R session’s workspace</a></li>
+  <li><a href="#loading-activating-packages" id="toc-loading-activating-packages" class="nav-link" data-scroll-target="#loading-activating-packages">Loading (activating) packages</a></li>
+  </ul></li>
+  <li><a href="#loading-gis-data-into-r" id="toc-loading-gis-data-into-r" class="nav-link" data-scroll-target="#loading-gis-data-into-r">Loading GIS data into R</a>
+  <ul class="collapse">
+  <li><a href="#loading-shapefiles" id="toc-loading-shapefiles" class="nav-link" data-scroll-target="#loading-shapefiles">Loading shapefiles</a></li>
+  <li><a href="#loading-raster-files" id="toc-loading-raster-files" class="nav-link" data-scroll-target="#loading-raster-files">Loading Raster Files</a></li>
+  </ul></li>
+  <li><a href="#visualizing-spatial-objects" id="toc-visualizing-spatial-objects" class="nav-link" data-scroll-target="#visualizing-spatial-objects">Visualizing Spatial Objects</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Loading and visualizing data in R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Manny Gimond </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
+<hr>
+<p>R is a data analysis environment. RStudio is a desktop interface to R (sometimes referred to as an integrated development environment-or IDE for short). Unlike most desktop environments you have been exposed to so far, R does not take instructions from a point-and-click environment, its instructions are provided by simple lines of text.</p>
+<section id="setting-up-the-r-environment" class="level1">
+<h1>Setting up the R environment</h1>
+<section id="installing-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-packages">Installing packages</h2>
+<p>This R session will make use of five packages: <code>spatstat</code> which has all of the spatial statistics tools used in this exercise; <code>sf</code> which is used to load the vector files; <code>maptools</code> which converts the raster format to an ‘im’ format recognized by <code>spatstat</code>; and <code>raster</code> which is used to manipulate raster files. You’ll also need to install <code>rgdal</code> to help the <code>raster</code> package read the <code>.img</code> raster file.</p>
+<p>You can install packages in one of two ways: via command line or via the RStudio interface.</p>
+<section id="option-1-command-line" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-command-line">Option 1: Command line</h3>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-1_9cd121cbbc281096b38dcdccd4c335b6">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"spatstat"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"raster"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rgdal"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"maptools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="option-2-rstudio-interface" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-rstudio-interface">Option 2: RStudio interface</h3>
+<p><img src="img/image1.jpg" class="img-fluid"></p>
+</section>
+</section>
+<section id="opening-a-new-r-script" class="level2">
+<h2 class="anchored" data-anchor-id="opening-a-new-r-script">Opening a new R script</h2>
+<p>If an empty R script file is not opened in RStudio open a new one now.</p>
+<p><img src="img/image2.jpg" class="img-fluid" width="242"></p>
+<p>R scripts are usually saved using the .R extension (e.g.&nbsp;Day14.R). Make sure to save this script on a regular basis as you add/modify pieces of code.</p>
+</section>
+<section id="setting-an-r-sessions-workspace" class="level2">
+<h2 class="anchored" data-anchor-id="setting-an-r-sessions-workspace">Setting an R session’s workspace</h2>
+<p>If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session’s project folder. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the in-class dataset downloaded from filer (e.g.&nbsp;the <code>walmart/</code> folder).</p>
+<p><img src="img/image3.jpg" class="img-fluid" width="409"></p>
+</section>
+<section id="loading-activating-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-activating-packages">Loading (activating) packages</h2>
+<p>Installing packages under your user profile is a one-time process, but to access the package contents in a current R session you must explicitly load its contents via the <code>library</code> function.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-2_1f8f2f591514d5106e1b928e98c5fea9">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that you do not need to load the <code>rgdal</code> package since its functionality is used in the <code>raster</code> package.</p>
+</section>
+</section>
+<section id="loading-gis-data-into-r" class="level1">
+<h1>Loading GIS data into R</h1>
+<section id="loading-shapefiles" class="level2">
+<h2 class="anchored" data-anchor-id="loading-shapefiles">Loading shapefiles</h2>
+<p>Note that R will recognize vector data models stored as shapefiles, but it will <em>not</em> recognize GIS files stored in geodatabases.</p>
+<p>First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile in an object called <code>s2</code>. Note the use of the assignment operator <code>&lt;-</code> which <em>assigns</em> the output to its right to the object to its left. The name of the shapefile must end with the <code>*.shp</code> extension, but note that the function understands that the shapefile consists of multiple files.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-3_f62bc0c11f685753eb4f293595e6f692">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `MA' from data source 
+  `C:\Users\mgimond\Documents\Github\test_quarto\Getting_started_with_R\MA.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 1 feature and 4 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 623157.2 ymin: 4577879 xmax: 922141 ymax: 4756659
+Projected CRS: NAD83 / UTM zone 18N</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory in an earlier step or you have a syntax error in the filename.</p>
+</blockquote>
+<p>R can store spatial objects in different internal formats but <code>spatstat</code>’s functions require that specific spatial formats be used. The <code>MA</code> states layer will be used to define the study extent which will require that it be stored as a <code>owin</code> object. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-4_94889591883bd44b6af5c5c17833a60a">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The coordinate unit associated with the spatial object inherits the underlying coordinate system’s map units–<code>meters</code> in our example. Such small units may make it difficult to interpret the output of some analyses (e.g.&nbsp;distance based and density based analyses). We will therefore convert the map units from meters to kilometers using the <code>rescale()</code> function. Note that 1000 m = 1 km.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-5_11957a1457394167727a47ecad4a5915">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The second parameter in the <code>rescale()</code> function, <code>1000</code>, tells R to divide the current measure of unit by 1000.</p>
+<p>Next we will load the Walmarts stores shapefile (<code>Walmarts.shp</code>) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a <code>ppp</code> point object.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-6_2fe0738dacc23d678909bc75cac3edfc">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `Walmarts' from data source 
+  `C:\Users\mgimond\Documents\Github\test_quarto\Getting_started_with_R\Walmarts.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 44 features and 40 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 640627.2 ymin: 4614803 xmax: 869353.2 ymax: 4738331
+Projected CRS: NAD83 / UTM zone 18N</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s1)  <span class="co"># creates a ppp object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in as.ppp.sf(s1): only first attribute column is used for marks</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will need to explicitly define the study extent for the point object. This will be critical when running the point process models.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-7_99340e2fd6df6347b76f92024439ad82">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is one more thing that we will need to do that will make the data behave with <code>spatstats</code> tools: remove the layer’s attribute information (point attributes are also known as <em>marks</em> in the point pattern analysis world). The point attributes will not be needed here since our interest is in the pattern generated by the points and not by their attribute values.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-8_2c5edcb7ec208278707c424e213af30c">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="loading-raster-files" class="level2">
+<h2 class="anchored" data-anchor-id="loading-raster-files">Loading Raster Files</h2>
+<p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>raster</code> function from the <code>raster</code> package, convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-9_688b376d839a3a2ef1e66bb4579e280f">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"./pop_sqmile.img"</span>) <span class="co"># Creates a raster object</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)  <span class="co"># Convert r object to an im object</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>r.km   <span class="ot">&lt;-</span> <span class="fu">rescale</span>(r, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="visualizing-spatial-objects" class="level1">
+<h1>Visualizing Spatial Objects</h1>
+<p>We can plot the raster and overlay it with the point layer. Several plotting options are available including the base <code>plot</code> function which will be used in this tutorial). However, there are many R packages that will help improve the “look” of a map including <code>tmap</code> and <code>ggplot2</code>.</p>
+<p>In the following code chunk, we will plot the point data. We’ll assign a yellow fill color to the point symbol. The point symbol type is defined by the <code>pch = 21</code> parameter.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-10_d2bd437a43fc707319ea287065f8b06f">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"yellow"</span>, <span class="at">main =</span> <span class="st">"Walmart stores"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Getting_started_with_R_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>Point symbol types are defined by a number. The above point symbol is number <code>21</code>. Other point symbols available in R are shown below:</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-11_dabb40629bb62ee874c856ee212007c5">
+<div class="cell-output-display">
+<p><img src="Getting_started_with_R_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>To plot a raster, you can use the <code>image</code> function (as well as the <code>plot</code> function). Here, we’ll adopt a built-in color scheme using the <code>hcl.colors</code> function.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-12_5b84482766db0b6f19a22f64fc84fe7e">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Getting_started_with_R_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>In the following chunk of code, we will plot both the raster and point layers. To add a “layer” to an existing map, include the <code>add = TRUE</code> parameter.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-13_1a08cef9170c29585662148871502367">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Getting_started_with_R_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+  </div>
+</footer>
+
+
+
+</body></html>

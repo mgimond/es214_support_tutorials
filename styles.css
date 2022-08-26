@@ -1,0 +1,11 @@
+/* css styles */
+
+.block1 {
+  background-color: #FAEBD7; 
+  border-radius: 5px;  
+  padding: 3px;
+}
+
+.navbar-dark .navbar-brand {
+    color: #c4c7ec;
+}
