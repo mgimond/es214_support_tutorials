@@ -120,7 +120,7 @@ Next, we will load the population density raster file `pop_sqmile.img` using the
 ```{r}
 img  <- raster("./pop_sqmile.img") # Creates a raster object
 r    <- as.im(img)  # Convert r object to an im object
-r.km   <- rescale(r, 1000)
+r.km <- rescale(r, 1000)
 ```
 
 # Visualizing Spatial Objects

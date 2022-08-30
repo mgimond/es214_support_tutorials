@@ -269,7 +269,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `MA' from data source 
-  `C:\Users\mgimond\Documents\Github\test_quarto\Getting_started_with_R\MA.shp' 
+  `C:\Users\mgimond\Documents\github\test_quarto\Getting_started_with_R\MA.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 4 fields
 Geometry type: MULTIPOLYGON
@@ -295,7 +295,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `Walmarts' from data source 
-  `C:\Users\mgimond\Documents\Github\test_quarto\Getting_started_with_R\Walmarts.shp' 
+  `C:\Users\mgimond\Documents\github\test_quarto\Getting_started_with_R\Walmarts.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 44 features and 40 fields
 Geometry type: POINT
@@ -321,10 +321,10 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <section id="loading-raster-files" class="level2">
 <h2 class="anchored" data-anchor-id="loading-raster-files">Loading Raster Files</h2>
 <p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>raster</code> function from the <code>raster</code> package, convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
-<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-9_688b376d839a3a2ef1e66bb4579e280f">
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-9_be73a3665e2101420a0c37176bf00202">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"./pop_sqmile.img"</span>) <span class="co"># Creates a raster object</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)  <span class="co"># Convert r object to an im object</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>r.km   <span class="ot">&lt;-</span> <span class="fu">rescale</span>(r, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(r, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
