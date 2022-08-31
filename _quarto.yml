@@ -11,11 +11,13 @@ website:
       - href: Getting_started_with_R/Getting_started_with_R.qmd
         text: "Getting started with R"
       - href: PPM/PPM_analysis.qmd
-        text: "Poisson point process model"
+        text: "PPM"
       - href: Homogenous_ANN/Homogenous_ANN.qmd
-        text: "ANN Hypothesis Testing: homogeneous case"
+        text: "ANN: homogeneous case"
       - href: Inhomogenous_ANN/Inhomogenous_ANN.qmd
-        text: "ANN Hypothesis Testing: inhomogeneous case"
+        text: "ANN: inhomogeneous case"
+      - href: moranI/Mapping_and_Morans.qmd
+        text: "Spatial autocorrelation"
   page-footer: 
     right: "Creative Commons License, Manny Gimond, 2022" 
 

@@ -143,13 +143,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html">Poisson point process model</a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html">PPM</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" aria-current="page">ANN Hypothesis Testing: homogeneous case</a>
+    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" aria-current="page">ANN: homogeneous case</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN Hypothesis Testing: inhomogeneous case</a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">Spatial autocorrelation</a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -280,13 +283,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>[1] 0.3165</p>
+<p>[1] 0.312</p>
 </div>
-<p>About 32% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 32% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
+<p>About 31% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 31% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>
 <ul>
-<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 64% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
+<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 62% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
 <li><p>Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was <strong>the</strong> process behind the distribution of Walmart stores (in fact, it’s quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of <strong>many</strong> other processes that generated the pattern observed in our dataset.</p></li>
 </ul>
 </div>

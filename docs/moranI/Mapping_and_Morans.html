@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Manny Gimond">
+
+<title>ES214 R tutorials - Moran’s I analysis in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ES214 R tutorials</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../PPM/PPM_analysis.html">PPM</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN: homogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../moranI/Mapping_and_Morans.html" aria-current="page">Spatial autocorrelation</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link active" data-scroll-target="#loading-the-data">Loading the data</a></li>
+  <li><a href="#morans-i-analysis" id="toc-morans-i-analysis" class="nav-link" data-scroll-target="#morans-i-analysis">Moran’s I analysis</a>
+  <ul class="collapse">
+  <li><a href="#step-1-define-neighboring-polygons" id="toc-step-1-define-neighboring-polygons" class="nav-link" data-scroll-target="#step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</a></li>
+  <li><a href="#step-2-assign-weights-to-the-neighbors" id="toc-step-2-assign-weights-to-the-neighbors" class="nav-link" data-scroll-target="#step-2-assign-weights-to-the-neighbors">Step 2: Assign weights to the neighbors</a></li>
+  <li><a href="#step-3-compute-the-weighted-neighbor-mean-income-values-optional-step" id="toc-step-3-compute-the-weighted-neighbor-mean-income-values-optional-step" class="nav-link" data-scroll-target="#step-3-compute-the-weighted-neighbor-mean-income-values-optional-step">Step 3: Compute the (weighted) neighbor mean income values (optional step)</a></li>
+  <li><a href="#step-4-computing-the-morans-i-statistic" id="toc-step-4-computing-the-morans-i-statistic" class="nav-link" data-scroll-target="#step-4-computing-the-morans-i-statistic">Step 4: Computing the Moran’s I statistic</a></li>
+  <li><a href="#step-5-performing-a-hypothesis-test" id="toc-step-5-performing-a-hypothesis-test" class="nav-link" data-scroll-target="#step-5-performing-a-hypothesis-test">Step 5: Performing a hypothesis test</a></li>
+  </ul></li>
+  <li><a href="#another-example-florida-1980-homicide-rate-example" id="toc-another-example-florida-1980-homicide-rate-example" class="nav-link" data-scroll-target="#another-example-florida-1980-homicide-rate-example">Another example: Florida 1980 Homicide rate example</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Moran’s I analysis in R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Manny Gimond </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
+<hr>
+<blockquote class="blockquote">
+<p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
+</blockquote>
+<hr>
+<p>We will make use of the following packages: <code>sf</code> for importing the shapefiles, <code>tmap</code> for creating choropleth maps and <code>spdep</code> for implementing the Moran’s I analysis. Note that you will probably need to install <code>spdep</code> since this package has not been used thus far in class.</p>
+<p>The functions in <code>spdep</code> use spatial formats that differ from those used with <code>spatstat</code>. As such, we will no longer need to rely on calls to <code>as.owin(s)</code> and <code>as.ppp(s)</code> as was the case with the <code>spatstat</code> functions.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-1_be227407cc554e62d21b9f797dbbe9ad">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loading-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-data">Loading the data</h2>
+<p>Don’t forget to set the session’s working directory to the folder that contains the <code>NHME.shp</code> shapefile before running the following chunks of code. This should be the <code>NHME/</code> folder used in the in-class exercise.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-2_b3447487c5ceaf6117141d5cd206e731">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"NHME.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that unlike earlier point pattern analysis examples, we will need to <em>keep</em> the attribute information with our spatial objects.</p>
+<p>To list the column names associated with the object’s attribute table, type:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-3_7c83929476e5452258beffced071deeb">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "NAME"       "STATE_NAME" "POP10_SQMI" "AVE_HH_SZ"  "AVE_FAM_SZ"
+[6] "Income"     "House_year" "geometry"  </code></pre>
+</div>
+</div>
+<p>To list the contents of an attribute, affix the dollar sign <code>$</code> to the object name followed by the attribute name. For example, to list the income values, type:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-4_dcd27b7ec32474615a0dae64eac33eb0">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s<span class="sc">$</span>Income</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 45765 59560 46559 50515 50027 40695 55046 43484 56701 60782 52393 56139
+[13] 55045 70906 65226 79368 59580 56851 37378 41665 45747 44543 37110 39792
+[25] 38239 42407</code></pre>
+</div>
+</div>
+<p>You can plot the attribute values as follows:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-5_a8bbfc8108149d79d7723b01ab66df58">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(s<span class="sc">$</span>Income, <span class="at">main=</span><span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="288"></p>
+</div>
+</div>
+<p>or,</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-6_cae8248e586dca619e392460adf9cc86">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(s<span class="sc">$</span>Income, <span class="at">horizontal =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="288"></p>
+</div>
+</div>
+<p>To symbolize the polygons using the <code>Income</code> attribute we will first define the classification breaks (<code>style = quantile</code> with <code>n = 8</code> breaks) and the symbol colors (<code>palette="Greens"</code>). For the latter, the <code>tmap</code> package makes use of Cynthia Brewer’s color schemes (you are already familiar with her <a href="http://colorbrewer2.org/">website</a>).</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-7_4d77861091786d1c46ee26ba9380a6ae">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col=</span><span class="st">"Income"</span>, <span class="at">style=</span><span class="st">"quantile"</span>, <span class="at">n=</span><span class="dv">8</span>, <span class="at">palette=</span><span class="st">"Greens"</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">tm_legend</span>(<span class="at">outside=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="morans-i-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="morans-i-analysis">Moran’s I analysis</h2>
+<section id="step-1-define-neighboring-polygons" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</h3>
+<p>The first step in a Moran’s I analysis requires that we define “neighboring” polygons. This could refer to contiguous polygons, polygons within a certain distance, or it could be non-spatial in nature and defined by social, political or cultural “neighbors”.</p>
+<p>Here, we’ll adopt a contiguous neighbor definition. We’ll accept any contiguous polygons that share at least one vertex; this is the “queen” case (if one chooses to adopt the chess analogy) and it’s parameterized as <code>queen = TRUE</code> in the call to <code>poly2nb</code>. If we required that just <em>edges</em> be shared between polygons then we would set <code>queen = FALSE</code> (the <em>rook</em> case).</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-8_523b1e95b4c6a531274035e9251c1126">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(s, <span class="at">queen=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For each polygon in our shape object, <code>nb</code> lists all neighboring polygons. For example, to see the neighbors (by ID number) for the first polygon in the shape object, type:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-9_7f883ae4c018be473cb9a82a2b301198">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nb[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1]  2  3  6  7 20</code></pre>
+</div>
+</div>
+<p>Here’s the list of county names and associated IDs:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-10_23f9ceff249e5bd8a6f6283a00ff9b8d">
+<div class="cell-output-display">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:200px; "><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> County </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> ID </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Androscoggin </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cumberland </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kennebec </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Knox </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lincoln </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Oxford </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sagadahoc </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Waldo </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> York </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Belknap </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Carroll </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cheshire </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Grafton </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hillsborough </td>
+   <td style="text-align:right;"> 14 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merrimack </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Rockingham </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Strafford </td>
+   <td style="text-align:right;"> 17 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sullivan </td>
+   <td style="text-align:right;"> 18 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aroostook </td>
+   <td style="text-align:right;"> 19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Franklin </td>
+   <td style="text-align:right;"> 20 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hancock </td>
+   <td style="text-align:right;"> 21 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Penobscot </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Piscataquis </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Somerset </td>
+   <td style="text-align:right;"> 24 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Washington </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Coos </td>
+   <td style="text-align:right;"> 26 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+</section>
+<section id="step-2-assign-weights-to-the-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-assign-weights-to-the-neighbors">Step 2: Assign weights to the neighbors</h3>
+<p>Next, we need to assign weights to each neighboring polygon. In this example, each neighboring polygon will be assigned <strong>equal weight</strong> when computing the neighboring mean income values.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-11_ecbae960c9575e801828a6b998aac280">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To see the weight of the first polygon’s neighbors type:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-12_4bdc3596b2cd406ace8a3aedb50d7881">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>lw<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 0.2 0.2 0.2 0.2 0.2</code></pre>
+</div>
+</div>
+<p>These are the weights each neighboring income value will be multiplied by before being summed. If a polygon has 5 neighbors, each neighbor will have a weight of 1/5 or 0.2. This weight will then be used to compute the mean neighbor values as in <code>0.2(neighbor1) + 0.2(neighbor2) + 0.2(neighbor3) + 0.2(neighbor4) + 0.2(neighbor5)</code>. This is equivalent to summing all five income values then dividing by 5.</p>
+</section>
+<section id="step-3-compute-the-weighted-neighbor-mean-income-values-optional-step" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-compute-the-weighted-neighbor-mean-income-values-optional-step">Step 3: Compute the (weighted) neighbor mean income values (optional step)</h3>
+<p>NOTE: This step does not need to be performed when running the <code>moran</code> or <code>moran.test</code> functions outlined in Steps 4 and 5. This step is only needed if you wish to generate a scatter plot between the income values and their lagged counterpart.</p>
+<p>Next, we’ll have R compute the average neighbor income value for each polygon. These values are often referred to as <strong>spatially lagged</strong> values.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-13_871714b88846fd9aec6e69fda774fb97">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>inc.lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(lw, s<span class="sc">$</span>Income)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>inc.lag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 48705.00 49551.75 45963.17 46755.50 48901.00 49748.50 50477.75 46197.17
+ [9] 53057.00 58061.00 52535.00 63878.50 55531.80 64396.00 63755.33 65237.33
+[17] 62894.00 61829.00 39921.00 43202.75 42088.67 40291.67 40571.00 41789.83
+[25] 42556.00 49377.67</code></pre>
+</div>
+</div>
+<p>You can plot the relationship between income and its spatially lagged counterpart as follows (note that the blue line added to the plot is derived from a regression model).</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-14_2455c3a33432a8dc928db6ad9fff43ee">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">asp=</span><span class="dv">1</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income), <span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="240"></p>
+</div>
+</div>
+</section>
+<section id="step-4-computing-the-morans-i-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-computing-the-morans-i-statistic">Step 4: Computing the Moran’s I statistic</h3>
+<p>The Moran’s I statistic can be computed using the <code>moran</code> function.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-15_d8a3bb32e0fe28369dcf7c7874382fa5">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">moran</span>(s<span class="sc">$</span>Income, lw, <span class="fu">length</span>(nb), <span class="fu">Szero</span>(lw))[<span class="dv">1</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$I
+[1] 0.6827955</code></pre>
+</div>
+</div>
+<p>Recall that the Moran’s <code>I</code> value is the slope of the line that best fits the relationship between neighboring income values and each polygon’s income in the dataset.</p>
+</section>
+<section id="step-5-performing-a-hypothesis-test" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-performing-a-hypothesis-test">Step 5: Performing a hypothesis test</h3>
+<p>The hypothesis we are testing states that <em>“the income values are randomly distributed across counties following a completely random process”</em>. There are two methods to testing this hypothesis: an analytical method and a Monte Carlo method. We’ll explore both approaches in the following example.</p>
+<section id="analytical-method" class="level4">
+<h4 class="anchored" data-anchor-id="analytical-method">Analytical method</h4>
+<p>To run the Moran’s I analysis using the analytical method, use the <code>moran.test</code> function.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-16_b86fda2a6bb8937fb373b588b9fc9062">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(s<span class="sc">$</span>Income,lw, <span class="at">alternative=</span><span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Moran I test under randomisation
+
+data:  s$Income  
+weights: lw    
+
+Moran I statistic standard deviate = 5.8525, p-value = 2.421e-09
+alternative hypothesis: greater
+sample estimates:
+Moran I statistic       Expectation          Variance 
+       0.68279551       -0.04000000        0.01525284 </code></pre>
+</div>
+</div>
+<p>The Moran’s I statistic is 0.683 (same value that was computed using the <code>moran</code> function as expected). The p-value is very small. Usually, when the p-value is very small it’s common practice to report it as <code>&lt; 0.001</code>.</p>
+<p>Note that ArcGIS adopts this analytical approach to hypothesis testing however, it implements a <strong>two-sided</strong> test as opposed to the <strong>one-sided</strong> test adopted in the above example (i.e.&nbsp;<code>alternative = "greater"</code>). A two-sided p-value is nothing more than twice the one-sided p-value. Unfortunately, ArcGIS does not seem to make this important distinction in any of its documentation. This distinction can have important ramifications as shown in the next example (Florida crime data). The Maine income data is so strongly clustered that both a one-sided and two-sided test produce the same outcome (a p-value close to 0).</p>
+</section>
+<section id="monte-carlo-method" class="level4">
+<h4 class="anchored" data-anchor-id="monte-carlo-method">Monte Carlo method</h4>
+<p>The analytical approach to the Moran’s I analysis benefits from being fast. But it may be sensitive to irregularly distributed polygons. A safer approach to hypothesis testing is to run an MC simulation using the <code>moran.mc</code> function. The number of simulations is defined by the <code>nsim =</code> parameter. Here, we’ll permute income values <code>999</code> times.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-17_5ec3547ef4f7763054f676003b5126c1">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>MC<span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim =</span> <span class="dv">999</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># View results (including p-value)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>MC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Monte-Carlo simulation of Moran I
+
+data:  s$Income 
+weights: lw  
+number of simulations + 1: 1000 
+
+statistic = 0.6828, observed rank = 1000, p-value = 0.001
+alternative hypothesis: greater</code></pre>
+</div>
+</div>
+<p>The MC simulation generates a very small p-value, 0.001. This is not surprising given that the income values are strongly clustered. We can see the results graphically by passing the Moran’s I model to the plot function:</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-18_35450f804f1f67d9e97bda26807c462c">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the Null distribution (note that this is a density plot instead of a histogram)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The curve shows the distribution of Moran I values we could expect had the incomes been randomly distributed across the counties. Note that our observed statistic, 0.683, falls way to the right of the distribution suggesting that the income values are clustered (a positive Moran’s I value suggests clustering whereas a negative Moran’s I value suggests dispersion).</p>
+<p>Can you tell the difference between our observed income distribution and those generated from a completely random process in the following figure?</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-19_d07e43bb6743f757181fdb3404def9d3">
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The map on the left is our observed distribution. The three maps on the right are realizations of a completely random process.</p>
+</section>
+</section>
+</section>
+<section id="another-example-florida-1980-homicide-rate-example" class="level2">
+<h2 class="anchored" data-anchor-id="another-example-florida-1980-homicide-rate-example">Another example: Florida 1980 Homicide rate example</h2>
+<p>In this example, we explore the spatial distribution of 1980 homicide rates <code>HR80</code> by county for the state of Florida using the Monte Carlo approach. The data are found in the <code>NAT/</code> folder used in the in-class exercise.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-20_966cd3eedff2f8fdfe3954de315f9350">
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The following code chunk highlights the entire workflow (don’t forget to set your R session folder to that which houses the <code>FL.shp</code> file).</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-21_e1711216117426bc1bf05828d05c3c1d">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"FL.shp"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the neighbors (use queen case)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(s, <span class="at">queen=</span><span class="cn">TRUE</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the neighboring average homicide rates</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the MC simulation version of the Moran's I test</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>HR80, lw, <span class="at">nsim=</span><span class="dv">9999</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(M1)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the resulting statistics</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>M1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-22_5e26ecb976fe5adbc164a01f2e62e4bd">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Monte-Carlo simulation of Moran I
+
+data:  s$HR80 
+weights: lw  
+number of simulations + 1: 10000 
+
+statistic = 0.13628, observed rank = 9575, p-value = 0.0425
+alternative hypothesis: greater</code></pre>
+</div>
+</div>
+<p>The MC simulation generated a p-value of ~0.04 suggesting that there would be a ~4% chance of being wrong in rejecting the null hypothesis or that there is a ~4% chance that our observed pattern is consistent with a random process (note that your simulated p-value may differ from the one shown here–the number of simulations may need to be increased to reach a more stable convergence). Recall that this is a one-sided test. ArcGIS’s analytical solution adopts a two-sided test. To compare its p-value to ours, we need to divide its p-value by 2 (i.e.&nbsp;<code>0.0588 / 2</code>) which gives us a one-sided p-value of <code>0.0294</code>–about 25% smaller than our simulated p-value.</p>
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-23_8662f7444756c629eec966278131a8b0">
+<div class="cell-output-display">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p>The wording adopted by ArcGIS under the infographic (highlighted in yellow in the above figure) is unfortunate. It seems to suggest a one-sided test by explicitly describing the nature of the pattern (i.e.&nbsp;<em>clustered</em>). A more appropriate statement would have been <em>“There is less than a 6% likelihood that the observed pattern could be the result of random chance”</em> (note the omission of the word <em>clustered</em>) or as <em>“The homicide rates are mildly autocorrelated with a Moran’s I value of 0.14 and a p-value of 0.0588.”</em>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+  </div>
+</footer>
+
+
+
+</body></html>

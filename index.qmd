@@ -2,7 +2,18 @@
 title: "This repo houses standalone R scripts used in Colby's  ES214 course"
 ---
 
+## Introduction to R
+
 - [Loading and visualizing spatial data in R](Getting_started_with_R/Getting_started_with_R.html)
+
+## Point pattern analysis
+
+### 1^st^ order analysis
 - [Poisson point process model](PPM/PPM_analysis.html)
+
+### 2^nd^ order analysis
 - [ANN Hypothesis Testing: homogeneous case](Homogenous_ANN/Homogenous_ANN.html)
 - [ANN Hypothesis Testing: inhomogeneous case](Inhomogenous_ANN/Inhomogenous_ANN.html)
+
+## Spatial autocorrelation
+- [Moran's I](moranI/Mapping_and_Morans.html)

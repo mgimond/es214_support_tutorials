@@ -9,3 +9,13 @@
 .navbar-dark .navbar-brand {
     color: #c4c7ec;
 }
+
+h2 + {
+   /* text-indent: 30px; */
+    margin-left: 30px;
+} 
+
+h3, h3 + * {
+   /* text-indent: 30px; */
+    margin-left: 30px;
+}  

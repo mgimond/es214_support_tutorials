@@ -143,13 +143,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link active" href="../Getting_started_with_R/Getting_started_with_R.html" aria-current="page">Getting started with R</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html">Poisson point process model</a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html">PPM</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN Hypothesis Testing: homogeneous case</a>
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN: homogeneous case</a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN Hypothesis Testing: inhomogeneous case</a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">Spatial autocorrelation</a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -269,7 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `MA' from data source 
-  `C:\Users\mgimond\Documents\github\test_quarto\Getting_started_with_R\MA.shp' 
+  `C:\Users\mgimond\Documents\github\es214_support_tutorials\Getting_started_with_R\MA.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 4 fields
 Geometry type: MULTIPOLYGON
@@ -295,7 +298,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `Walmarts' from data source 
-  `C:\Users\mgimond\Documents\github\test_quarto\Getting_started_with_R\Walmarts.shp' 
+  `C:\Users\mgimond\Documents\github\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 44 features and 40 fields
 Geometry type: POINT
