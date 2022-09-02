@@ -16,4 +16,6 @@ title: "This repo houses standalone R scripts used in Colby's  ES214 course"
 - [ANN Hypothesis Testing: inhomogeneous case](Inhomogenous_ANN/Inhomogenous_ANN.html)
 
 ## Spatial autocorrelation
-- [Moran's I](moranI/Mapping_and_Morans.html)
+- [Moran's I: Contiguity](moranI/Mapping_and_Morans.html)
+- [Moran's I: Distance bands](moranI_distance/MoranI_distance_band.html)
+

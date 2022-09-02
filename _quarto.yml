@@ -17,7 +17,9 @@ website:
       - href: Inhomogenous_ANN/Inhomogenous_ANN.qmd
         text: "ANN: inhomogeneous case"
       - href: moranI/Mapping_and_Morans.qmd
-        text: "Spatial autocorrelation"
+        text: "Spatial autocorrelation: Contiguity"
+      - href: moranI_distance/MoranI_distance_band.qmd
+        text: "Spatial autocorrelation: Distance"
   page-footer: 
     right: "Creative Commons License, Manny Gimond, 2022" 
 

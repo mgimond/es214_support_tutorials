@@ -1,0 +1,188 @@
+---
+title: "Moran's I in R: Distance bands"
+author: "Manny Gimond"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, tidy=FALSE )
+```
+
+------------------------------------------------------------------------
+
+[Data for this tutorial can be downloaded [from here](./data.zip). Don't forget to unzip the files to a dedicated folder on your computer.]{.block1}
+
+-----
+
+> Don't forget to set the R session to the project folder via *Session >> Set Working Directory >> Choose Directory*.
+
+-----
+
+-----------------
+
+We will make use of the following packages:
+
+```{r}
+library(sf)
+library(spdep)
+library(tmap)
+```
+
+## Loading and visualizing the data
+
+Load the Massachusetts income data (values are aggregated at the census tract level). The data are stored in the `MA/` in-class exercise folder.
+
+```{r results='hide'}
+# Load the shapefile
+s <- st_read("MA_income.shp")
+```
+
+Plot the data.
+
+```{r}
+tm_shape(s) + tm_fill(col="Income", style="quantile",n=8,
+                      palette="Greens") +
+              tm_legend(outside=TRUE)
+```
+
+## Moran's I as a function of a distance band
+
+We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest *if* its centroid (defined as a point) falls within the distance of the polygon of interest's centroid. This will therefore require that we compute the centroid of each census tract polygon. The coordinate pairs can be extracted using the `coordinate` function.
+
+```{r}
+s.center <- st_point_on_surface(s)
+s.coord <- st_coordinates(s.center)
+```
+
+The object `s.coord` stores all pairs of coordinate values from the census tract.
+
+Next, we will define the search radius to include all neighboring polygon centers that are within 5 km (or 5,000 map units).
+
+```{r}
+s.dist  <-  dnearneigh(s.coord, 0, 5000)  
+```
+
+The `dnearneigh` function takes three parameters: the coordinate values `s.coord`, the radius for the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is `0` and the outer annulus radius is `5000` which implies that all polygon centers up to 5 km are considered neighbors (i.e. the current example creates a full circle search radius).
+
+An example of polygons (in white) falling within 5 km of one MA census tract (in dark green) is shown in the following figure:
+
+![](img/an_0_5km.jpg){width="75%"}
+
+Note that large polygons will have fewer neighbors given the increased distance between their centroids and their boundaries as seen in the following example:
+
+![](img/an_0_5km_b.jpg){width="75%"}
+
+As another example, if we chose to restrict the neighbors to all polygon centers between 40 km and 45 km, then we would define a search annulus (instead of a circle) as:
+
+```{r eval = FALSE}
+s.dist  <-  dnearneigh(s.coord, 40000, 45000) 
+```
+
+Examples of neighbors using this definition are shown next:
+
+![](img/an_40_45km_a.jpg){width="50%"}
+
+![](img/an_40_45km_b.jpg){width="50%"}
+
+Continuing with our 0 to 5 km distance band neighbor definiton, we will create the list of neighboring polygons for each polygon in the dataset.
+
+```{r}
+lw <- nb2listw(s.dist, style="W", zero.policy = TRUE) 
+```
+
+Next, we'll run the MC simulation.
+
+```{r}
+MI  <-  moran.mc(s$Income, lw, nsim=599, zero.policy = TRUE) 
+```
+
+Plot the results.
+
+```{r fig.width=3, fig.height=2, echo = 2}
+OP <- par(mar = c(3,3,1,0))
+plot(MI, main = NULL) 
+par(OP)
+```
+
+Display p-value and other summary statistics.
+
+```{r}
+MI
+```
+
+In this example, it's clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from the census tract of interest. None of the simulated Moran's I values under the null hypothesis were more extreme than our observed Moran I value.
+
+Now, let's run a Moran's I analysis using 40 to 45 km distance band:
+
+```{r fig.width=3, fig.height=2, echo = 2:6}
+OP <- par(mar = c(3,3,1,0))
+s.dist  <-  dnearneigh(s.coord, 40000, 45000)
+lw <- nb2listw(s.dist, style="W", zero.policy = TRUE) 
+MI  <-  moran.mc(s$Income, lw, nsim=599, zero.policy = TRUE) 
+plot(MI, main = NULL) 
+MI       
+par(OP)
+```
+
+The output differs from that shown earlier. Here, the Moran's I analysis suggests a slightly more dispersed pattern than expected when comparing income values 40 to 45 km apart from one another.
+
+## Moran's I as a function of multiple distance bands
+
+> Note that you will not be expected to run this script in your final exam. But you should be able to interpret the output if asked.
+
+We can extend this analysis by calculating a Moran's I index (and p.value) at different distance bands. This gives us the change in spatial autocorrelation as a function of distance.
+
+We first create a "for" loop that iterates across range of distance band values.
+
+```{r}
+# Define the distance bands (note that each band is defined
+# by an annulus)
+start <- 0 # Starting distance in meters (the From)
+end <- 125000 # Ending distance in meters (the To)
+incr <- 5000 # Distance increment (which also defines the annulus width)
+incr.v <- seq(start, end, incr)
+
+
+# Define empty vector elements to store the I and p-values
+morI.mc <- vector()
+sign.mc <- vector()
+
+# Loop through each distance band
+for (i in (2:length(incr.v))) {
+  s.dist <- dnearneigh(s.coord, incr.v[i - 1], incr.v[i])
+  s.lw <- nb2listw(s.dist, style = "W", zero.policy=T)
+  s.mor <- moran.mc(s$Income, s.lw, nsim=599, zero.policy = TRUE)
+  sign.mc[i] <- s.mor$p.value
+  morI.mc[i] <- s.mor$statistic
+}
+
+# Modify p-value to reflect extremes at each end
+sign.mc <- ifelse(sign.mc > 0.5, 1 - sign.mc, sign.mc)
+```
+
+Next, we'll plot the Moran's I statistic as a function of distance band. We'll also symbolize each point by a binary color scheme whereby "red" will be assigned to Moran's I dots that meet a statistical threshold (let's say 0.01 in this example) and a "grey" dot otherwise.
+
+```{r fig.width = 6, fig.height=4, small.mar = TRUE}
+# First, generate an empty plot
+plot(morI.mc ~ eval(incr.v - incr * 0.5), type = "n", ann = FALSE, axes = FALSE)
+
+# Set the background plot to grey then add white grids
+u <- par("usr") # Get plot are coordinates
+rect(u[1], u[3], u[2], u[4], col = "#EEEEEE", border = NA)
+axis(1, lab = ((incr.v) / 1000), at = (incr.v), tck = 1, col = "#FFFFFF", lty = 1)
+axis(2, tck = 1, col = "#FFFFFF", lty = 1, labels = FALSE)
+
+# Add the theoretical "no autocorelation" line
+abline(h = -1 / (length(s$Income)), col = "grey20")
+
+# Add the plot to the canvas
+par(new = TRUE)
+plot(morI.mc ~ eval(incr.v - incr * 0.5),
+     type = "b", xaxt = "n", las = 1,
+     xlab = "Distance (km)", ylab = "Moran's I")
+points(morI.mc ~ eval(incr.v - incr * 0.5), 
+       col = ifelse(sign.mc < 0.01, "red", "grey"), 
+       pch = 16, cex = 2.0)
+
+# Add numeric values to points
+text(eval(incr.v - incr * 0.5), morI.mc, round(sign.mc,3), pos = 3, cex = 0.5)
+```
