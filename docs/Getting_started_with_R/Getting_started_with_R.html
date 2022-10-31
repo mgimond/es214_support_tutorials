@@ -240,17 +240,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="option-2-rstudio-interface" class="level3">
 <h3 class="anchored" data-anchor-id="option-2-rstudio-interface">Option 2: RStudio interface</h3>
 <p><img src="img/image1.jpg" class="img-fluid"></p>
+<blockquote class="blockquote">
+<p>If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option. This may slow down the package installation process somewhat.</p>
+</blockquote>
 </section>
 </section>
 <section id="opening-a-new-r-script" class="level2">
 <h2 class="anchored" data-anchor-id="opening-a-new-r-script">Opening a new R script</h2>
 <p>If an empty R script file is not opened in RStudio open a new one now.</p>
 <p><img src="img/image2.jpg" class="img-fluid" width="242"></p>
-<p>R scripts are usually saved using the .R extension (e.g.&nbsp;Day14.R). Make sure to save this script on a regular basis as you add/modify pieces of code.</p>
+<p>R scripts are usually saved using the .R extension (e.g.&nbsp;<em>r_intro.R</em>). Make sure to save this script on a regular basis as you add/modify pieces of code.</p>
 </section>
 <section id="setting-an-r-sessions-workspace" class="level2">
 <h2 class="anchored" data-anchor-id="setting-an-r-sessions-workspace">Setting an R session’s workspace</h2>
-<p>If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session’s project folder. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the in-class dataset downloaded from filer (e.g.&nbsp;the <code>walmart/</code> folder).</p>
+<p>If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session’s project folder. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the sample dataset.</p>
 <p><img src="img/image3.jpg" class="img-fluid" width="409"></p>
 </section>
 <section id="loading-activating-packages" class="level2">
@@ -262,7 +265,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that you do not need to load the <code>rgdal</code> package since its functionality is used in the <code>raster</code> package.</p>
+<p>Note that you do not need to explicitly load the <code>rgdal</code> package since its functionality is used in the <code>raster</code> package.</p>
 </section>
 </section>
 <section id="loading-gis-data-into-r" class="level1">
@@ -275,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `MA' from data source 
-  `C:\Users\mgimond\Documents\github\es214_support_tutorials\Getting_started_with_R\MA.shp' 
+  `C:\Users\mgimond\Documents\Github\es214_support_tutorials\Getting_started_with_R\MA.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 4 fields
 Geometry type: MULTIPOLYGON
@@ -285,23 +288,23 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
-<p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory in an earlier step or you have a syntax error in the filename.</p>
+<p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the filename.</p>
 </blockquote>
-<p>R can store spatial objects in different internal formats but <code>spatstat</code>’s functions require that specific spatial formats be used. The <code>MA</code> states layer will be used to define the study extent which will require that it be stored as a <code>owin</code> object. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
+<p>R can store spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> states layer will be used to define the study extent which will require that it be stored as an <code>owin</code> formatted object. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
 <div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-4_94889591883bd44b6af5c5c17833a60a">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The coordinate unit associated with the spatial object inherits the underlying coordinate system’s map units–<code>meters</code> in our example. Such small units may make it difficult to interpret the output of some analyses (e.g.&nbsp;distance based and density based analyses). We will therefore convert the map units from meters to kilometers using the <code>rescale()</code> function. Note that 1000 m = 1 km.</p>
+<p>The coordinate unit associated with the spatial object inherits the underlying coordinate system’s map units–<code>meters</code> in our example. Such small units may make it difficult to interpret the output of some analyses given that some analyses may generate very small values (i.e.&nbsp;density based analyses) or very large values (i.e.&nbsp;distance based analyses). We will therefore convert the map units from meters to kilometers using the <code>rescale()</code> function. Note that 1000 m = 1 km.</p>
 <div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-5_11957a1457394167727a47ecad4a5915">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The second parameter in the <code>rescale()</code> function, <code>1000</code>, tells R to divide the current measure of unit by 1000.</p>
-<p>Next we will load the Walmarts stores shapefile (<code>Walmarts.shp</code>) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a <code>ppp</code> point object.</p>
+<p>The second parameter in the <code>rescale()</code> function, <code>1000</code>, tells R to divide the planar unit by 1000.</p>
+<p>Next we will load the Walmart stores shapefile (<code>Walmarts.shp</code>) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a <code>ppp</code> formatted point object.</p>
 <div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-6_2fe0738dacc23d678909bc75cac3edfc">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `Walmarts' from data source 
-  `C:\Users\mgimond\Documents\github\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
+  `C:\Users\mgimond\Documents\Github\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 44 features and 40 fields
 Geometry type: POINT
@@ -315,7 +318,10 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will need to explicitly define the study extent for the point object. This will be critical when running the point process models.</p>
+<p>By default, R will adopt a rectangular extent for the point data.</p>
+<p><img src="img/image5.jpg" class="img-fluid" width="220"></p>
+<p>Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object.</p>
+<p><img src="img/image6.jpg" class="img-fluid" width="220"></p>
 <div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-7_99340e2fd6df6347b76f92024439ad82">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -326,10 +332,10 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </section>
 <section id="loading-raster-files" class="level2">
 <h2 class="anchored" data-anchor-id="loading-raster-files">Loading Raster Files</h2>
-<p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>raster</code> function from the <code>raster</code> package, convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
-<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-9_be73a3665e2101420a0c37176bf00202">
+<p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>raster</code> function from the <code>raster</code> package, than we’ll convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
+<div class="cell" data-hash="Getting_started_with_R_cache/html/unnamed-chunk-9_c68f83d6210161608719946bc9e22b68">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"./pop_sqmile.img"</span>) <span class="co"># Creates a raster object</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)  <span class="co"># Convert r object to an im object</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)                 <span class="co"># Convert r object to an im object</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(r, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>

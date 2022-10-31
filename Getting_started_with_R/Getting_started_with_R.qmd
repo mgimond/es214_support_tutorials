@@ -1,6 +1,8 @@
 ---
 title: "Loading and visualizing data in R"
 author: "Manny Gimond"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -37,6 +39,9 @@ install.packages("maptools")
 ### Option 2: RStudio interface
 
 ![](img/image1.jpg)
+ 
+ 
+> If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option. This may slow down the package installation process somewhat.
 
 ## Opening a new R script
 
@@ -44,11 +49,11 @@ If an empty R script file is not opened in RStudio open a new one now.
 
 ![](img/image2.jpg){width="242"}
 
-R scripts are usually saved using the .R extension (e.g. Day14.R). Make sure to save this script on a regular basis as you add/modify pieces of code.
+R scripts are usually saved using the .R extension (e.g. *r_intro.R*). Make sure to save this script on a regular basis as you add/modify pieces of code.
 
 ## Setting an R session's workspace
 
-If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session's project folder. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the in-class dataset downloaded from filer (e.g. the `walmart/` folder).
+If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session's project folder. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the sample dataset.
 
 ![](img/image3.jpg){width="409"}
 
@@ -63,7 +68,7 @@ library(raster)
 library(maptools) 
 ```
 
-Note that you do not need to load the `rgdal` package since its functionality is used in the `raster` package.
+Note that you do not need to explicitly load the `rgdal` package since its functionality is used in the `raster` package.
 
 # Loading GIS data into R
 
@@ -75,25 +80,26 @@ First, we will load the Massachusetts polygon shapefile into R and save the cont
 
 ```{r}
 s2 <- st_read("MA.shp")
-```
+``` 
 
-> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory in an earlier step or you have a syntax error in the filename.
+ 
+> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the filename.
 
-R can store spatial objects in different internal formats but `spatstat`'s functions require that specific spatial formats be used. The `MA` states layer will be used to define the study extent which will require that it be stored as a `owin` object. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
+R can store spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent which will require that it be stored as an `owin` formatted object. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
 
 ```{r}
 w  <- as.owin(s2)
 ```
 
-The coordinate unit associated with the spatial object inherits the underlying coordinate system's map units--`meters` in our example. Such small units may make it difficult to interpret the output of some analyses (e.g. distance based and density based analyses). We will therefore convert the map units from meters to kilometers using the `rescale()` function. Note that 1000 m = 1 km.
+The coordinate unit associated with the spatial object inherits the underlying coordinate system's map units--`meters` in our example. Such small units may make it difficult to interpret the output of some analyses given that some analyses may generate very small values (i.e. density based analyses) or very large values (i.e. distance based analyses). We will therefore convert the map units from meters to kilometers using the `rescale()` function. Note that 1000 m = 1 km.
 
 ```{r}
 w.km <- rescale(w, 1000)
 ```
 
-The second parameter in the `rescale()` function, `1000`, tells R to divide the current measure of unit by 1000.
+The second parameter in the `rescale()` function, `1000`, tells R to divide the planar unit by 1000.
 
-Next we will load the Walmarts stores shapefile (`Walmarts.shp`) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a `ppp` point object.
+Next we will load the Walmart stores shapefile (`Walmarts.shp`) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a `ppp` formatted point object.
 
 ```{r}
 s1 <- st_read("Walmarts.shp")  
@@ -101,7 +107,15 @@ p  <- as.ppp(s1)  # creates a ppp object
 p.km <- rescale(p, 1000)
 ```
 
-We will need to explicitly define the study extent for the point object. This will be critical when running the point process models.
+
+By default, R will adopt a rectangular extent for the point data. 
+
+![](img/image5.jpg){width="220"}
+
+
+Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object. 
+
+![](img/image6.jpg){width="220"}
 
 ```{r}
 Window(p.km) <- w.km
@@ -115,11 +129,11 @@ marks(p.km) <- NULL
 
 ## Loading Raster Files
 
-Next, we will load the population density raster file `pop_sqmile.img` using the `raster` function from the `raster` package, convert it to an `im` object recognized by spatstat and name the object `r.km` once re-scaled.
+Next, we will load the population density raster file `pop_sqmile.img` using the `raster` function from the `raster` package, than we'll convert it to an `im` object recognized by spatstat and name the object `r.km` once re-scaled.
 
 ```{r}
 img  <- raster("./pop_sqmile.img") # Creates a raster object
-r    <- as.im(img)  # Convert r object to an im object
+r    <- as.im(img)                 # Convert r object to an im object
 r.km <- rescale(r, 1000)
 ```
 
