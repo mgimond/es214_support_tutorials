@@ -210,13 +210,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="block1">Data for this tutorial can be downloaded <a href="./walmarts.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
 <hr>
 <blockquote class="blockquote">
-<p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
+<p>In RStudio, don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
 <section id="load-and-prep-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
-<p>In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R will adopt the layer’s coordinate system’s map units when expressing distance or area values, so by changing the layer’s default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to “interpret”.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-1_1e02d923914b6dd2ed056ec75be696e6">
+<p>The following chunk of code loads the shapefiles into R. They are then converted to spatial formats readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer’s coordinate system’s map units when expressing distance or area values, so by changing the layer’s default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to “interpret”.</p>
+<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-1_d30845ee7d159f5ef0067e07b1830dbd">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
@@ -228,21 +228,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>s  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in as.ppp.sf(s): only first attribute column is used for marks</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p) <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># Remove attribute table (simplifies plot operations)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>) <span class="co"># Rescale map units to km</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p) <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># Remove attribute table (simplifies plot operations)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>) <span class="co"># Rescale map units to km</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="average-nearest-neighbor-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
 <p>First, we’ll compute the observed Walmart ANN statistic.</p>
 <div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-2_ec10735ff3e83ea3c4aff0d9e6806c0e">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13.29478</code></pre>
 </div>
@@ -250,29 +247,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The observed average nearest neighbor is 13.29 km.</p>
 <section id="is-our-observed-ann-value-consistent-with-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process">Is our observed ANN value consistent with a random process?</h3>
-<p>In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our <strong>null hypothesis</strong>. We’ll therefore compare our observed ANN value to the <em>range</em> of ANN values we could expect to get <em>if</em> the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is then repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.</p>
+<p>In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our <strong>null hypothesis</strong>. We’ll therefore compare our observed ANN value to the <em>range</em> of ANN values we could expect to get <em>if</em> the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.</p>
 <div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-3_5001c0312a198fc4e8cf3dcd3123d302">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       <span class="co"># Number of times to run the simulation</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ann.r <span class="ot">&lt;-</span> <span class="fu">vector</span>()   <span class="co"># Create an empty object to be used to store the simulated  ANN values</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">win =</span> w.km)  <span class="co"># Generate random point locations</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  ann.r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))     <span class="co"># Compute and store the simulated ANN value</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       <span class="co"># Number of times to run the simulation</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.r <span class="ot">&lt;-</span> <span class="fu">vector</span>()   <span class="co"># Create an empty object to be used to store the simulated  ANN values</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">win =</span> w.km)  <span class="co"># Generate random point locations</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ann.r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))     <span class="co"># Compute and store the simulated ANN value</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In the above loop, the function <code>rpoint</code> is passed two parameters: <code>n = p.km$n</code> and <code>win = w.km</code>. The first tells the function how many points to randomly place (i.e.&nbsp;the same number of points as that in the Walmart points layer which we can extract from the <code>p.km$n</code> object). The second tells the function to confine the randomly generated points to the extent defined by <code>w.km</code> (the <code>MA</code> polygon).</p>
+<p>In the above loop, the function <code>rpoint</code> is passed two parameters: <code>n = p.km$n</code> and <code>win = w.km</code>. The first tells the function how many points to randomly generate (i.e.&nbsp;the same number of points as that in the Walmart points layer which we can extract from the <code>p.km$n</code> object). The second tells the function to confine the randomly generated points to the extent defined by <code>w.km</code> (the <code>MA</code> polygon).</p>
 <p>Note that after running the last simulation, you can view its set of randomly generated points via:</p>
 <div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-4_1e29f3348b16237ee677e4f74bef62d6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Given that this is a random process, your output will look different–as expected.</p>
-<p>Next, let’s plot the histogram of the simulated ANN values then add a blue line showing where our observed ANN value lies relative to the distribution of simulated ANN values under the null. (Your histogram may look different given the random nature of the simulation).</p>
+<p>Next, we plot the histogram of the simulated ANN values then add a blue line showing where our observed ANN value lies relative to the distribution of simulated ANN values under the null. (Your histogram may look different given the random nature of the simulation).</p>
 <div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-5_c2e9e3814e6e3989aea8c033b493319a">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.r, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.r), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)  <span class="co"># lw = 2 increases the line width</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.r, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.r), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)  <span class="co"># lw = 2 increases the line width</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -281,11 +278,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="extracting-a-p-value-from-the-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-a-p-value-from-the-simulation">Extracting a p-value from the simulation</h3>
-<p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/point-pattern-analysis-in-r.html#computing-a-pseudo-p-value">lecture notes</a> for more information.</p>
+<p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/hypothesis-testing.html#a-better-approach-a-monte-carlo-test">lecture notes</a> for more information.</p>
 <div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-6_8c5a05d9b3fd56586426acc0a3d05eab">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>[1] 0.3115</p>
 </div>
 <p>About 31% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 31% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>

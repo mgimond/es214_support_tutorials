@@ -13,16 +13,16 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, results="hide
 
 -----
 
-> Don't forget to set the R session to the project folder via *Session \>\> Set Working Directory \>\> Choose Directory*.
+> In RStudio, don't forget to set the R session to the project folder via *Session \>\> Set Working Directory \>\> Choose Directory*.
 
 -----
 
 ## Load and prep the dataset
 
-In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale` function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R will adopt the layer's coordinate system's map units when expressing distance or area values, so by changing the layer's default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to "interpret". 
+The following chunk of code loads the shapefiles into R. They are then converted to  spatial formats readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale` function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer's coordinate system's map units when expressing distance or area values, so by changing the layer's default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to "interpret". 
 
 
-```{r, message=FALSE, results='hide'}
+```{r, message=FALSE, results='hide', message=FALSE, warning=FALSE}
 # Load packages
 library(sf)
 library(spatstat)
@@ -53,7 +53,7 @@ The observed average nearest neighbor is `r round(ann.p, 2)` km.
 
 ### Is our observed ANN value consistent with a random process?
 
-In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our **null hypothesis**. We'll therefore compare our observed ANN value to the *range* of ANN values we could expect to get *if* the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is then repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.
+In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our **null hypothesis**. We'll therefore compare our observed ANN value to the *range* of ANN values we could expect to get *if* the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.
 
 ```{r}
 n     <- 1999       # Number of times to run the simulation
@@ -65,7 +65,7 @@ for (i in 1:n){
 }
 ```
 
-In the above loop, the function `rpoint` is passed two parameters: `n = p.km$n` and `win = w.km`. The first tells the function how many points to randomly place (i.e. the same number of points as that in the Walmart points layer which we can extract from the `p.km$n` object). The second tells the function to confine the randomly generated points to the extent defined by `w.km` (the `MA` polygon).
+In the above loop, the function `rpoint` is passed two parameters: `n = p.km$n` and `win = w.km`. The first tells the function how many points to randomly generate (i.e. the same number of points as that in the Walmart points layer which we can extract from the `p.km$n` object). The second tells the function to confine the randomly generated points to the extent defined by `w.km` (the `MA` polygon).
 
 Note that after running the last simulation, you can view its set of randomly generated points via:
 
@@ -77,7 +77,7 @@ par(OP)
 
 Given that this is a random process, your output will look different--as expected.
 
-Next, let's plot the histogram of the simulated ANN values then add a blue line showing where our observed ANN value lies relative to the distribution of simulated ANN values under the null. (Your histogram may look different given the random nature of the simulation).
+Next, we plot the histogram of the simulated ANN values then add a blue line showing where our observed ANN value lies relative to the distribution of simulated ANN values under the null. (Your histogram may look different given the random nature of the simulation).
 
 ```{r, fig.height=2, echo=2:3}
 OP <- par(mar=c(4,4,0,0))
@@ -90,7 +90,7 @@ The test suggests that our observed ANN value may not be that different from the
 
 ### Extracting a p-value from the simulation
 
-We first need to find the end of the distribution that is *closest* to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called *one-sided* P-value. See [lecture notes](https://mgimond.github.io/Spatial/point-pattern-analysis-in-r.html#computing-a-pseudo-p-value) for more information.
+We first need to find the end of the distribution that is *closest* to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called *one-sided* P-value. See [lecture notes](https://mgimond.github.io/Spatial/hypothesis-testing.html#a-better-approach-a-monte-carlo-test) for more information.
 
 ```{r results = 'asis'}
 N.greater <- sum(ann.r > ann.p)
