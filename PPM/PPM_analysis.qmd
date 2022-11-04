@@ -94,9 +94,9 @@ par(OP)
 
 ## Modeling point density as a function of two competing covariates: population density and income.
 
-We will first develop two different models that we think might define the Walmart's point intensity. Recall that *intensity* is a property of the underlying "process" (one being defined by the distribution of population density and the other being defined by the distribution of income)--this differs from *density* which is associated with the observed pattern. These models are represented in our R script by a couple of "raster": a population raster and a distribution and income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
+We will first develop two different models that we think might define the Walmart's point intensity. Recall that *intensity* is a property of the underlying "process" (one being defined by the distribution of population density and the other being defined by the distribution of income)--this differs from *density* which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
 
-We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` will define the model where we the intensity of the process is the same across the entire study extent.
+We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` will define the model where the intensity of the process is assumed to be the same across the entire study extent.
 
 ```{r}
 Mpop <- ppm(p.km ~ pop.km.log) # Population model
