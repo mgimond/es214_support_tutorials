@@ -48,42 +48,24 @@ marks(p.km)  <- NULL
 Window(p.km) <- w.km
 
 # Read population density raster
-img         <- raster("pop_sqmile.tif")
-pop         <- as.im(img)
-pop.km      <- rescale(pop, 1000)
-pop.km.log  <- log(pop.km)
+img     <- raster("log_pop_sqmile.tif")
+pop     <- as.im(img)
+pop.km  <- rescale(pop, 1000)
 
 # Read median income raster
 img      <- raster("median_income.tif")
 inc      <- as.im(img)
 inc.km   <- rescale(inc, 1000)
-inc.km[] <- as.double(inc.km[]) # Convert integer income values to double values
 ```
 
-You'll note that we are converting the income raster from integer data type to double (`inc[] <- as.double(inc[])`). This is done to satisfy the `effectfun()` function that will be used later in this workflow--that function does *not* accept integer rasters.
-
-You'll also note in the above chunk of code that we are **transforming** population density values to logged values (`log(pop.km)`) because of the **skewed nature** of the population raster. This may help improve the model performance. Such transformation techniques are not uncommon in the field of statistics.
-
-A quick way to check the distribution of raster pixel values is to plot the histogram as follows:
-
-```{r, fig.height=2.5, fig.width=3}
-# Plot original raster values
-hist(pop.km)
-```
-
-```{r, fig.height=2.5, fig.width=3}
-# Plot log-transformed raster values
-hist(pop.km.log)
-```
-
-The latter distribution of values is better suited for the ppm technique adopted in this exercise. 
+Note that later in the script, we will make use of the `effectfun()` that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing `typeof(inc.km[])`, for example. If it's not stored as a double, you can force it to a double using the `as.double()` function (e.g. `inc[] <- as.double(inc[])`). 
 
 Let's plot each raster with the Walmart point overlay. We'll use `R`'s base plotting environment.
 
 ```{r fig.height=3, small.mar = TRUE, fig.show='hold', echo = 2:7}
 OP <- par(mfrow = c(1,2), mar=c(2,0,2,0)) # This creates a two-pane plotting window
 
-plot(pop.km.log, ribside="bottom", main="Population (log)")
+plot(pop.km, ribside="bottom", main="Population (log)")
 plot(p.km, pch = 20, col=rgb(1,1,1,0.5), add=TRUE)
 
 plot(inc.km, ribside="bottom", main="Income")
@@ -99,9 +81,9 @@ We will first develop two different models that we think might define the Walmar
 We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` will define the model where the intensity of the process is assumed to be the same across the entire study extent.
 
 ```{r}
-Mpop <- ppm(p.km ~ pop.km.log) # Population model
-Minc <- ppm(p.km ~ inc.km)     # Income model
-Mo   <- ppm(p.km ~ 1)          # Null model
+Mpop <- ppm(p.km ~ pop.km) # Population model
+Minc <- ppm(p.km ~ inc.km) # Income model
+Mo   <- ppm(p.km ~ 1)      # Null model
 ```
 
 Let's explore the model parameters. First, we'll look at `Mpop`.
@@ -110,7 +92,7 @@ Let's explore the model parameters. First, we'll look at `Mpop`.
 Mpop
 ```
 
-The values of interest are the **intercept** (whose value is around `-10.1`) and the **coefficient** `pop.km.log` (whose value is around `0.63`). Using these values, we can construct the mathematical relationship (noting that we are using the logged population raster and not the original population raster values):
+The values of interest are the **intercept** (whose value is around `-10.1`) and the **coefficient** `pop.km` (whose value is around `0.63`). Using these values, we can construct the mathematical relationship (noting that we are using the logged population raster and not the original population raster values):
 
 $$
 Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
@@ -145,7 +127,7 @@ which is nothing more than the number of stores per unit area (44 stores / 21,00
 ```{r fig.show='hold', fig.height=3, small.mar =TRUE}
 OP <- par(mfrow = c(1,2), mar = c(4,4,2,1))  # This creates a two-pane plotting window
 
-plot(effectfun(Mpop, "pop.km.log", se.fit = TRUE), main = "Population",
+plot(effectfun(Mpop, "pop.km", se.fit = TRUE), main = "Population",
      ylab = "Walmarts per km2", xlab = "Population density", legend = FALSE)
 
 plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
