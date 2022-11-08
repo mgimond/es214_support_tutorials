@@ -1,5 +1,5 @@
 ---
-title: "ANN Hypothesis Testing: inhomogeneous case"
+title: "ANN Hypothesis Testing: Inhomogeneous Case"
 author: "Manny Gimond"
 ---
 
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 
 In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale` function.
 
-As was noted in our PPM analysis of the population data, given its strongly skewed distribution we found it best to express it on a log scale as opposed to a linear scale. We'll therefore adopt this log scale in this analysis too.
+Our earlier PPM analysis suggested that the population density distribution (expressed on a log scale), could help explain the observed distribution of Walmart stores. We therefore need to account for this *inhomogeneity* in the underlying 1^st^ order effect before tackling a distance based analysis which addresses the 2^nd^ order effect of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.
 
 ```{r, message=FALSE, results='hide'}
 # Load packages
@@ -44,10 +44,9 @@ p.km <- rescale(p, 1000)
 Window(p.km) <- w.km     
 
 # Read population raster
-img     <- raster("./pop_sqmile.img") # Creates a raster object
-pop     <- as.im(img)  # Convert r object to an im object
-pop.km  <- rescale(pop, 1000)
-pop.km.log <- log(pop.km)  # Log transform population data
+img     <- raster("./log_pop_sqmile.tif") # load a raster layer file
+rast     <- as.im(img)  # Convert raster object to an im object
+rast.km  <- rescale(rast, 1000)
 ```
 
 ## Average nearest neighbor analysis
@@ -68,20 +67,19 @@ In our earlier analysis of the point pattern, we calculated a (pseudo) p-value o
 If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while **controlling** for population distribution influence. We do this by instructing the `rpoint()` function to increase point placement probability at locations with high covariate values (i.e. a high population density area is more likely to receive a random point than a low density area).
 
 ```{r}
-n     <- 999
+n     <- 1999
 ann.het <- vector()
 for (i in 1:n){
-  rand.p   <- rpoint(n = p.km$n, f = pop.km.log, win = w.km) 
+  rand.p   <- rpoint(n = p.km$n, f = rast.km) 
   ann.het[i] <- mean(nndist(rand.p, k = 1))
 }
 
 ```
 
-The above loop is almost identical to that of the homogeneous case except with the addition of the `f = pop.km.log` argument which defines the intensity of the underlying process (`pop.km.log` represents the population density raster). The `rpoint` function rescales the raster values to a range of `[0,1]` where `1` designates maximum probability of a pixel receiving a point and `0` minimum (or no) probability of a pixel receiving a point. Note that this is still a random process in that each time the `rpoint` function is run, we'll have a different point pattern. However, on average, more points will be located where the `pop.km.log` pixels have the highest values.
+The above loop is almost identical to that of the homogeneous case except with the addition of the `f = rast.km` argument which defines the intensity of the underlying process (`rast.km` represents the population density raster). The `rpoint` function rescales the raster values to a range of `[0,1]` where `1` designates maximum probability of a pixel receiving a point and `0` minimum (or no) probability of a pixel receiving a point. Note that this is still a random process in that each time the `rpoint` function is run, we'll have a different point pattern. However, on average, more points will be located where the `rast.km` pixels have the highest values.
 
-Note that the `f =` parameter will supersede that of the `win =` parameter. In other words, if `pop.km.log` covers a different extent than `w.km`, the `rpoint()` function will generate random points within the `pop.km.log` extent instead of the `w.km` extent.
 
-The following map shows an example of how the Walmart store distribution *could* look like *if* dictated by population alone.
+The following map shows an example of how the Walmart store distribution *could* look like *if* dictated by population distribution
 
 ```{r fig.height=1.5, echo=3}
 OP <- par(mar=c(0,0,0,0))
@@ -90,7 +88,9 @@ plot(rand.p, pch = 16, main = NULL)
 par(OP)
 ```
 
-Now let's plot the histogram of simulated ANN values:
+It may not look terribly different from the homogeneous ANN model, but if you were to tally all point distributions from each simulation, you would very likely find more points occurring in areas with higher population values (as expressed by the raster layer).
+
+Now, let's plot the histogram of simulated ANN values:
 
 ```{r fig.height=2, echo=2:3}
 OP <- par(mar=c(4,4,0,0))
@@ -103,20 +103,22 @@ The histogram is displaying the range of expected ANN values when the placement 
 
 Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart may be more *dispersed* than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.
 
+The p-value is thus:
+
 ```{r}
 N.greater <- sum(ann.het > ann.p)
 p <- min(N.greater + 1, n + 1 - N.greater) / (n +1)
 p
 ```
 
+Note that this is a smaller p-value than that computed under the homogeneous scenario. 
+
 ## Final note
 
-While the wording in the last paragraph may imply that it's the *observed* ANN value that has shifted along the x-axis relative to the hypothesized distribution, it's really the distribution that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses.
-
+While the histogram may imply that it's the *observed* ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it's really the *distribution* that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses!
 
 
 ```{r fig.height=3, fig.width=6, echo = FALSE}
-```{r}
 n     <- 1999       
 ann.hom <- vector()   
 
@@ -136,33 +138,4 @@ plot(h1,  xlim=range(c(ann.hom, ann.het, ann.het)),
 plot(h2, col = rgb(0,1,0,0.5), add = TRUE, border = "green")
 abline(v = ann.p, col = "blue", lw = 3)
 ```
-
-## Addendum
-
-It's good practice to indicate, in your analysis results, if you use a transformed version of the covariate since this can impact the outcome of the analysis. In the following example, the original linear version of the population raster is used.
-
-```{r}
-ann.r <- vector()
-for (i in 1:n){
-  rand.p   <- rpoint(n = p.km$n, f = pop.km, win = w.km) 
-  ann.r[i] <- mean(nndist(rand.p, k = 1))
-}
-
-```
-
-```{r fig.height=2, echo=2:3}
-OP <- par(mar=c(4,4,0,0))
-hist(ann.r, breaks = 40, col = "bisque", xlim = range(ann.p, ann.r), main = NULL)
-abline(v = ann.p, col = "blue", lw = 2)
-par(OP)
-```
-
-```{r}
-N.greater <- sum(ann.r > ann.p)
-p <- min(N.greater + 1, n + 1 - N.greater) / (n + 1)
-p
-```
-
-The outcome of this analysis is quite different from the one using the raw population density values. **Both outcomes are perfectly valid**, but they address slightly different questions: "When controlling for the population density distribution, are Walmart stores randomly distributed?" vs. "When controlling for the population density distribution **as measured on a log scale**, are Walmart stores randomly distributed?"
-
 
