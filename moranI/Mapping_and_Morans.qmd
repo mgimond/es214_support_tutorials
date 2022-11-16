@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, tidy=FALSE )
 
 ------------------------------------------------------------------------
 
-[Data for this tutorial can be downloaded [from here](./data.zip). Don't forget to unzip the files to a dedicated folder on your computer.]{.block1}
+[Data for this tutorial can be downloaded [from here](./data.zip). Make sure to unzip the files to a dedicated folder on your computer.]{.block1}
 
 -----
 
@@ -30,7 +30,7 @@ library(tmap)
 
 ## Loading the data
 
-Don't forget to set the session's working directory to the folder that contains the `NHME.shp` shapefile before running the following chunks of code. This should be the `NHME/` folder used in the in-class exercise.
+Don't forget to set the session's working directory to the folder that contains the `NHME.shp` shapefile before running the following chunks of code. 
 
 ```{r results='hide'}
 # Load the shapefile
@@ -66,13 +66,12 @@ boxplot(s$Income, horizontal = TRUE)
 par(OP)
 ```
 
-To symbolize the polygons using the `Income` attribute we will first define the classification breaks (`style = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`). For the latter, the `tmap` package makes use of Cynthia Brewer's color schemes (you are already familiar with her [website](http://colorbrewer2.org/)). 
+To generate a map by symbolizing the polygons using the `Income` attribute we will define the classification breaks (`style = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`). For the latter, the `tmap` package makes use of Cynthia Brewer's color schemes (you are already familiar with her [website](http://colorbrewer2.org/)). 
 
 ```{r fig.height=3}
 tm_shape(s) + tm_fill(col="Income", style="quantile", n=8, palette="Greens") +
               tm_legend(outside=TRUE)
 ```
-
 
 ## Moran's I analysis
 
@@ -81,22 +80,27 @@ tm_shape(s) + tm_fill(col="Income", style="quantile", n=8, palette="Greens") +
 The first step in a Moran's I analysis requires that we define "neighboring" polygons. This could refer to contiguous polygons, polygons within a certain distance, or it could be non-spatial in nature and defined by social, political or cultural "neighbors".
 
 Here, we'll adopt a contiguous neighbor definition. We'll accept any contiguous polygons that share at least one vertex; this is the "queen" case (if one chooses to adopt the chess analogy) and it's  parameterized as `queen = TRUE` in the call to `poly2nb`. If we required that just *edges* be shared between polygons then we would set `queen = FALSE` (the *rook* case).
-
+ 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 nb <- poly2nb(s, queen=TRUE)
 ```
-
+ 
 For each polygon in our shape object, `nb` lists all neighboring polygons. For example, to see the neighbors (by ID number) for the first polygon in the shape object, type:
-
+ 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 nb[1]
 ```
-
+ 
 Here's the list of county names and associated IDs:
-
+ 
 ```{r echo=FALSE}
+#| class-output: divh3
 library(kableExtra)
-knitr::kable(data.frame(County=s$NAME, ID=1:nrow(s)), "html") %>% scroll_box(width = "200px", height = "200px")  
+knitr::kable(data.frame(County=s$NAME, ID=1:nrow(s)), "html", table.attr = "class=\'divh3\'") %>% scroll_box(width = "200px", height = "200px")  
 
 ```
 
@@ -105,11 +109,15 @@ knitr::kable(data.frame(County=s$NAME, ID=1:nrow(s)), "html") %>% scroll_box(wid
 Next, we need to assign weights to each neighboring polygon. In this example, each neighboring polygon will be assigned **equal weight** when computing the neighboring mean income values.
 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 lw <- nb2listw(nb, style="W", zero.policy=TRUE)
 ```
 
 To see the weight of the first polygon's neighbors type:
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 lw$weights[1]
 ```
 
@@ -122,6 +130,8 @@ NOTE: This step does not need to be performed when running the `moran` or `moran
 Next, we'll have R compute the average neighbor income value for each polygon. These values are often referred to as **spatially lagged** values.
 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 inc.lag <- lag.listw(lw, s$Income)
 inc.lag
 ```
@@ -129,6 +139,8 @@ inc.lag
 You can plot the relationship between income and its spatially lagged counterpart as follows (note that the blue line added to the plot is derived from a regression model).
 
 ```{r fig.height=2.5,  fig.width = 2.5, echo=2:3}
+#| class-output: divh3
+#| class-source: divh3
 OP <- par(pty="s", mar=c(3.5, 3.7, 0,1))
 plot(inc.lag ~ s$Income, pch=16, asp=1)
 abline(lm(inc.lag ~ s$Income), col="blue")
@@ -140,6 +152,8 @@ par(OP)
 The Moran's I statistic can be computed using the `moran` function. 
 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 I <- moran(s$Income, lw, length(nb), Szero(lw))[1]
 I
 ```
@@ -156,6 +170,8 @@ The hypothesis we are testing states that _"the income values are randomly distr
 To run the Moran's I analysis using the analytical method, use the `moran.test` function. 
 
 ```{r}
+#| class-output: divh3
+#| class-source: divh3
 moran.test(s$Income,lw, alternative="greater")
 ```
 
@@ -167,8 +183,12 @@ Note that ArcGIS adopts this analytical approach to hypothesis testing however, 
 
 The analytical approach to the Moran's I analysis benefits from being fast. But it may be sensitive to irregularly distributed polygons. A safer approach to hypothesis testing is to run an MC simulation using the `moran.mc` function. The number of simulations is defined by the `nsim = ` parameter. Here, we'll permute income values `999` times.
 
+The `moran.mc` function takes another parameter called `alternative =`. This parameter has three possible values: `"greater"` (the default), `"less"`, and `"two.sided"`. The choice will be dictated by the side of the distribution we want to compute the p-value for. If our observed Moran's I is to the right of the expected distribution, we will want to adopt the `"greater"` option which will focus on the upper tail of the distribution. If our observed value is to the left of the distribution, we will want to choose the `"less"` option to focus on the lower tail of the distribution. You can usually tell from the computed Moran's I value which tail you will want to emphasize by its sign. A general rule of thumb is to place emphasis on the lower tail if Moran's I value is negative, and to place emphasis on the upper tail if Moran's I value is positive. In our example, out Moran's I value of `r round(unlist(I),2)` is positive so we'll choose `"greater"` for the parameter.
+
 ```{r}
-MC<- moran.mc(s$Income, lw, nsim = 999)
+#| class-output: divh3
+#| class-source: divh3
+MC<- moran.mc(s$Income, lw, nsim = 999, alternative = "greater")
 
 # View results (including p-value)
 MC
@@ -177,6 +197,8 @@ MC
 The MC simulation generates a very small p-value, `r MC$p.value`. This is not surprising given that the income values are strongly clustered. We can see the results graphically by passing the Moran's I model to the plot function:
 
 ```{r fig.height=3}
+#| class-output: divh3
+#| class-source: divh3
 # Plot the Null distribution (note that this is a density plot instead of a histogram)
 plot(MC)
 ```
@@ -186,6 +208,8 @@ The curve shows the distribution of Moran I values we could expect had the incom
 Can you tell the difference between our observed income distribution and those generated from a completely random process in the following figure?
 
 ```{r echo=FALSE, fig.height=2, fig.width=7}
+#| class-output: divh3
+#| class-source: divh3
 set.seed(131)
 s$rand1 <- sample(s$Income, length(s$Income), replace = FALSE)
 s$rand2 <- sample(s$Income, length(s$Income), replace = FALSE)
@@ -228,7 +252,7 @@ nb <- poly2nb(s, queen=TRUE)
 lw <- nb2listw(nb, style="W", zero.policy=TRUE)
 
 # Run the MC simulation version of the Moran's I test
-M1 <- moran.mc(s$HR80, lw, nsim=9999)
+M1 <- moran.mc(s$HR80, lw, nsim=9999, alternative = "greater")
 
 # Plot the results
 plot(M1)
@@ -251,4 +275,4 @@ img <- readPNG("img/HR80_arcmap_output.PNG")
  grid.raster(img)
 ```
 
-The wording adopted by ArcGIS under the infographic (highlighted in yellow in the above figure) is unfortunate. It seems to suggest a one-sided test by explicitly describing the nature of the pattern (i.e. *clustered*). A more appropriate statement would have been  _"There is less than a 6% likelihood that the observed pattern could be the result of random chance"_ (note the omission of the word _clustered_) or as _"The homicide rates are mildly autocorrelated with a Moran's I value of 0.14 and a p-value of 0.0588."_.
+The wording adopted by ArcGIS under the infographic (highlighted in yellow in the above figure) is unfortunate. It seems to suggest a one-sided test by explicitly describing the nature of the pattern (i.e. *clustered*). A more appropriate statement would have been  _"There is less than a 6% likelihood that the observed pattern could be the result of random chance"_ (note the omission of the word _clustered_).
