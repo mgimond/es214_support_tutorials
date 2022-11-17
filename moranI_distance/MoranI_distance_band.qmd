@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, tidy=FALSE )
 
 -----
 
-> Don't forget to set the R session to the project folder via *Session >> Set Working Directory >> Choose Directory*.
+> Be sure to set the R session to the project folder via *Session >> Set Working Directory >> Choose Directory*.
 
 -----
 
@@ -29,7 +29,7 @@ library(tmap)
 
 ## Loading and visualizing the data
 
-Load the Massachusetts income data (values are aggregated at the census tract level). The data are stored in the `MA/` in-class exercise folder.
+Load the Massachusetts income data (values are aggregated at the census tract level).
 
 ```{r results='hide'}
 # Load the shapefile
@@ -67,7 +67,7 @@ An example of polygons (in white) falling within 5 km of one MA census tract (in
 
 ![](img/an_0_5km.jpg){width="75%"}
 
-Note that large polygons will have fewer neighbors given the increased distance between their centroids and their boundaries as seen in the following example:
+Note that large polygons will have fewer neighbors given the increased distance between their centroids and neighboring centroids as seen in the following example:
 
 ![](img/an_0_5km_b.jpg){width="75%"}
 
@@ -83,7 +83,7 @@ Examples of neighbors using this definition are shown next:
 
 ![](img/an_40_45km_b.jpg){width="50%"}
 
-Continuing with our 0 to 5 km distance band neighbor definiton, we will create the list of neighboring polygons for each polygon in the dataset.
+Continuing with our 0 to 5 km distance band neighbor definition, we will create the list of neighboring polygons for each polygon in the dataset.
 
 ```{r}
 lw <- nb2listw(s.dist, style="W", zero.policy = TRUE) 

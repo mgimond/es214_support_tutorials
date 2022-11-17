@@ -214,25 +214,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
 <hr>
 <blockquote class="blockquote">
-<p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
+<p>Be sure to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
 <hr>
 <p>We will make use of the following packages:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_fbcd2ee567ec30f116f72bd19bd3c417">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_cce55f45a7da838ca90691d60911e4c9">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="loading-and-visualizing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-and-visualizing-the-data">Loading and visualizing the data</h2>
-<p>Load the Massachusetts income data (values are aggregated at the census tract level). The data are stored in the <code>MA/</code> in-class exercise folder.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-2_ed321bf7b82f2118bed15ae74fe16a15">
+<p>Load the Massachusetts income data (values are aggregated at the census tract level).</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-2_9489684b3e6c429bf29fb6ee17f37e5e">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA_income.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Plot the data.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_60374fdb07256b393943b1e80e3c86cf">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_9df312ef1f7dde9f0143ddea67105c7b">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col=</span><span class="st">"Income"</span>, <span class="at">style=</span><span class="st">"quantile"</span>,<span class="at">n=</span><span class="dv">8</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">palette=</span><span class="st">"Greens"</span>) <span class="sc">+</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">tm_legend</span>(<span class="at">outside=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -244,49 +244,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="morans-i-as-a-function-of-a-distance-band" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-a-distance-band">Moran’s I as a function of a distance band</h2>
 <p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest <em>if</em> its centroid (defined as a point) falls within the distance of the polygon of interest’s centroid. This will therefore require that we compute the centroid of each census tract polygon. The coordinate pairs can be extracted using the <code>coordinate</code> function.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-4_dbf9dae6e58dd2cfce0463566fdc38dd">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s.center <span class="ot">&lt;-</span> <span class="fu">st_point_on_surface</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in st_point_on_surface.sf(s): st_point_on_surface assumes attributes are
-constant over geometries of x</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s.coord <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(s.center)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-4_0057c6925c68bf9edbdaf24f78b24ec3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s.center <span class="ot">&lt;-</span> <span class="fu">st_point_on_surface</span>(s)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s.coord <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(s.center)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The object <code>s.coord</code> stores all pairs of coordinate values from the census tract.</p>
 <p>Next, we will define the search radius to include all neighboring polygon centers that are within 5 km (or 5,000 map units).</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-5_aea870f5bf673e370bb2832ac6fc7b18">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">0</span>, <span class="dv">5000</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-5_2a5d04d0ead890b1601be618914856cb">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">0</span>, <span class="dv">5000</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>dnearneigh</code> function takes three parameters: the coordinate values <code>s.coord</code>, the radius for the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is <code>0</code> and the outer annulus radius is <code>5000</code> which implies that all polygon centers up to 5 km are considered neighbors (i.e.&nbsp;the current example creates a full circle search radius).</p>
 <p>An example of polygons (in white) falling within 5 km of one MA census tract (in dark green) is shown in the following figure:</p>
 <p><img src="img/an_0_5km.jpg" class="img-fluid" style="width:75.0%"></p>
-<p>Note that large polygons will have fewer neighbors given the increased distance between their centroids and their boundaries as seen in the following example:</p>
+<p>Note that large polygons will have fewer neighbors given the increased distance between their centroids and neighboring centroids as seen in the following example:</p>
 <p><img src="img/an_0_5km_b.jpg" class="img-fluid" style="width:75.0%"></p>
 <p>As another example, if we chose to restrict the neighbors to all polygon centers between 40 km and 45 km, then we would define a search annulus (instead of a circle) as:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-6_635b3b362e1f03c78e17abc3bc8b8975">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-6_1feb95492a6ab1cf741415c2e1a57616">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Examples of neighbors using this definition are shown next:</p>
 <p><img src="img/an_40_45km_a.jpg" class="img-fluid" style="width:50.0%"></p>
 <p><img src="img/an_40_45km_b.jpg" class="img-fluid" style="width:50.0%"></p>
-<p>Continuing with our 0 to 5 km distance band neighbor definiton, we will create the list of neighboring polygons for each polygon in the dataset.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-7_6c65a565193d83451df783916abc2c26">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Continuing with our 0 to 5 km distance band neighbor definition, we will create the list of neighboring polygons for each polygon in the dataset.</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-7_1123860e1eb6daa9fc10828a99935b1e">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we’ll run the MC simulation.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-8_c2448548da57f97fa7d09a31ae297e4e">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-8_aa248bde6be9b0d8330eec4f23a0d735">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Plot the results.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-9_8ee76bc56e3373a1d05d7ff99cf98357">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-9_b3f3fc53b5d141e5804fe100edd1fc17">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="288"></p>
 </div>
 </div>
 <p>Display p-value and other summary statistics.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-10_ab79af5a96b1e1bc59deeaa529f56570">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MI</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-10_ca376be697c34d9edab67ae104ad17c7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MI</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Monte-Carlo simulation of Moran I
@@ -301,15 +297,15 @@ alternative hypothesis: greater</code></pre>
 </div>
 <p>In this example, it’s clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from the census tract of interest. None of the simulated Moran’s I values under the null hypothesis were more extreme than our observed Moran I value.</p>
 <p>Now, let’s run a Moran’s I analysis using 40 to 45 km distance band:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-11_5a9b1c11769aef8e1d537c83b89725a3">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-11_c5d782f6e6315e8e9fd19f7f39b7e0d6">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="288"></p>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>MI       </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>MI       </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Monte-Carlo simulation of Moran I
@@ -318,7 +314,7 @@ data:  s$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = -0.012984, observed rank = 11, p-value = 0.9817
+statistic = -0.012984, observed rank = 13, p-value = 0.9783
 alternative hypothesis: greater</code></pre>
 </div>
 </div>
@@ -331,56 +327,56 @@ alternative hypothesis: greater</code></pre>
 </blockquote>
 <p>We can extend this analysis by calculating a Moran’s I index (and p.value) at different distance bands. This gives us the change in spatial autocorrelation as a function of distance.</p>
 <p>We first create a “for” loop that iterates across range of distance band values.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-12_d3ec22bd38a30bf8e6b0ee6ba010e715">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the distance bands (note that each band is defined</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># by an annulus)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Starting distance in meters (the From)</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>end <span class="ot">&lt;-</span> <span class="dv">125000</span> <span class="co"># Ending distance in meters (the To)</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>incr <span class="ot">&lt;-</span> <span class="dv">5000</span> <span class="co"># Distance increment (which also defines the annulus width)</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>incr.v <span class="ot">&lt;-</span> <span class="fu">seq</span>(start, end, incr)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define empty vector elements to store the I and p-values</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>morI.mc <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each distance band</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(incr.v))) {</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  s.dist <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(s.coord, incr.v[i <span class="sc">-</span> <span class="dv">1</span>], incr.v[i])</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  s.lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style =</span> <span class="st">"W"</span>, <span class="at">zero.policy=</span>T)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  s.mor <span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, s.lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  sign.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>p.value</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  morI.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>statistic</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify p-value to reflect extremes at each end</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span> <span class="sc">-</span> sign.mc, sign.mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-12_aac1e0a3b06903e5d6d2dad41cf3c87e">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the distance bands (note that each band is defined</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># by an annulus)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Starting distance in meters (the From)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>end <span class="ot">&lt;-</span> <span class="dv">125000</span> <span class="co"># Ending distance in meters (the To)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>incr <span class="ot">&lt;-</span> <span class="dv">5000</span> <span class="co"># Distance increment (which also defines the annulus width)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>incr.v <span class="ot">&lt;-</span> <span class="fu">seq</span>(start, end, incr)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define empty vector elements to store the I and p-values</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>morI.mc <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each distance band</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> (<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(incr.v))) {</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  s.dist <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(s.coord, incr.v[i <span class="sc">-</span> <span class="dv">1</span>], incr.v[i])</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  s.lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style =</span> <span class="st">"W"</span>, <span class="at">zero.policy=</span>T)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  s.mor <span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, s.lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  sign.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>p.value</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  morI.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>statistic</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify p-value to reflect extremes at each end</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span> <span class="sc">-</span> sign.mc, sign.mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we’ll plot the Moran’s I statistic as a function of distance band. We’ll also symbolize each point by a binary color scheme whereby “red” will be assigned to Moran’s I dots that meet a statistical threshold (let’s say 0.01 in this example) and a “grey” dot otherwise.</p>
-<div class="cell" data-small.mar="true" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-13_2c643c7b74818830c621a5d113a72638">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, generate an empty plot</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the background plot to grey then add white grids</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>) <span class="co"># Get plot are coordinates</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#EEEEEE"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">lab =</span> ((incr.v) <span class="sc">/</span> <span class="dv">1000</span>), <span class="at">at =</span> (incr.v), <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the theoretical "no autocorelation" line</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(s<span class="sc">$</span>Income)), <span class="at">col =</span> <span class="st">"grey20"</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the plot to the canvas</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>),</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance (km)"</span>, <span class="at">ylab =</span> <span class="st">"Moran's I"</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), </span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="st">"red"</span>, <span class="st">"grey"</span>), </span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">2.0</span>)</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add numeric values to points</span></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), morI.mc, <span class="fu">round</span>(sign.mc,<span class="dv">3</span>), <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-small.mar="true" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-13_1930782cc86f45c03e272e30af7555e6">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, generate an empty plot</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the background plot to grey then add white grids</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>) <span class="co"># Get plot are coordinates</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#EEEEEE"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">lab =</span> ((incr.v) <span class="sc">/</span> <span class="dv">1000</span>), <span class="at">at =</span> (incr.v), <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the theoretical "no autocorelation" line</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(s<span class="sc">$</span>Income)), <span class="at">col =</span> <span class="st">"grey20"</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the plot to the canvas</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance (km)"</span>, <span class="at">ylab =</span> <span class="st">"Moran's I"</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="st">"red"</span>, <span class="st">"grey"</span>), </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">2.0</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add numeric values to points</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), morI.mc, <span class="fu">round</span>(sign.mc,<span class="dv">3</span>), <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="576"></p>
 </div>
