@@ -1,6 +1,8 @@
 ---
 title: "Moran's I analysis in R"
 author: "Manny Gimond"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -24,7 +26,7 @@ The functions in `spdep` use spatial formats that differ from those used with `s
 ```{r}
 library(sf)
 library(spdep)
-library(tmap)
+library(RColorBrewer)
 ```
 
 
@@ -33,11 +35,10 @@ library(tmap)
 Don't forget to set the session's working directory to the folder that contains the `NHME.shp` shapefile before running the following chunks of code. 
 
 ```{r results='hide'}
-# Load the shapefile
 s <- st_read("NHME.shp")
 ```
 
-Note that unlike earlier point pattern analysis examples, we will need to _keep_ the attribute information with our spatial objects.
+Note that unlike the earlier point pattern analysis exercises, we will need to _keep_ the attribute information with our spatial objects.
 
 To list the column names associated with the object's attribute table, type:
 
@@ -66,11 +67,19 @@ boxplot(s$Income, horizontal = TRUE)
 par(OP)
 ```
 
-To generate a map by symbolizing the polygons using the `Income` attribute we will define the classification breaks (`style = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`). For the latter, the `tmap` package makes use of Cynthia Brewer's color schemes (you are already familiar with her [website](http://colorbrewer2.org/)). 
+To generate a map by symbolizing the polygons using the `Income` attribute we will define the classification breaks (`breaks = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`). For the latter, the `tmap` package makes use of Cynthia Brewer's color schemes (you are already familiar with her [website](http://colorbrewer2.org/)). 
 
 ```{r fig.height=3}
-tm_shape(s) + tm_fill(col="Income", style="quantile", n=8, palette="Greens") +
-              tm_legend(outside=TRUE)
+color <- brewer.pal(8, "Greens")
+plot(s["Income"], key.pos = 4, nbreaks = 8, breaks = "quantile", pal = color)
+```
+
+You can change the classification schemes by setting the `breaks` parameter to styles such as `"equal"`, `"jenks"` (ArcGIS' default), `"sd"`, `"pretty"` to name a few.
+
+You can change the Brewer color palette to any one of the following sequential color schemes:
+
+```{r fig.height=4}
+display.brewer.all(type = "seq")
 ```
 
 ## Moran's I analysis
@@ -215,9 +224,16 @@ s$rand1 <- sample(s$Income, length(s$Income), replace = FALSE)
 s$rand2 <- sample(s$Income, length(s$Income), replace = FALSE)
 s$rand3 <- sample(s$Income, length(s$Income), replace = FALSE)
 
-tm_shape(s) + tm_fill(col=c("Income", "rand1", "rand2", "rand3"),
-                      style="quantile", n=8, palette="Greens", legend.show = FALSE) +
-              tm_facets( nrow=1)
+OP <- par(mfrow=c(1,4))
+tmp <- plot(s["Income"], key.pos = NULL, reset = FALSE, main = NULL,
+            nbreaks = 8, breaks = "quantile", pal = color)
+tmp <- plot(s["rand2"], key.pos = NULL, reset = FALSE, main = NULL, 
+            nbreaks = 8, breaks = "quantile", pal = color)
+tmp <- plot(s["rand1"], key.pos = NULL, reset = FALSE, main = NULL, 
+            nbreaks = 8, breaks = "quantile", pal = color)
+tmp <- plot(s["rand3"], key.pos = NULL, reset = FALSE, main = NULL, 
+            nbreaks = 8, breaks = "quantile", pal = color)
+par(OP)
               
 ```
 
@@ -233,9 +249,8 @@ In this example, we explore the spatial distribution of 1980 homicide rates `HR8
 s <- st_read("FL.shp")
 
 # Plot the data
-tm_shape(s) + tm_fill( col="HR80", style="quantile", n=8,
-                       palette="Reds") +
-              tm_legend(outside=TRUE)
+color <- brewer.pal(n=8, "Reds")
+plot(s["HR80"], nbreaks = 8, breaks = "quantile", pal = color)
 ```
 
 The following code chunk highlights the entire workflow (don't forget to set your R session folder to that which houses the `FL.shp` file).

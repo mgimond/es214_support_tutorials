@@ -27,26 +27,26 @@ Our earlier PPM analysis suggested that the population density distribution (exp
 ```{r, message=FALSE, results='hide'}
 # Load packages
 library(sf)
-library(maptools)
 library(spatstat)
-library(raster)
+library(terra)
 
 # Read state polygon data
 s  <- st_read("MA.shp")
 w  <- as.owin(s)
-w.km <- rescale(w, 1000)
+w.km <- rescale.owin(w, 1000)
 
 # Read Walmart point data
 s  <- st_read("Walmarts.shp")
 p  <- as.ppp(s)
 marks(p) <- NULL
-p.km <- rescale(p, 1000)
+p.km <- rescale.ppp(p, 1000)
 Window(p.km) <- w.km     
 
 # Read population raster
-img     <- raster("./log_pop_sqmile.tif") # load a raster layer file
-rast     <- as.im(img)  # Convert raster object to an im object
-rast.km  <- rescale(rast, 1000)
+img      <- rast("log_pop_sqmile.tif") 
+df       <- as.data.frame(img, xy = TRUE)
+rast     <- as.im(df)  
+rast.km  <- rescale.im(rast, 1000)
 ```
 
 ## Average nearest neighbor analysis

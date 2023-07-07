@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, results="hide
 
 ## Load and prep the dataset
 
-The following chunk of code loads the shapefiles into R. They are then converted to  spatial formats readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale` function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer's coordinate system's map units when expressing distance or area values, so by changing the layer's default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to "interpret". 
+The following chunk of code loads the shapefiles into R. They are then converted to  spatial formats readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale.*` functions. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer's coordinate system's map units when expressing distance or area values, so by changing the layer's default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to "interpret". 
 
 
 ```{r, message=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -30,13 +30,13 @@ library(spatstat)
 # Read state polygon data
 s  <- st_read("MA.shp")
 w  <- as.owin(s)
-w.km <- rescale(w, 1000)  # rescale map units to km
+w.km <- rescale.owin(w, 1000)  # rescale map units to km
 
 # Read Walmart point data
 s  <- st_read("Walmarts.shp")
 p  <- as.ppp(s)
 marks(p) <- NULL  # Remove attribute table (simplifies plot operations)
-p.km <- rescale(p, 1000) # Rescale map units to km
+p.km <- rescale.ppp(p, 1000) # Rescale map units to km
 Window(p.km) <- w.km      
 ```
 

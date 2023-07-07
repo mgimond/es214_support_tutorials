@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.313">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -144,25 +144,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html">Home</a>
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">
+ <span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html">PPM</a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html">
+ <span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" aria-current="page">ANN: homogeneous case</a>
+    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" aria-current="page">
+ <span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">
+ <span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">Spatial autocorrelation: Contiguity</a>
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">
+ <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html">Spatial autocorrelation: Distance</a>
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html">
+ <span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -207,6 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
+  
     
   </div>
   
@@ -222,8 +230,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr>
 <section id="load-and-prep-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
-<p>The following chunk of code loads the shapefiles into R. They are then converted to spatial formats readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer’s coordinate system’s map units when expressing distance or area values, so by changing the layer’s default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to “interpret”.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-1_d30845ee7d159f5ef0067e07b1830dbd">
+<p>The following chunk of code loads the shapefiles into R. They are then converted to spatial formats readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale.*</code> functions. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer’s coordinate system’s map units when expressing distance or area values, so by changing the layer’s default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to “interpret”.</p>
+<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-1_67400d80e9857b6b0446fc72f3413e5b">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
@@ -231,13 +239,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read state polygon data</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>s  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)  <span class="co"># rescale map units to km</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)  <span class="co"># rescale map units to km</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>s  <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p) <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># Remove attribute table (simplifies plot operations)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>) <span class="co"># Rescale map units to km</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>) <span class="co"># Rescale map units to km</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -290,13 +298,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>[1] 0.3115</p>
+<p>[1] 0.319</p>
 </div>
-<p>About 31% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 31% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
+<p>About 32% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 32% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>
 <ul>
-<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 62% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
+<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 64% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
 <li><p>Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was <strong>the</strong> process behind the distribution of Walmart stores (in fact, it’s quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of <strong>many</strong> other processes that generated the pattern observed in our dataset.</p></li>
 </ul>
 </div>
@@ -347,7 +355,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -383,24 +408,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

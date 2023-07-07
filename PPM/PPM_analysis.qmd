@@ -28,34 +28,33 @@ First, we'll load the point pattern dataset, then we'll load two different raste
 
 ```{r results='hide', warning=FALSE, message=FALSE}
 # Load packages
-# Note that the rgdal package should also be installed on your computer 
-# even though it's not explicitly loaded in the R code
 library(spatstat)
-library(maptools)
 library(sf)
-library(raster)
+library(terra)
 
 # Read state polygon data
 s    <- st_read("MA.shp")
 w    <- as.owin(s)
-w.km <- rescale(w, 1000)
+w.km <- rescale.owin(w, 1000)
 
 # Read Walmart point data
 s    <- st_read("Walmarts.shp")
 p    <- as.ppp(s)
-p.km <- rescale(p, 1000)
+p.km <- rescale.ppp(p, 1000)
 marks(p.km)  <- NULL
 Window(p.km) <- w.km
 
 # Read population density raster
-img     <- raster("log_pop_sqmile.tif")
-pop     <- as.im(img)
-pop.km  <- rescale(pop, 1000)
+img     <- rast("log_pop_sqmile.tif")
+df      <- as.data.frame(img, xy = TRUE)
+pop     <- as.im(df)
+pop.km  <- rescale.im(pop, 1000)
 
 # Read median income raster
-img      <- raster("median_income.tif")
-inc      <- as.im(img)
-inc.km   <- rescale(inc, 1000)
+img      <- rast("median_income.tif")
+df       <- as.data.frame(img, xy = TRUE)
+inc      <- as.im(df)
+inc.km   <- rescale.im(inc, 1000)
 ```
 
 Note that later in the script, we will make use of the `effectfun()` that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing `typeof(inc.km[])`, for example. If it's not stored as a double, you can force it to a double using the `as.double()` function (e.g. `inc[] <- as.double(inc[])`). 
@@ -158,6 +157,6 @@ What we are seeking is a small p-value (parameter `Pr(>Chi)` in the output). The
 
 The p-value for `Minc`, on the other hand, is higher with a value of `Pr = 0.247` indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.
 
-So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though it's not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
+So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
 
 

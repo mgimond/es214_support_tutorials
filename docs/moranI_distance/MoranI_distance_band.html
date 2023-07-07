@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.313">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -144,25 +144,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html">Home</a>
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">
+ <span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html">PPM</a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html">
+ <span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN: homogeneous case</a>
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">
+ <span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">
+ <span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">Spatial autocorrelation: Contiguity</a>
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">
+ <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../moranI_distance/MoranI_distance_band.html" aria-current="page">Spatial autocorrelation: Distance</a>
+    <a class="nav-link active" href="../moranI_distance/MoranI_distance_band.html" aria-current="page">
+ <span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -204,6 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
+  
     
   </div>
   
@@ -219,10 +227,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr>
 <hr>
 <p>We will make use of the following packages:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_cce55f45a7da838ca90691d60911e4c9">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_9658413f7137ed13c69ce4f80bfc6aa7">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="loading-and-visualizing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-and-visualizing-the-data">Loading and visualizing the data</h2>
@@ -232,10 +240,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA_income.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Plot the data.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_9df312ef1f7dde9f0143ddea67105c7b">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(s) <span class="sc">+</span> <span class="fu">tm_fill</span>(<span class="at">col=</span><span class="st">"Income"</span>, <span class="at">style=</span><span class="st">"quantile"</span>,<span class="at">n=</span><span class="dv">8</span>,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">palette=</span><span class="st">"Greens"</span>) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">tm_legend</span>(<span class="at">outside=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_c0c6b249ae15eaf709d95c47b3a1636e">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">"Greens"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s[<span class="st">"Income"</span>], <span class="at">nbreaks =</span> <span class="dv">8</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">pal =</span> color, <span class="at">border =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -314,7 +321,7 @@ data:  s$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = -0.012984, observed rank = 13, p-value = 0.9783
+statistic = -0.012984, observed rank = 8, p-value = 0.9867
 alternative hypothesis: greater</code></pre>
 </div>
 </div>
@@ -427,7 +434,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -463,24 +487,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

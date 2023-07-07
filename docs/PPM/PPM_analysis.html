@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.313">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -145,25 +145,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html">Home</a>
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">Getting started with R</a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">
+ <span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../PPM/PPM_analysis.html" aria-current="page">PPM</a>
+    <a class="nav-link active" href="../PPM/PPM_analysis.html" aria-current="page">
+ <span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">ANN: homogeneous case</a>
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">
+ <span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">ANN: inhomogeneous case</a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">
+ <span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">Spatial autocorrelation: Contiguity</a>
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html">
+ <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html">Spatial autocorrelation: Distance</a>
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html">
+ <span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -206,6 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
+  
     
   </div>
   
@@ -222,36 +230,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="loading-the-data-into-r" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data-into-r">Loading the data into R</h2>
 <p>First, we’ll load the point pattern dataset, then we’ll load two different raster datasets that will represent two separate 1<sup>st</sup> order effects we suspect may help explain the distribution of stores within the study extent.</p>
-<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-1_2cd7687a9acda94f0f614f91e6f5383c">
+<div class="cell" data-hash="PPM_analysis_cache/html/unnamed-chunk-1_fb6e46d13eeff03c5d01f2013b24803d">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that the rgdal package should also be installed on your computer </span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># even though it's not explicitly loaded in the R code</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maptools)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Read state polygon data</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>w    <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(w, <span class="dv">1000</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>p    <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(p, <span class="dv">1000</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km)  <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Read population density raster</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>img     <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"log_pop_sqmile.tif"</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>pop     <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>pop.km  <span class="ot">&lt;-</span> <span class="fu">rescale</span>(pop, <span class="dv">1000</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Read median income raster</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>img      <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">"median_income.tif"</span>)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>inc      <span class="ot">&lt;-</span> <span class="fu">as.im</span>(img)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>inc.km   <span class="ot">&lt;-</span> <span class="fu">rescale</span>(inc, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Read state polygon data</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>w    <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Read Walmart point data</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>s    <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>p    <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km)  <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Read population density raster</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>img     <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"log_pop_sqmile.tif"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>pop     <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>pop.km  <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(pop, <span class="dv">1000</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Read median income raster</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>img      <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"median_income.tif"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df       <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>inc      <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>inc.km   <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(inc, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that later in the script, we will make use of the <code>effectfun()</code> that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing <code>typeof(inc.km[])</code>, for example. If it’s not stored as a double, you can force it to a double using the <code>as.double()</code> function (e.g.&nbsp;<code>inc[] &lt;- as.double(inc[])</code>).</p>
 <p>Let’s plot each raster with the Walmart point overlay. We’ll use <code>R</code>’s base plotting environment.</p>
@@ -290,6 +297,7 @@ trend = ~inc.km, data = NULL, interaction = NULL)</code></pre>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Mpop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Nonstationary Poisson process
+Fitted to point pattern dataset 'p.km'
 
 Log intensity:  ~pop.km
 
@@ -314,6 +322,7 @@ Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Nonstationary Poisson process
+Fitted to point pattern dataset 'p.km'
 
 Log intensity:  ~inc.km
 
@@ -340,6 +349,7 @@ Walmart\ intensity(i) = e^{−5.58\ −1.66e^{−5}\ Income(i)}
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Mo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Stationary Poisson process
+Fitted to point pattern dataset 'p.km'
 Intensity: 0.002086305
              Estimate      S.E.   CI95.lo   CI95.hi Ztest      Zval
 log(lambda) -6.172361 0.1507557 -6.467836 -5.876885   *** -40.94281</code></pre>
@@ -420,7 +430,7 @@ Model 2: ~inc.km     Poisson
 </div>
 <p>What we are seeking is a small p-value (parameter <code>Pr(&gt;Chi)</code> in the output). The smaller the value, the more confident we are in stating that the covariate does a better job in predicting Walmart intensity than the null model. For example, the p-value for the <code>Mpop</code> model (<code>Pr(&gt;Chi) = 1.776e-08</code>) suggests that population density does a better job in predicting Walmart density than the null model <code>Mo</code>.</p>
 <p>The p-value for <code>Minc</code>, on the other hand, is higher with a value of <code>Pr = 0.247</code> indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.</p>
-<p>So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though it’s not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.</p>
+<p>So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.</p>
 
 
 </section>
@@ -467,7 +477,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -503,24 +530,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

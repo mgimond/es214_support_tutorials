@@ -24,7 +24,7 @@ We will make use of the following packages:
 ```{r}
 library(sf)
 library(spdep)
-library(tmap)
+library(RColorBrewer)
 ```
 
 ## Loading and visualizing the data
@@ -39,9 +39,8 @@ s <- st_read("MA_income.shp")
 Plot the data.
 
 ```{r}
-tm_shape(s) + tm_fill(col="Income", style="quantile",n=8,
-                      palette="Greens") +
-              tm_legend(outside=TRUE)
+color <- brewer.pal(8, "Greens")
+plot(s["Income"], nbreaks = 8, breaks = "quantile", pal = color, border = NA)
 ```
 
 ## Moran's I as a function of a distance band

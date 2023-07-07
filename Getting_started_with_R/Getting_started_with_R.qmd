@@ -22,7 +22,7 @@ R is a data analysis environment. RStudio is a desktop interface to R (sometimes
 
 ## Installing packages
 
-This R session will make use of five packages: `spatstat` which has all of the spatial statistics tools used in this exercise; `sf` which is used to load the vector files; `maptools` which converts the raster format to an 'im' format recognized by `spatstat`; and `raster` which is used to manipulate raster files. You'll also need to install `rgdal` to help the `raster` package read the `.img` raster file.
+This course will make use of five packages: `sf` which is used to load and visualize vector files; `terra` which is used to load and visualize raster files; `spatstat` which will be used for point pattern analysis;  `spdep` which will be used to analyze spatial autocorrelation in the data.
 
 You can install packages in one of two ways: via command line or via the RStudio interface.
 
@@ -31,9 +31,8 @@ You can install packages in one of two ways: via command line or via the RStudio
 ```{r eval=FALSE}
 install.packages("sf")
 install.packages("spatstat")
-install.packages("raster")
-install.packages("rgdal")
-install.packages("maptools")
+install.packages("terra")
+install.packages("spdep")
 ```
 
 ### Option 2: RStudio interface
@@ -61,14 +60,13 @@ If you plan to read or write files from/to a directory, you might find it benefi
 
 Installing packages under your user profile is a one-time process, but to access the package contents in a current R session you must explicitly load its contents via the `library` function.
 
+In this exercise, we will load and prep the data for a point pattern analysis using the `spatstat` package. We will therefore not need to load the `spdep` package which won't be used until we tackle spatial autocorrelation in later exercises.
+
 ```{r}
 library(sf)
 library(spatstat)
-library(raster)
-library(maptools) 
+library(terra)
 ```
-
-Note that you do not need to explicitly load the `rgdal` package since its functionality is used in the `raster` package.
 
 # Loading GIS data into R
 
@@ -76,7 +74,7 @@ Note that you do not need to explicitly load the `rgdal` package since its funct
 
 Note that R will recognize vector data models stored as shapefiles, but it will *not* recognize GIS files stored in geodatabases.
 
-First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile in an object called `s2`. Note the use of the assignment operator `<-` which *assigns* the output to its right to the object to its left. The name of the shapefile must end with the `*.shp` extension, but note that the function understands that the shapefile consists of multiple files.
+First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile to an object called `s2`. Note the use of the assignment operator `<-` which *assigns* the output to its right to the object to its left. The name of the shapefile must end with the `*.shp` extension, but note that the function understands that the shapefile consists of *multiple* files.
 
 ```{r}
 s2 <- st_read("MA.shp")
@@ -85,26 +83,26 @@ s2 <- st_read("MA.shp")
  
 > NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the filename.
 
-R can store spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent which will require that it be stored as an `owin` formatted object. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
+R can store spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
 
 ```{r}
 w  <- as.owin(s2)
 ```
 
-The coordinate unit associated with the spatial object inherits the underlying coordinate system's map units--`meters` in our example. Such small units may make it difficult to interpret the output of some analyses given that some analyses may generate very small values (i.e. density based analyses) or very large values (i.e. distance based analyses). We will therefore convert the map units from meters to kilometers using the `rescale()` function. Note that 1000 m = 1 km.
+The coordinate unit associated with the spatial object inherits the underlying coordinate system's map units--`meters` in this example. Such small units may make it difficult to interpret the output of some operations given that some analyses may generate very small values (i.e. density based analyses) or very large values (i.e. distance based analyses). We will therefore convert the map units from meters to kilometers using the `rescale.owin()` function. Note that 1000 m = 1 km.
 
 ```{r}
-w.km <- rescale(w, 1000)
+w.km <- rescale.owin(w, 1000)
 ```
 
-The second parameter in the `rescale()` function, `1000`, tells R to divide the planar unit by 1000.
+The second parameter in the `rescale.owin()` function, `1000`, tells R to divide the planar unit by 1000.
 
 Next we will load the Walmart stores shapefile (`Walmarts.shp`) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a `ppp` formatted point object.
 
 ```{r}
 s1 <- st_read("Walmarts.shp")  
 p  <- as.ppp(s1)  # creates a ppp object
-p.km <- rescale(p, 1000)
+p.km <- rescale.ppp(p, 1000)
 ```
 
 
@@ -121,7 +119,7 @@ Given that we will be defining the extent to match that of the Massachusetts bou
 Window(p.km) <- w.km
 ```
 
-There is one more thing that we will need to do that will make the data behave with `spatstats` tools: remove the layer's attribute information (point attributes are also known as *marks* in the point pattern analysis world). The point attributes will not be needed here since our interest is in the pattern generated by the points and not by their attribute values.
+There is one more thing that we will need to do that will make the data behave with `spatstats` tools: remove the layer's attribute information (attributes are also known as *marks* in the point pattern analysis world). The point attributes will not be needed here since our interest is in the pattern generated by the points and not by their attribute values.
 
 ```{r}
 marks(p.km) <- NULL
@@ -129,17 +127,18 @@ marks(p.km) <- NULL
 
 ## Loading Raster Files
 
-Next, we will load the population density raster file `pop_sqmile.img` using the `raster` function from the `raster` package, than we'll convert it to an `im` object recognized by spatstat and name the object `r.km` once re-scaled.
+Next, we will load the population density raster file `pop_sqmile.img` using the `rast()` function from the `terra` package, then we'll convert it to an `im` object recognized by spatstat and name the object `r.km` once re-scaled.
 
 ```{r}
-img  <- raster("./pop_sqmile.img") # Creates a raster object
-r    <- as.im(img)                 # Convert r object to an im object
-r.km <- rescale(r, 1000)
+img  <- rast("pop_sqmile.img") # Load raster file
+df <- as.data.frame(img, xy = TRUE) # Convert to XYZ data table
+r    <- as.im(df)             # Convert XYZ table to im object
+r.km <- rescale.im(r, 1000)
 ```
 
 # Visualizing Spatial Objects
 
-We can plot the raster and overlay it with the point layer. Several plotting options are available including the base `plot` function which will be used in this tutorial). However, there are many R packages that will help improve the "look" of a map including `tmap` and `ggplot2`.
+We can plot the raster and overlay it with the point layer. Several plotting options are available including the base `plot` function which will be used in this tutorial. However, there are many R packages that will help improve the "look" of a map including `tmap` and `ggplot2`.
 
 In the following code chunk, we will plot the point data. We'll assign a yellow fill color to the point symbol. The point symbol type is defined by the `pch = 21` parameter.
 
@@ -176,4 +175,4 @@ plot(p.km, pch = 16, add = TRUE)
 par(OP)
 ```
 
-
+This wraps up this tutorial.
