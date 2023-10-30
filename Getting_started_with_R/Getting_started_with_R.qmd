@@ -13,20 +13,33 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, results="hide
 
 [Data for this tutorial can be downloaded [from here](./data.zip). Don't forget to unzip the files to a dedicated folder on your computer.]{.block1}
 
-
 ------------------------------------------------------------------------
 
 R is a data analysis environment. RStudio is a desktop interface to R (sometimes referred to as an integrated development environment-or IDE for short). Unlike most desktop environments you have been exposed to so far, R does not take instructions from a point-and-click environment, its instructions are provided by simple lines of text.
+
+------------------------------------------------------------------------
+
+# Launching the RStudio software
+
+RStudio software comes in two flavors: a server based application and a desktop based application. Some of you may have already used the server based version of RStudio that you access via a web browser. In this course, we will make use of the desktop version of the software (i.e. an installed version of RStudio and R). Note that you can install R and RStudio on your personal computer if you want to tackle these exercises independent of the computer lab. For instructions on installing R and RStudio, see [here](https://posit.co/download/rstudio-desktop/).
+
+Click on the windows icon and launch RStudio.
+
+![](img/rstudio.png){width="244"}
+
+------------------------------------------------------------------------
 
 # Setting up the R environment
 
 ## Installing packages
 
-This course will make use of five packages: `sf` which is used to load and visualize vector files; `terra` which is used to load and visualize raster files; `spatstat` which will be used for point pattern analysis;  `spdep` which will be used to analyze spatial autocorrelation in the data.
+This course will make use of four packages: `sf` which is used to load, manipulate and visualize vector files; `terra` which is used to load, manipulate and visualize raster files; `spatstat` which will be used for point pattern analysis; `spdep` which will be used to analyze spatial autocorrelation in the data.
 
 You can install packages in one of two ways: via command line or via the RStudio interface.
 
 ### Option 1: Command line
+
+If you choose to install the packages via the command line, type the following lines of code in the console, one line at a time.
 
 ```{r eval=FALSE}
 install.packages("sf")
@@ -37,20 +50,21 @@ install.packages("spdep")
 
 ### Option 2: RStudio interface
 
+If you choose to install the packages via RStudio's pull-down menu, click on the **Packages \>\> Install** tab and list the packages to be installed in the *Packages* field separated by commas.
+
 ![](img/image1.jpg)
- 
- 
-> If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option. This may slow down the package installation process somewhat.
+
+> If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option.
 
 ## Opening a new R script
 
-If an empty R script file is not opened in RStudio open a new one now.
+If an empty R script file is not open in RStudio open a new one now.
 
 ![](img/image2.jpg){width="242"}
 
-R scripts are usually saved using the .R extension (e.g. *r_intro.R*). Make sure to save this script on a regular basis as you add/modify pieces of code.
+R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script *r_intro.R*. Make sure to save this script on a regular basis as you add/modify pieces of code.
 
-## Setting an R session's workspace
+## Setting an R session's work space
 
 If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session's project folder. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the sample dataset.
 
@@ -68,6 +82,8 @@ library(spatstat)
 library(terra)
 ```
 
+------------------------------------------------------------------------
+
 # Loading GIS data into R
 
 ## Loading shapefiles
@@ -78,10 +94,9 @@ First, we will load the Massachusetts polygon shapefile into R and save the cont
 
 ```{r}
 s2 <- st_read("MA.shp")
-``` 
+```
 
- 
-> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the filename.
+> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the file name.
 
 R can store spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
 
@@ -105,13 +120,11 @@ p  <- as.ppp(s1)  # creates a ppp object
 p.km <- rescale.ppp(p, 1000)
 ```
 
-
-By default, R will adopt a rectangular extent for the point data. 
+By default, R will adopt a rectangular extent for the point data.
 
 ![](img/image5.jpg){width="220"}
 
-
-Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object. 
+Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object.
 
 ![](img/image6.jpg){width="220"}
 
@@ -135,6 +148,8 @@ df <- as.data.frame(img, xy = TRUE) # Convert to XYZ data table
 r    <- as.im(df)             # Convert XYZ table to im object
 r.km <- rescale.im(r, 1000)
 ```
+
+------------------------------------------------------------------------
 
 # Visualizing Spatial Objects
 

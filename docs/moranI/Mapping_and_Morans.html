@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,9 +18,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -47,43 +48,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -119,7 +90,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -141,41 +113,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="navbar-title">ES214 R tutorials</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html">
+    <a class="nav-link" href="../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html">
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html" rel="" target="">
  <span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html">
+    <a class="nav-link" href="../PPM/PPM_analysis.html" rel="" target="">
  <span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html">
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html" rel="" target="">
  <span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html">
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" rel="" target="">
  <span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../moranI/Mapping_and_Morans.html" aria-current="page">
+    <a class="nav-link active" href="../moranI/Mapping_and_Morans.html" rel="" target="" aria-current="page">
  <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html">
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html" rel="" target="">
  <span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -303,11 +277,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</h3>
 <p>The first step in a Moran’s I analysis requires that we define “neighboring” polygons. This could refer to contiguous polygons, polygons within a certain distance, or it could be non-spatial in nature and defined by social, political or cultural “neighbors”.</p>
 <p>Here, we’ll adopt a contiguous neighbor definition. We’ll accept any contiguous polygons that share at least one vertex; this is the “queen” case (if one chooses to adopt the chess analogy) and it’s parameterized as <code>queen = TRUE</code> in the call to <code>poly2nb</code>. If we required that just <em>edges</em> be shared between polygons then we would set <code>queen = FALSE</code> (the <em>rook</em> case).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-9_c86098e6c4323b633fae5246f8ce9ea7">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-9_a6c4a2278aae0fb2bba6a60759161bb0">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(s, <span class="at">queen=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For each polygon in our shape object, <code>nb</code> lists all neighboring polygons. For example, to see the neighbors (by ID number) for the first polygon in the shape object, type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-10_025d8f5808d6ff0c31dffb233c04e8da">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-10_abe4c02252949de6e7562f5dcea44187">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nb[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="divh3"><code>[[1]]
@@ -315,123 +289,124 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Here’s the list of county names and associated IDs:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-11_aa03333024912b2b1806a4aab1e80911">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-11_58acafd1b538dee7d5d247402e1d6f5c">
 <div class="cell-output-display">
-
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:200px; "><table class="divh3">
- <thead>
-  <tr>
-   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> County </th>
-   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> ID </th>
-  </tr>
- </thead>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:200px; ">
+<table class="divh3 table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">County</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">ID</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> Androscoggin </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Cumberland </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Kennebec </td>
-   <td style="text-align:right;"> 3 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Knox </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Lincoln </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Oxford </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Sagadahoc </td>
-   <td style="text-align:right;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Waldo </td>
-   <td style="text-align:right;"> 8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> York </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Belknap </td>
-   <td style="text-align:right;"> 10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Carroll </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Cheshire </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Grafton </td>
-   <td style="text-align:right;"> 13 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Hillsborough </td>
-   <td style="text-align:right;"> 14 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Merrimack </td>
-   <td style="text-align:right;"> 15 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Rockingham </td>
-   <td style="text-align:right;"> 16 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Strafford </td>
-   <td style="text-align:right;"> 17 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Sullivan </td>
-   <td style="text-align:right;"> 18 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Aroostook </td>
-   <td style="text-align:right;"> 19 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Franklin </td>
-   <td style="text-align:right;"> 20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Hancock </td>
-   <td style="text-align:right;"> 21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Penobscot </td>
-   <td style="text-align:right;"> 22 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Piscataquis </td>
-   <td style="text-align:right;"> 23 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Somerset </td>
-   <td style="text-align:right;"> 24 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Washington </td>
-   <td style="text-align:right;"> 25 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Coos </td>
-   <td style="text-align:right;"> 26 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">Androscoggin</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cumberland</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kennebec</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Knox</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lincoln</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Oxford</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sagadahoc</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Waldo</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">York</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belknap</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Carroll</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cheshire</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grafton</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hillsborough</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Merrimack</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rockingham</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Strafford</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sullivan</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aroostook</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Franklin</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hancock</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Penobscot</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Piscataquis</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Somerset</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Washington</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Coos</td>
+<td style="text-align: right;">26</td>
+</tr>
 </tbody>
-</table></div>
+</table>
+</div>
 
 </div>
 </div>
@@ -439,11 +414,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="step-2-assign-weights-to-the-neighbors" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-assign-weights-to-the-neighbors">Step 2: Assign weights to the neighbors</h3>
 <p>Next, we need to assign weights to each neighboring polygon. In this example, each neighboring polygon will be assigned <strong>equal weight</strong> when computing the neighboring mean income values.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-12_5588e1984c69050c4568331e3ee4fefd">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-12_668913c0252c3aa4987a804c94d078ee">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To see the weight of the first polygon’s neighbors type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-13_58301413e1c6e4dc41dff1ecc56f7af2">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-13_dc1722b1583761cb7a4ab33b9c3aa7a1">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lw<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="divh3"><code>[[1]]
@@ -456,7 +431,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="step-3-compute-the-weighted-neighbor-mean-income-values-optional-step">Step 3: Compute the (weighted) neighbor mean income values (optional step)</h3>
 <p>NOTE: This step does not need to be performed when running the <code>moran</code> or <code>moran.test</code> functions outlined in Steps 4 and 5. This step is only needed if you wish to generate a scatter plot between the income values and their lagged counterpart.</p>
 <p>Next, we’ll have R compute the average neighbor income value for each polygon. These values are often referred to as <strong>spatially lagged</strong> values.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-14_2e0a1761640291902f9c6bd58b40962b">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-14_304105618fec03af2a1cfc12a66e90f7">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc.lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(lw, s<span class="sc">$</span>Income)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>inc.lag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -467,7 +442,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>You can plot the relationship between income and its spatially lagged counterpart as follows (note that the blue line added to the plot is derived from a regression model).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-15_338ab8d2c78a720e8def7148aec1b349">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-15_390e7b2894486a6374a3b1a7b7ad8b62">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">asp=</span><span class="dv">1</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income), <span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -478,7 +453,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="step-4-computing-the-morans-i-statistic" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-computing-the-morans-i-statistic">Step 4: Computing the Moran’s I statistic</h3>
 <p>The Moran’s I statistic can be computed using the <code>moran</code> function.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-16_48f393ac817a8084d7e646e704473713">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-16_68d36f62106422d4911107037c68e69b">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">moran</span>(s<span class="sc">$</span>Income, lw, <span class="fu">length</span>(nb), <span class="fu">Szero</span>(lw))[<span class="dv">1</span>]</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -494,7 +469,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="analytical-method" class="level4">
 <h4 class="anchored" data-anchor-id="analytical-method">Analytical method</h4>
 <p>To run the Moran’s I analysis using the analytical method, use the <code>moran.test</code> function.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-17_77f30c8b99ff314c095e6bd9d6748ae3">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-17_3cefc1385d64013332d471fa2366612f">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(s<span class="sc">$</span>Income,lw, <span class="at">alternative=</span><span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="divh3"><code>
@@ -517,7 +492,7 @@ Moran I statistic       Expectation          Variance
 <h4 class="anchored" data-anchor-id="monte-carlo-method">Monte Carlo method</h4>
 <p>The analytical approach to the Moran’s I analysis benefits from being fast. But it may be sensitive to irregularly distributed polygons. A safer approach to hypothesis testing is to run an MC simulation using the <code>moran.mc</code> function. The number of simulations is defined by the <code>nsim =</code> parameter. Here, we’ll permute income values <code>999</code> times.</p>
 <p>The <code>moran.mc</code> function takes another parameter called <code>alternative =</code>. This parameter has three possible values: <code>"greater"</code> (the default), <code>"less"</code>, and <code>"two.sided"</code>. The choice will be dictated by the side of the distribution we want to compute the p-value for. If our observed Moran’s I is to the right of the expected distribution, we will want to adopt the <code>"greater"</code> option which will focus on the upper tail of the distribution. If our observed value is to the left of the distribution, we will want to choose the <code>"less"</code> option to focus on the lower tail of the distribution. You can usually tell from the computed Moran’s I value which tail you will want to emphasize by its sign. A general rule of thumb is to place emphasis on the lower tail if Moran’s I value is negative, and to place emphasis on the upper tail if Moran’s I value is positive. In our example, out Moran’s I value of 0.68 is positive so we’ll choose <code>"greater"</code> for the parameter.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-18_2b54df1e5321510273a1a973f2405451">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-18_df2441e789c7199d35a3aab8acc0d95d">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>MC<span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim =</span> <span class="dv">999</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># View results (including p-value)</span></span>
@@ -535,7 +510,7 @@ alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The MC simulation generates a very small p-value, 0.001. This is not surprising given that the income values are strongly clustered. We can see the results graphically by passing the Moran’s I model to the plot function:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-19_c8e472caafc44faac25397ffb72f5732">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-19_3f1d648f9cb13321b37ed8e98ee85975">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the Null distribution (note that this is a density plot instead of a histogram)</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -544,7 +519,7 @@ alternative hypothesis: greater</code></pre>
 </div>
 <p>The curve shows the distribution of Moran I values we could expect had the incomes been randomly distributed across the counties. Note that our observed statistic, 0.683, falls way to the right of the distribution suggesting that the income values are clustered (a positive Moran’s I value suggests clustering whereas a negative Moran’s I value suggests dispersion).</p>
 <p>Can you tell the difference between our observed income distribution and those generated from a completely random process in the following figure?</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-20_3e5dcb0243fffecccd1c56aa21e6ea49">
+<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-20_95d8a8735032c2f03ac19a841181a7e8">
 <div class="cell-output-display">
 <p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -636,9 +611,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -703,6 +692,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -745,6 +820,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
     <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
   </div>
 </footer>
