@@ -95,7 +95,7 @@ The values of interest are the **intercept** (whose value is around `-10.1`) and
 
 $$
 Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
-$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−10.1}$ which is very close to `0`. So for every unit increase of the *logged* population density (i.e. log of one person per square mile), there is a $e^{0.63}$ increase in Walmart intensity.
+$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−10.1}$ which is very close to `0`. So for every unit increase of the *logged* population density (i.e. log of one person per square mile), there is an increase in Walmart intensity by a factor of $e^{0.63}$.
 
 Likewise, we can extract the parameters from the `Minc` model and construct its equation.
 
