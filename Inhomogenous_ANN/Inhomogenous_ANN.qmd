@@ -24,7 +24,7 @@ In the following chunk of code, we will load the shapefiles into R, then we will
 
 Our earlier PPM analysis suggested that the population density distribution (expressed on a log scale), could help explain the observed distribution of Walmart stores. We therefore need to account for this *inhomogeneity* in the underlying 1^st^ order effect before tackling a distance based analysis which addresses the 2^nd^ order effect of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.
 
-```{r, message=FALSE, results='hide'}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 # Load packages
 library(sf)
 library(spatstat)
