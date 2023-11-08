@@ -234,7 +234,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="average-nearest-neighbor-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
 <p>First, we’ll compute the observed Walmart ANN statistic.</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-2_cd1ca320d28f7790d34bb23c7bb1a178">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-2_7bc1f73f18ffddeddec39f2d9b13b778">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -244,9 +244,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The observed average nearest neighbor is 13.29 km.</p>
 <section id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" class="level3">
 <h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</h3>
-<p>In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11-0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
+<p>In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
 <p>If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while <strong>controlling</strong> for population distribution influence. We do this by instructing the <code>rpoint()</code> function to increase point placement probability at locations with high covariate values (i.e.&nbsp;a high population density area is more likely to receive a random point than a low density area).</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-3_0f23b7eb4aa4fa1b8f72197a70177692">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-3_3cf3055e0697f99bd08dd99c52e51054">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.het <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
@@ -256,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The above loop is almost identical to that of the homogeneous case except with the addition of the <code>f = rast.km</code> argument which defines the intensity of the underlying process (<code>rast.km</code> represents the population density raster). The <code>rpoint</code> function rescales the raster values to a range of <code>[0,1]</code> where <code>1</code> designates maximum probability of a pixel receiving a point and <code>0</code> minimum (or no) probability of a pixel receiving a point. It’s therefore important to remember that you want the large pixel values to be associated with a greater probability of receiving a point. If you want to reverse the relationship, in other words if you want to assign a greater probability of placing a point where you have a small pixel value, simply inverse the pixel values (this can be done in the GIS software or in R via <code>rast.km[] = max(rast.km[]) - rast.km[]</code>. Note that the covariate raster cannot have negative values, hence the values must still be greater than or equal to <code>0</code>.</p>
 <p>The following map shows an example of how the Walmart store distribution <em>could</em> look like <em>if</em> dictated by population distribution.</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-4_7c516b1ed9783bb853af0c663a1ca93f">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-4_e4419fe2b1a8e20e67565003e296bc3d">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>It may not look terribly different from the homogeneous ANN model, but if you were to tally all point distributions from each simulation, you would very likely find more points occurring in areas with higher population values (as expressed by the raster layer).</p>
 <p>Now, let’s plot the histogram of simulated ANN values:</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-5_917cc0c42110b8997b40a0e2680ac3be">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-5_91a83423c47dab43e5ef6a637d12ae78">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.het, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.het), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -274,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The histogram is displaying the range of expected ANN values when the placement of Walmart points are dictated by the population distribution.</p>
 <p>Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart may be more <em>dispersed</em> than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.</p>
 <p>The p-value is thus:</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-6_e252ad46ce170376de71e56d714549d8">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-6_0cffc04eb1b8d1b5a4f2b2ca791643df">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.het <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -288,7 +288,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="final-note" class="level2">
 <h2 class="anchored" data-anchor-id="final-note">Final note</h2>
 <p>While the histogram may imply that it’s the <em>observed</em> ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it’s really the <em>distribution</em> that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km is constant under both analyses!</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-7_d09f64780966717863797adb93f97918">
+<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-7_e94591f6d48687b370334546dcbd9be8">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in hist.default(ann.hom, breaks = 40, col = "bisque", main = NULL, :
+arguments 'col', 'main' are not made use of</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in hist.default(ann.het, breaks = 40, col = "green", main = NULL, :
+arguments 'col', 'main' are not made use of</code></pre>
+</div>
 <div class="cell-output-display">
 <p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="576"></p>
 </div>
