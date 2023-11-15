@@ -181,7 +181,7 @@ To run the Moran's I analysis using the analytical method, use the `moran.test` 
 ```{r}
 #| class-output: divh3
 #| class-source: divh3
-moran.test(s$Income,lw, alternative="greater")
+moran.test(s$Income,lw, alternative="greater", zero.policy=TRUE)
 ```
 
 The Moran's I statistic is `r round(moran.test(s$Income,lw)$estimate[1],3)` (same value that was computed using the `moran` function as expected). The p-value is very small. Usually, when the p-value is very small it's common practice to report it as `< 0.001`. 
@@ -197,7 +197,7 @@ The `moran.mc` function takes another parameter called `alternative =`. This par
 ```{r}
 #| class-output: divh3
 #| class-source: divh3
-MC<- moran.mc(s$Income, lw, nsim = 999, alternative = "greater")
+MC<- moran.mc(s$Income, lw, nsim = 999, alternative = "greater", zero.policy=TRUE)
 
 # View results (including p-value)
 MC
@@ -267,7 +267,7 @@ nb <- poly2nb(s, queen=TRUE)
 lw <- nb2listw(nb, style="W", zero.policy=TRUE)
 
 # Run the MC simulation version of the Moran's I test
-M1 <- moran.mc(s$HR80, lw, nsim=9999, alternative = "greater")
+M1 <- moran.mc(s$HR80, lw, nsim=9999, alternative = "greater", zero.policy=TRUE)
 
 # Plot the results
 plot(M1)
