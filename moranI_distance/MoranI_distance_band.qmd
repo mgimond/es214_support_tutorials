@@ -15,8 +15,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, tidy=FALSE )
 
 > Be sure to set the R session to the project folder via *Session >> Set Working Directory >> Choose Directory*.
 
------
-
 -----------------
 
 We will make use of the following packages:
@@ -45,16 +43,16 @@ plot(s["Income"], nbreaks = 8, breaks = "quantile", pal = color, border = NA)
 
 ## Moran's I as a function of a distance band
 
-We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest *if* its centroid (defined as a point) falls within the distance of the polygon of interest's centroid. This will therefore require that we compute the centroid of each census tract polygon. The coordinate pairs can be extracted using the `coordinate` function.
+We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest *if* its centroid (defined as a point) falls within the distance of the polygon of interest's centroid. This will therefore require that we compute the centroid of each census tract polygon using `st_point_on_surface`. The centroids' coordinate pairs will then be extracted using the `st_coordinate` function.
 
-```{r}
+```{r, warning=FALSE}
 s.center <- st_point_on_surface(s)
 s.coord <- st_coordinates(s.center)
 ```
 
-The object `s.coord` stores all pairs of coordinate values from the census tract.
+The object `s.coord` stores all pairs of coordinate values from the census tracts' centroids.
 
-Next, we will define the search radius to include all neighboring polygon centers that are within 5 km (or 5,000 map units).
+Next, we will define a neighbor as including all polygon centers that are within 5 km (or 5,000 map units in this example) of each polygon.
 
 ```{r}
 s.dist  <-  dnearneigh(s.coord, 0, 5000)  
@@ -94,11 +92,11 @@ Next, we'll run the MC simulation.
 MI  <-  moran.mc(s$Income, lw, nsim=599, zero.policy = TRUE) 
 ```
 
-Plot the results.
+Now, let's plot the results.
 
-```{r fig.width=3, fig.height=2, echo = 2}
-OP <- par(mar = c(3,3,1,0))
-plot(MI, main = NULL) 
+```{r fig.width=3, fig.height=2.5, echo = 2}
+OP <- par(mar = c(4,4,2,4), cex.main=0.9)
+plot(MI, xlab = "Moran's I") 
 par(OP)
 ```
 
@@ -108,21 +106,24 @@ Display p-value and other summary statistics.
 MI
 ```
 
-In this example, it's clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from the census tract of interest. None of the simulated Moran's I values under the null hypothesis were more extreme than our observed Moran I value.
+In this example, it's clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from a census tract of interest. None of the simulated Moran's I values under the null hypothesis were more extreme than our observed Moran I value.
 
-Now, let's run a Moran's I analysis using 40 to 45 km distance band:
+Now, let's run a Moran's I analysis using a 40 to 45 km distance band as a "neighborhood" definition:
 
-```{r fig.width=3, fig.height=2, echo = 2:6}
-OP <- par(mar = c(3,3,1,0))
+```{r fig.width=3, fig.height=2.5, echo = 2:6}
+OP <- par(mar = c(4,4,2,4), cex.main=0.9)
 s.dist  <-  dnearneigh(s.coord, 40000, 45000)
-lw <- nb2listw(s.dist, style="W", zero.policy = TRUE) 
+lw  <- nb2listw(s.dist, style="W", zero.policy = TRUE) 
 MI  <-  moran.mc(s$Income, lw, nsim=599, zero.policy = TRUE) 
-plot(MI, main = NULL) 
+plot(MI, xlab = "Moran's I") 
 MI       
 par(OP)
 ```
 
-The output differs from that shown earlier. Here, the Moran's I analysis suggests a slightly more dispersed pattern than expected when comparing income values 40 to 45 km apart from one another.
+The output differs from that shown earlier. Here, the Moran's I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away. 
+
+Note the high p-value! Recall that by default, the `moran.mc` function reports the fraction of simulated values that are `greater` than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e. more dispersed), we can subtract the reported value from `1` or, we can rerun the `moran.mc` function with `alternative="less"`. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - `r MI$p.value` = `r 1 - MI$p.value` (or `r (1 - MI$p.value) * 100` if reported as a percentage).
+
 
 ## Moran's I as a function of multiple distance bands
 
@@ -130,7 +131,7 @@ The output differs from that shown earlier. Here, the Moran's I analysis suggest
 
 We can extend this analysis by calculating a Moran's I index (and p.value) at different distance bands. This gives us the change in spatial autocorrelation as a function of distance.
 
-We first create a "for" loop that iterates across range of distance band values.
+We first create a "for" loop that iterates across a range of distance band values.
 
 ```{r}
 # Define the distance bands (note that each band is defined
@@ -158,7 +159,7 @@ for (i in (2:length(incr.v))) {
 sign.mc <- ifelse(sign.mc > 0.5, 1 - sign.mc, sign.mc)
 ```
 
-Next, we'll plot the Moran's I statistic as a function of distance band. We'll also symbolize each point by a binary color scheme whereby "red" will be assigned to Moran's I dots that meet a statistical threshold (let's say 0.01 in this example) and a "grey" dot otherwise.
+Next, we plot the Moran's I statistic as a function of distance band. We'll also symbolize each point by a binary color scheme whereby "red" will be assigned to Moran's I point symbols that meet a statistical threshold (let's say 0.01 in this example) and a "grey" point otherwise.
 
 ```{r fig.width = 6, fig.height=4, small.mar = TRUE}
 # First, generate an empty plot
@@ -185,3 +186,5 @@ points(morI.mc ~ eval(incr.v - incr * 0.5),
 # Add numeric values to points
 text(eval(incr.v - incr * 0.5), morI.mc, round(sign.mc,3), pos = 3, cex = 0.5)
 ```
+
+You'll note that as distances between polygons increases, the spatial autocorrelation statistic decreases. At around 40 km, the statistic turns negative indicating a change from a clustered pattern to a dispersed pattern. 

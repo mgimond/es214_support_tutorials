@@ -199,9 +199,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Be sure to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
-<hr>
 <p>We will make use of the following packages:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_9658413f7137ed13c69ce4f80bfc6aa7">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-1_71673310f52c36be0bf1c140ab2f6ee7">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -209,12 +208,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="loading-and-visualizing-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-and-visualizing-the-data">Loading and visualizing the data</h2>
 <p>Load the Massachusetts income data (values are aggregated at the census tract level).</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-2_9489684b3e6c429bf29fb6ee17f37e5e">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-2_ed321bf7b82f2118bed15ae74fe16a15">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA_income.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Plot the data.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_c0c6b249ae15eaf709d95c47b3a1636e">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-3_2709a338521032ab9216354e3c3079c7">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">"Greens"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s[<span class="st">"Income"</span>], <span class="at">nbreaks =</span> <span class="dv">8</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">pal =</span> color, <span class="at">border =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -224,14 +223,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="morans-i-as-a-function-of-a-distance-band" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-a-distance-band">Moran’s I as a function of a distance band</h2>
-<p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest <em>if</em> its centroid (defined as a point) falls within the distance of the polygon of interest’s centroid. This will therefore require that we compute the centroid of each census tract polygon. The coordinate pairs can be extracted using the <code>coordinate</code> function.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-4_0057c6925c68bf9edbdaf24f78b24ec3">
+<p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest <em>if</em> its centroid (defined as a point) falls within the distance of the polygon of interest’s centroid. This will therefore require that we compute the centroid of each census tract polygon using <code>st_point_on_surface</code>. The centroids’ coordinate pairs will then be extracted using the <code>st_coordinate</code> function.</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-4_42f6099e545e0bd64620f3ac00380b3f">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s.center <span class="ot">&lt;-</span> <span class="fu">st_point_on_surface</span>(s)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s.coord <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(s.center)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The object <code>s.coord</code> stores all pairs of coordinate values from the census tract.</p>
-<p>Next, we will define the search radius to include all neighboring polygon centers that are within 5 km (or 5,000 map units).</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-5_2a5d04d0ead890b1601be618914856cb">
+<p>The object <code>s.coord</code> stores all pairs of coordinate values from the census tracts’ centroids.</p>
+<p>Next, we will define a neighbor as including all polygon centers that are within 5 km (or 5,000 map units in this example) of each polygon.</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-5_aea870f5bf673e370bb2832ac6fc7b18">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">0</span>, <span class="dv">5000</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>dnearneigh</code> function takes three parameters: the coordinate values <code>s.coord</code>, the radius for the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is <code>0</code> and the outer annulus radius is <code>5000</code> which implies that all polygon centers up to 5 km are considered neighbors (i.e.&nbsp;the current example creates a full circle search radius).</p>
@@ -240,29 +239,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Note that large polygons will have fewer neighbors given the increased distance between their centroids and neighboring centroids as seen in the following example:</p>
 <p><img src="img/an_0_5km_b.jpg" class="img-fluid" style="width:75.0%"></p>
 <p>As another example, if we chose to restrict the neighbors to all polygon centers between 40 km and 45 km, then we would define a search annulus (instead of a circle) as:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-6_1feb95492a6ab1cf741415c2e1a57616">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-6_635b3b362e1f03c78e17abc3bc8b8975">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Examples of neighbors using this definition are shown next:</p>
 <p><img src="img/an_40_45km_a.jpg" class="img-fluid" style="width:50.0%"></p>
 <p><img src="img/an_40_45km_b.jpg" class="img-fluid" style="width:50.0%"></p>
 <p>Continuing with our 0 to 5 km distance band neighbor definition, we will create the list of neighboring polygons for each polygon in the dataset.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-7_1123860e1eb6daa9fc10828a99935b1e">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-7_6c65a565193d83451df783916abc2c26">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we’ll run the MC simulation.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-8_aa248bde6be9b0d8330eec4f23a0d735">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-8_c2448548da57f97fa7d09a31ae297e4e">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Plot the results.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-9_b3f3fc53b5d141e5804fe100edd1fc17">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, let’s plot the results.</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-9_34aac0480edae8ef568af9a73236fc04">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">xlab =</span> <span class="st">"Moran's I"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="288"></p>
 </div>
 </div>
 <p>Display p-value and other summary statistics.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-10_ca376be697c34d9edab67ae104ad17c7">
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-10_ab79af5a96b1e1bc59deeaa529f56570">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MI</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -276,13 +275,13 @@ statistic = 0.35028, observed rank = 600, p-value = 0.001667
 alternative hypothesis: greater</code></pre>
 </div>
 </div>
-<p>In this example, it’s clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from the census tract of interest. None of the simulated Moran’s I values under the null hypothesis were more extreme than our observed Moran I value.</p>
-<p>Now, let’s run a Moran’s I analysis using 40 to 45 km distance band:</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-11_c5d782f6e6315e8e9fd19f7f39b7e0d6">
+<p>In this example, it’s clear that there is a strong spatial autocorrelation when defining neighbors as all census tracts within 5 km from a census tract of interest. None of the simulated Moran’s I values under the null hypothesis were more extreme than our observed Moran I value.</p>
+<p>Now, let’s run a Moran’s I analysis using a 40 to 45 km distance band as a “neighborhood” definition:</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-11_f1c75ba91eb59d15a7877dd4b7b726cf">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">40000</span>, <span class="dv">45000</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lw  <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(s.dist, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>MI  <span class="ot">&lt;-</span>  <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">main =</span> <span class="cn">NULL</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MI, <span class="at">xlab =</span> <span class="st">"Moran's I"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="288"></p>
 </div>
@@ -295,11 +294,12 @@ data:  s$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = -0.012984, observed rank = 13, p-value = 0.9783
+statistic = -0.012984, observed rank = 15, p-value = 0.975
 alternative hypothesis: greater</code></pre>
 </div>
 </div>
-<p>The output differs from that shown earlier. Here, the Moran’s I analysis suggests a slightly more dispersed pattern than expected when comparing income values 40 to 45 km apart from one another.</p>
+<p>The output differs from that shown earlier. Here, the Moran’s I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away.</p>
+<p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.975 = 0.025 (or 2.5 if reported as a percentage).</p>
 </section>
 <section id="morans-i-as-a-function-of-multiple-distance-bands" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-multiple-distance-bands">Moran’s I as a function of multiple distance bands</h2>
@@ -307,8 +307,8 @@ alternative hypothesis: greater</code></pre>
 <p>Note that you will not be expected to run this script in your final exam. But you should be able to interpret the output if asked.</p>
 </blockquote>
 <p>We can extend this analysis by calculating a Moran’s I index (and p.value) at different distance bands. This gives us the change in spatial autocorrelation as a function of distance.</p>
-<p>We first create a “for” loop that iterates across range of distance band values.</p>
-<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-12_aac1e0a3b06903e5d6d2dad41cf3c87e">
+<p>We first create a “for” loop that iterates across a range of distance band values.</p>
+<div class="cell" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-12_d3ec22bd38a30bf8e6b0ee6ba010e715">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the distance bands (note that each band is defined</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># by an annulus)</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Starting distance in meters (the From)</span></span>
@@ -333,8 +333,8 @@ alternative hypothesis: greater</code></pre>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify p-value to reflect extremes at each end</span></span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span> <span class="sc">-</span> sign.mc, sign.mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Next, we’ll plot the Moran’s I statistic as a function of distance band. We’ll also symbolize each point by a binary color scheme whereby “red” will be assigned to Moran’s I dots that meet a statistical threshold (let’s say 0.01 in this example) and a “grey” dot otherwise.</p>
-<div class="cell" data-small.mar="true" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-13_1930782cc86f45c03e272e30af7555e6">
+<p>Next, we plot the Moran’s I statistic as a function of distance band. We’ll also symbolize each point by a binary color scheme whereby “red” will be assigned to Moran’s I point symbols that meet a statistical threshold (let’s say 0.01 in this example) and a “grey” point otherwise.</p>
+<div class="cell" data-small.mar="true" data-hash="MoranI_distance_band_cache/html/unnamed-chunk-13_2c643c7b74818830c621a5d113a72638">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, generate an empty plot</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -362,6 +362,7 @@ alternative hypothesis: greater</code></pre>
 <p><img src="MoranI_distance_band_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
+<p>You’ll note that as distances between polygons increases, the spatial autocorrelation statistic decreases. At around 40 km, the statistic turns negative indicating a change from a clustered pattern to a dispersed pattern.</p>
 
 
 </section>
