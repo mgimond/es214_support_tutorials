@@ -82,6 +82,8 @@ library(spatstat)
 library(terra)
 ```
 
+Note that you might see `Warning` messages and red text in the output console when loading the above packages. This should not be a problem.
+
 ------------------------------------------------------------------------
 
 # Loading GIS data into R
@@ -96,9 +98,9 @@ First, we will load the Massachusetts polygon shapefile into R and save the cont
 s2 <- st_read("MA.shp")
 ```
 
-> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or you have a syntax error in the file name.
+> NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or, you have a syntax error in the file name.
 
-R can store spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
+R can work with spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
 
 ```{r}
 w  <- as.owin(s2)

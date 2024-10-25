@@ -98,7 +98,7 @@ p <- min(N.greater + 1, n + 1 - N.greater) / (n + 1)
 p
 ```
 
-About `r round(p, 2) * 100`% of the simulated ANN value were more extreme than our obserbved ANN value of `r round(ann.p, 2)`. Hence, the p-value suggests that we would be `r round(p, 2) * 100`% wrong in rejecting the null hypothesis that a random process *could* have generated a pattern that is *more dispersed* than our observed pattern.
+About `r round(p, 2) * 100`% of the simulated ANN value were more extreme than our obserbved ANN value of `r round(ann.p, 2)` (Note that your p-value may be slightly different given that the p-value results from random events). Hence, the p-value suggests that we would be `r round(p, 2) * 100`% wrong in rejecting the null hypothesis that a random process *could* have generated a pattern that is *more dispersed* than our observed pattern.
 
 ::: {style="background:#FFE4C4;"}
 NOTES:

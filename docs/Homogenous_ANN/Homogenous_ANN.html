@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Manny Gimond">
 
-<title>ES214 R tutorials - ANN Hypothesis Testing: homogeneous case</title>
+<title>ANN Hypothesis Testing: homogeneous case – ES214 R tutorials</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -103,51 +110,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ES214 R tutorials</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html" rel="" target="">
- <span class="menu-text">Getting started with R</span></a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html"> 
+<span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html" rel="" target="">
- <span class="menu-text">PPM</span></a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html"> 
+<span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" rel="" target="" aria-current="page">
- <span class="menu-text">ANN: homogeneous case</span></a>
+    <a class="nav-link active" href="../Homogenous_ANN/Homogenous_ANN.html" aria-current="page"> 
+<span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" rel="" target="">
- <span class="menu-text">ANN: inhomogeneous case</span></a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html"> 
+<span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI/Mapping_and_Morans.html" rel="" target="">
- <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html"> 
+<span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html" rel="" target="">
- <span class="menu-text">Spatial autocorrelation: Distance</span></a>
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html"> 
+<span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -193,7 +200,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <hr>
 <p><span class="block1">Data for this tutorial can be downloaded <a href="./walmarts.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
@@ -205,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="load-and-prep-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
 <p>The following chunk of code loads the shapefiles into R. They are then converted to spatial formats readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale.*</code> functions. This last step will generate distance values of kilometers instead of meters when we compute the average nearest neighbor value. Much like ArcGIS, R adopts the layer’s coordinate system’s map units when expressing distance or area values, so by changing the layer’s default map units, we end up with output distance values that are no more than 3 or 4 digits long and easier to “interpret”.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-1_67400d80e9857b6b0446fc72f3413e5b">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
@@ -226,38 +235,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="average-nearest-neighbor-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
 <p>First, we’ll compute the observed Walmart ANN statistic.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-2_a92e3e667d6caf7257759cc0bb5f920d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.29478</code></pre>
+</div>
 </div>
 <p>The observed average nearest neighbor is 13.29 km.</p>
 <section id="is-our-observed-ann-value-consistent-with-a-random-process" class="level3">
 <h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process">Is our observed ANN value consistent with a random process?</h3>
 <p>In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our <strong>null hypothesis</strong>. We’ll therefore compare our observed ANN value to the <em>range</em> of ANN values we could expect to get <em>if</em> the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-3_4afece97ba6a4f1d5b845cf6c0c5a93b">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       <span class="co"># Number of times to run the simulation</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ann.r <span class="ot">&lt;-</span> <span class="fu">vector</span>()   <span class="co"># Create an empty object to be used to store the simulated  ANN values</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">win =</span> w.km)  <span class="co"># Generate random point locations</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ann.r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))     <span class="co"># Compute and store the simulated ANN value</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       <span class="co"># Number of times to run the simulation</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.r <span class="ot">&lt;-</span> <span class="fu">vector</span>()   <span class="co"># Create an empty object to be used to store the simulated  ANN values</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  rand.p   <span class="ot">&lt;-</span> <span class="fu">rpoint</span>(<span class="at">n =</span> p.km<span class="sc">$</span>n, <span class="at">win =</span> w.km)  <span class="co"># Generate random point locations</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ann.r[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(rand.p, <span class="at">k =</span> <span class="dv">1</span>))     <span class="co"># Compute and store the simulated ANN value</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In the above loop, the function <code>rpoint</code> is passed two parameters: <code>n = p.km$n</code> and <code>win = w.km</code>. The first tells the function how many points to randomly generate (i.e.&nbsp;the same number of points as that in the Walmart points layer which we can extract from the <code>p.km$n</code> object). The second tells the function to confine the randomly generated points to the extent defined by <code>w.km</code> (the <code>MA</code> polygon).</p>
 <p>Note that after running the last simulation, you can view its set of randomly generated points via:</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-4_471cf5594e639c225fb29a33d07c155e">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Given that this is a random process, your output will look different–as expected.</p>
 <p>Next, we plot the histogram of the simulated ANN values then add a blue line showing where our observed ANN value lies relative to the distribution of simulated ANN values under the null. (Your histogram may look different given the random nature of the simulation).</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-5_5b20a5134d317fd51fae7205d6a5cc7e">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.r, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.r), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)  <span class="co"># lw = 2 increases the line width</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.r, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.r), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)  <span class="co"># lw = 2 increases the line width</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Homogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The test suggests that our observed ANN value may not be that different from the 1999 ANN values we simulated under the assumption that the stores are randomly distributed. Our observed values is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).</p>
@@ -265,17 +285,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="extracting-a-p-value-from-the-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-a-p-value-from-the-simulation">Extracting a p-value from the simulation</h3>
 <p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/hypothesis-testing.html#a-better-approach-a-monte-carlo-test">lecture notes</a> for more information.</p>
-<div class="cell" data-hash="Homogenous_ANN_cache/html/unnamed-chunk-6_98befcee3f3af6df3323fd1e3be20bc0">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>[1] 0.3275</p>
-</div>
-<p>About 33% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29. Hence, the p-value suggests that we would be 33% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>[1] 0.31</p>
+<p>About 31% of the simulated ANN value were more extreme than our obserbved ANN value of 13.29 (Note that your p-value may be slightly different given that the p-value results from random events). Hence, the p-value suggests that we would be 31% wrong in rejecting the null hypothesis that a random process <em>could</em> have generated a pattern that is <em>more dispersed</em> than our observed pattern.</p>
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>
 <ul>
-<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 66% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
+<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 62% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
 <li><p>Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was <strong>the</strong> process behind the distribution of Walmart stores (in fact, it’s quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of <strong>many</strong> other processes that generated the pattern observed in our dataset.</p></li>
 </ul>
 </div>
@@ -320,18 +338,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -363,11 +370,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -377,8 +423,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -390,7 +445,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -434,6 +612,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -459,6 +638,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -527,9 +732,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+    <div class="nav-footer-right">
+<p>Creative Commons License, Manny Gimond, 2024</p>
+</div>
   </div>
 </footer>
+
 
 
 

@@ -21,7 +21,7 @@ website:
       - href: moranI_distance/MoranI_distance_band.qmd
         text: "Spatial autocorrelation: Distance"
   page-footer: 
-    right: "Creative Commons License, Manny Gimond, 2022" 
+    right: "Creative Commons License, Manny Gimond, 2024" 
 
 
 

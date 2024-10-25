@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Manny Gimond">
 
-<title>ES214 R tutorials - Moran’s I analysis in R</title>
+<title>Moran’s I analysis in R – ES214 R tutorials</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,14 +95,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
-
 <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -106,51 +114,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ES214 R tutorials</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html" rel="" target="">
- <span class="menu-text">Getting started with R</span></a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html"> 
+<span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html" rel="" target="">
- <span class="menu-text">PPM</span></a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html"> 
+<span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html" rel="" target="">
- <span class="menu-text">ANN: homogeneous case</span></a>
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html"> 
+<span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" rel="" target="">
- <span class="menu-text">ANN: inhomogeneous case</span></a>
+    <a class="nav-link" href="../Inhomogenous_ANN/Inhomogenous_ANN.html"> 
+<span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../moranI/Mapping_and_Morans.html" rel="" target="" aria-current="page">
- <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
+    <a class="nav-link active" href="../moranI/Mapping_and_Morans.html" aria-current="page"> 
+<span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html" rel="" target="">
- <span class="menu-text">Spatial autocorrelation: Distance</span></a>
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html"> 
+<span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -200,7 +208,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <hr>
 <p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Make sure to unzip the files to a dedicated folder on your computer.</span></p>
@@ -211,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 <p>We will make use of the following packages: <code>sf</code> for importing the shapefiles, <code>tmap</code> for creating choropleth maps and <code>spdep</code> for implementing the Moran’s I analysis. Note that you will probably need to install <code>spdep</code> since this package has not been used thus far in class.</p>
 <p>The functions in <code>spdep</code> use spatial formats that differ from those used with <code>spatstat</code>. As such, we will no longer need to rely on calls to <code>as.owin(s)</code> and <code>as.ppp(s)</code> as was the case with the <code>spatstat</code> functions.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-1_b2218aec5051ea25298dd6d3e7f3544e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -219,12 +229,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="loading-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data">Loading the data</h2>
 <p>Don’t forget to set the session’s working directory to the folder that contains the <code>NHME.shp</code> shapefile before running the following chunks of code.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-2_b186acad8770b43477c219e3ba3b9e26">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"NHME.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that unlike the earlier point pattern analysis exercises, we will need to <em>keep</em> the attribute information with our spatial objects.</p>
 <p>To list the column names associated with the object’s attribute table, type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-3_7c83929476e5452258beffced071deeb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "NAME"       "STATE_NAME" "POP10_SQMI" "AVE_HH_SZ"  "AVE_FAM_SZ"
@@ -232,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>To list the contents of an attribute, affix the dollar sign <code>$</code> to the object name followed by the attribute name. For example, to list the income values, type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-4_dcd27b7ec32474615a0dae64eac33eb0">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s<span class="sc">$</span>Income</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 45765 59560 46559 50515 50027 40695 55046 43484 56701 60782 52393 56139
@@ -241,33 +251,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>You can plot the attribute values as follows:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-5_a8bbfc8108149d79d7723b01ab66df58">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(s<span class="sc">$</span>Income, <span class="at">main=</span><span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="288"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>or,</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-6_cae8248e586dca619e392460adf9cc86">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(s<span class="sc">$</span>Income, <span class="at">horizontal =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="288"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>To generate a map by symbolizing the polygons using the <code>Income</code> attribute we will define the classification breaks (<code>breaks = quantile</code> with <code>n = 8</code> breaks) and the symbol colors (<code>palette="Greens"</code>). For the latter, the <code>tmap</code> package makes use of Cynthia Brewer’s color schemes (you are already familiar with her <a href="http://colorbrewer2.org/">website</a>).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-7_e707c9c3977d081f1d1c10547761f516">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">"Greens"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s[<span class="st">"Income"</span>], <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">nbreaks =</span> <span class="dv">8</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">pal =</span> color)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>You can change the classification schemes by setting the <code>breaks</code> parameter to styles such as <code>"equal"</code>, <code>"jenks"</code> (ArcGIS’ default), <code>"sd"</code>, <code>"pretty"</code> to name a few.</p>
 <p>You can change the Brewer color palette to any one of the following sequential color schemes:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-8_a95626b01ae3fb3fbd7cdd1d93c18f98">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">display.brewer.all</span>(<span class="at">type =</span> <span class="st">"seq"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -277,11 +303,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</h3>
 <p>The first step in a Moran’s I analysis requires that we define “neighboring” polygons. This could refer to contiguous polygons, polygons within a certain distance, or it could be non-spatial in nature and defined by social, political or cultural “neighbors”.</p>
 <p>Here, we’ll adopt a contiguous neighbor definition. We’ll accept any contiguous polygons that share at least one vertex; this is the “queen” case (if one chooses to adopt the chess analogy) and it’s parameterized as <code>queen = TRUE</code> in the call to <code>poly2nb</code>. If we required that just <em>edges</em> be shared between polygons then we would set <code>queen = FALSE</code> (the <em>rook</em> case).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-9_54177a6cf6c5963a0e1239c5ebe68473">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(s, <span class="at">queen=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For each polygon in our shape object, <code>nb</code> lists all neighboring polygons. For example, to see the neighbors (by ID number) for the first polygon in the shape object, type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-10_46333df1535113deef0445d08167425e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nb[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="divh3"><code>[[1]]
@@ -289,10 +315,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Here’s the list of county names and associated IDs:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-11_a28f46a5e409253e1293b7c315fe4175">
+<div class="cell">
 <div class="cell-output-display">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:200px; ">
-<table class="divh3 table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="divh3 caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">County</th>
@@ -414,11 +440,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-assign-weights-to-the-neighbors" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-assign-weights-to-the-neighbors">Step 2: Assign weights to the neighbors</h3>
 <p>Next, we need to assign weights to each neighboring polygon. In this example, each neighboring polygon will be assigned <strong>equal weight</strong> when computing the neighboring mean income values.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-12_78a19e59a6b19758a2e5ef88f9b0ad32">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb, <span class="at">style=</span><span class="st">"W"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To see the weight of the first polygon’s neighbors type:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-13_6944e7c42bbb7ce24ff1d47e3c585fa4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lw<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre class="divh3"><code>[[1]]
@@ -431,7 +457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="step-3-compute-the-weighted-neighbor-mean-income-values-optional-step">Step 3: Compute the (weighted) neighbor mean income values (optional step)</h3>
 <p>NOTE: This step does not need to be performed when running the <code>moran</code> or <code>moran.test</code> functions outlined in Steps 4 and 5. This step is only needed if you wish to generate a scatter plot between the income values and their lagged counterpart.</p>
 <p>Next, we’ll have R compute the average neighbor income value for each polygon. These values are often referred to as <strong>spatially lagged</strong> values.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-14_d6b5ed66ab19bed6f312fca2b9879d46">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc.lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(lw, s<span class="sc">$</span>Income)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>inc.lag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -442,18 +468,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>You can plot the relationship between income and its spatially lagged counterpart as follows (note that the blue line added to the plot is derived from a regression model).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-15_72a4ad8774f7dea2b8b5e21ff46441f5">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">asp=</span><span class="dv">1</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(inc.lag <span class="sc">~</span> s<span class="sc">$</span>Income), <span class="at">col=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="240"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="240"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="step-4-computing-the-morans-i-statistic" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-computing-the-morans-i-statistic">Step 4: Computing the Moran’s I statistic</h3>
 <p>The Moran’s I statistic can be computed using the <code>moran</code> function.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-16_7326570adebe02c472a1c49e80358d7d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">moran</span>(s<span class="sc">$</span>Income, lw, <span class="fu">length</span>(nb), <span class="fu">Szero</span>(lw))[<span class="dv">1</span>]</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -469,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="analytical-method" class="level4">
 <h4 class="anchored" data-anchor-id="analytical-method">Analytical method</h4>
 <p>To run the Moran’s I analysis using the analytical method, use the <code>moran.test</code> function.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-17_f18a5a65636219ddb1ce67591b0133d7">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(s<span class="sc">$</span>Income,lw, <span class="at">alternative=</span><span class="st">"greater"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -492,7 +522,7 @@ Moran I statistic       Expectation          Variance
 <h4 class="anchored" data-anchor-id="monte-carlo-method">Monte Carlo method</h4>
 <p>The analytical approach to the Moran’s I analysis benefits from being fast. But it may be sensitive to irregularly distributed polygons. A safer approach to hypothesis testing is to run an MC simulation using the <code>moran.mc</code> function. The number of simulations is defined by the <code>nsim =</code> parameter. Here, we’ll permute income values <code>999</code> times.</p>
 <p>The <code>moran.mc</code> function takes another parameter called <code>alternative =</code>. This parameter has three possible values: <code>"greater"</code> (the default), <code>"less"</code>, and <code>"two.sided"</code>. The choice will be dictated by the side of the distribution we want to compute the p-value for. If our observed Moran’s I is to the right of the expected distribution, we will want to adopt the <code>"greater"</code> option which will focus on the upper tail of the distribution. If our observed value is to the left of the distribution, we will want to choose the <code>"less"</code> option to focus on the lower tail of the distribution. You can usually tell from the computed Moran’s I value which tail you will want to emphasize by its sign. A general rule of thumb is to place emphasis on the lower tail if Moran’s I value is negative, and to place emphasis on the upper tail if Moran’s I value is positive. In our example, out Moran’s I value of 0.68 is positive so we’ll choose <code>"greater"</code> for the parameter.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-18_6d9cb6516451e11a8a4a2d4441bbf916">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>MC<span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, lw, <span class="at">nsim =</span> <span class="dv">999</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">zero.policy=</span><span class="cn">TRUE</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># View results (including p-value)</span></span>
@@ -510,18 +540,26 @@ alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The MC simulation generates a very small p-value, 0.001. This is not surprising given that the income values are strongly clustered. We can see the results graphically by passing the Moran’s I model to the plot function:</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-19_83e06e0f85c9b0130e7dd77f96bfce0b">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r divh3 code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the Null distribution (note that this is a density plot instead of a histogram)</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(MC, <span class="at">xlab=</span><span class="st">"Moran's I"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The curve shows the distribution of Moran I values we could expect had the incomes been randomly distributed across the counties. Note that our observed statistic, 0.683, falls way to the right of the distribution suggesting that the income values are clustered (a positive Moran’s I value suggests clustering whereas a negative Moran’s I value suggests dispersion).</p>
 <p>Can you tell the difference between our observed income distribution and those generated from a completely random process in the following figure?</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-20_e108e8334c4ad46ec8f957e5bcd3646e">
+<div class="cell">
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The map on the left is our observed distribution. The three maps on the right are realizations of a completely random process.</p>
@@ -531,13 +569,17 @@ alternative hypothesis: greater</code></pre>
 <section id="another-example-florida-1980-homicide-rate-example" class="level2">
 <h2 class="anchored" data-anchor-id="another-example-florida-1980-homicide-rate-example">Another example: Florida 1980 Homicide rate example</h2>
 <p>In this example, we explore the spatial distribution of 1980 homicide rates <code>HR80</code> by county for the state of Florida using the Monte Carlo approach. The data are found in the <code>NAT/</code> folder used in the in-class exercise.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-21_0320765429b3e0d5a1888f165993f149">
+<div class="cell">
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The following code chunk highlights the entire workflow (don’t forget to set your R session folder to that which houses the <code>FL.shp</code> file).</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-22_6ccb7e1d0e23c73796a13a6961dffcc4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"FL.shp"</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -556,10 +598,14 @@ alternative hypothesis: greater</code></pre>
 <span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the resulting statistics</span></span>
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>M1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-23_198bac06adf54e62979429be5fa64df5">
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Monte-Carlo simulation of Moran I
@@ -573,9 +619,13 @@ alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The MC simulation generated a p-value of ~0.04 suggesting that there would be a ~4% chance of being wrong in rejecting the null hypothesis or that there is a ~4% chance that our observed pattern is consistent with a random process (note that your simulated p-value may differ from the one shown here–the number of simulations may need to be increased to reach a more stable convergence). Recall that this is a one-sided test. ArcGIS’s analytical solution adopts a two-sided test. To compare its p-value to ours, we need to divide its p-value by 2 (i.e.&nbsp;<code>0.0588 / 2</code>) which gives us a one-sided p-value of <code>0.0294</code>–about 25% smaller than our simulated p-value.</p>
-<div class="cell" data-hash="Mapping_and_Morans_cache/html/unnamed-chunk-24_9b81eff28da42e9e43d2b901e7f4167e">
+<div class="cell">
 <div class="cell-output-display">
-<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="480"></p>
+<div>
+<figure class="figure">
+<p><img src="Mapping_and_Morans_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The wording adopted by ArcGIS under the infographic (highlighted in yellow in the above figure) is unfortunate. It seems to suggest a one-sided test by explicitly describing the nature of the pattern (i.e.&nbsp;<em>clustered</em>). A more appropriate statement would have been <em>“There is less than a 6% likelihood that the observed pattern could be the result of random chance”</em> (note the omission of the word <em>clustered</em>).</p>
@@ -619,18 +669,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -662,11 +701,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -676,8 +754,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -689,7 +776,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -733,6 +943,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -758,6 +969,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -826,9 +1063,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+    <div class="nav-footer-right">
+<p>Creative Commons License, Manny Gimond, 2024</p>
+</div>
   </div>
 </footer>
+
 
 
 

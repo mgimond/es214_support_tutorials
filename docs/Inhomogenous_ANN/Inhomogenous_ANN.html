@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Manny Gimond">
 
-<title>ES214 R tutorials - ANN Hypothesis Testing: Inhomogeneous Case</title>
+<title>ANN Hypothesis Testing: Inhomogeneous Case – ES214 R tutorials</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -103,51 +110,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ES214 R tutorials</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html" rel="" target="">
- <span class="menu-text">Getting started with R</span></a>
+    <a class="nav-link" href="../Getting_started_with_R/Getting_started_with_R.html"> 
+<span class="menu-text">Getting started with R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../PPM/PPM_analysis.html" rel="" target="">
- <span class="menu-text">PPM</span></a>
+    <a class="nav-link" href="../PPM/PPM_analysis.html"> 
+<span class="menu-text">PPM</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html" rel="" target="">
- <span class="menu-text">ANN: homogeneous case</span></a>
+    <a class="nav-link" href="../Homogenous_ANN/Homogenous_ANN.html"> 
+<span class="menu-text">ANN: homogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" rel="" target="" aria-current="page">
- <span class="menu-text">ANN: inhomogeneous case</span></a>
+    <a class="nav-link active" href="../Inhomogenous_ANN/Inhomogenous_ANN.html" aria-current="page"> 
+<span class="menu-text">ANN: inhomogeneous case</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI/Mapping_and_Morans.html" rel="" target="">
- <span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
+    <a class="nav-link" href="../moranI/Mapping_and_Morans.html"> 
+<span class="menu-text">Spatial autocorrelation: Contiguity</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html" rel="" target="">
- <span class="menu-text">Spatial autocorrelation: Distance</span></a>
+    <a class="nav-link" href="../moranI_distance/MoranI_distance_band.html"> 
+<span class="menu-text">Spatial autocorrelation: Distance</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -193,7 +200,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <hr>
 <p><span class="block1">Data for this tutorial can be downloaded <a href="./data.zip">from here</a>. Don’t forget to unzip the files to a dedicated folder on your computer.</span></p>
@@ -206,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
 <p>In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function.</p>
 <p>Our earlier PPM analysis suggested that the population density distribution (expressed on a log scale), could help explain the observed distribution of Walmart stores. We therefore need to account for this <em>inhomogeneity</em> in the underlying 1<sup>st</sup> order effect before tackling a distance based analysis which addresses the 2<sup>nd</sup> order effect of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-1_1957c317afc2df9738b4a52a8c163028">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
@@ -234,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="average-nearest-neighbor-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
 <p>First, we’ll compute the observed Walmart ANN statistic.</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-2_7bc1f73f18ffddeddec39f2d9b13b778">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -246,7 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</h3>
 <p>In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
 <p>If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while <strong>controlling</strong> for population distribution influence. We do this by instructing the <code>rpoint()</code> function to increase point placement probability at locations with high covariate values (i.e.&nbsp;a high population density area is more likely to receive a random point than a low density area).</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-3_3cf3055e0697f99bd08dd99c52e51054">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann.het <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
@@ -256,30 +265,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The above loop is almost identical to that of the homogeneous case except with the addition of the <code>f = rast.km</code> argument which defines the intensity of the underlying process (<code>rast.km</code> represents the population density raster). The <code>rpoint</code> function rescales the raster values to a range of <code>[0,1]</code> where <code>1</code> designates maximum probability of a pixel receiving a point and <code>0</code> minimum (or no) probability of a pixel receiving a point. It’s therefore important to remember that you want the large pixel values to be associated with a greater probability of receiving a point. If you want to reverse the relationship, in other words if you want to assign a greater probability of placing a point where you have a small pixel value, simply inverse the pixel values (this can be done in the GIS software or in R via <code>rast.km[] = max(rast.km[]) - rast.km[]</code>. Note that the covariate raster cannot have negative values, hence the values must still be greater than or equal to <code>0</code>.</p>
 <p>The following map shows an example of how the Walmart store distribution <em>could</em> look like <em>if</em> dictated by population distribution.</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-4_e4419fe2b1a8e20e67565003e296bc3d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rand.p, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">main =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>It may not look terribly different from the homogeneous ANN model, but if you were to tally all point distributions from each simulation, you would very likely find more points occurring in areas with higher population values (as expressed by the raster layer).</p>
 <p>Now, let’s plot the histogram of simulated ANN values:</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-5_91a83423c47dab43e5ef6a637d12ae78">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ann.het, <span class="at">breaks =</span> <span class="dv">40</span>, <span class="at">col =</span> <span class="st">"bisque"</span>, <span class="at">xlim =</span> <span class="fu">range</span>(ann.p, ann.het), <span class="at">main =</span> <span class="cn">NULL</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ann.p, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lw =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The histogram is displaying the range of expected ANN values when the placement of Walmart points are dictated by the population distribution.</p>
 <p>Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart may be more <em>dispersed</em> than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.</p>
 <p>The p-value is thus:</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-6_0cffc04eb1b8d1b5a4f2b2ca791643df">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.het <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1295</code></pre>
+<pre><code>[1] 0.1345</code></pre>
 </div>
 </div>
 <p>Note that this is a smaller p-value than that computed under the homogeneous scenario.</p>
@@ -288,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="final-note" class="level2">
 <h2 class="anchored" data-anchor-id="final-note">Final note</h2>
 <p>While the histogram may imply that it’s the <em>observed</em> ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it’s really the <em>distribution</em> that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km is constant under both analyses!</p>
-<div class="cell" data-hash="Inhomogenous_ANN_cache/html/unnamed-chunk-7_e94591f6d48687b370334546dcbd9be8">
+<div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in hist.default(ann.hom, breaks = 40, col = "bisque", main = NULL, :
 arguments 'col', 'main' are not made use of</code></pre>
@@ -298,7 +315,11 @@ arguments 'col', 'main' are not made use of</code></pre>
 arguments 'col', 'main' are not made use of</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="576"></p>
+<div>
+<figure class="figure">
+<p><img src="Inhomogenous_ANN_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
 </div>
 </div>
 
@@ -341,18 +362,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -384,11 +394,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -398,8 +447,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -411,7 +469,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -455,6 +636,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -480,6 +662,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -548,9 +756,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Creative Commons License, Manny Gimond, 2022</div>
+    <div class="nav-footer-right">
+<p>Creative Commons License, Manny Gimond, 2024</p>
+</div>
   </div>
 </footer>
+
 
 
 
