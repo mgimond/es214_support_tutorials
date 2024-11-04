@@ -299,7 +299,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <blockquote class="blockquote">
 <p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory (see earlier step) or, you have a syntax error in the file name.</p>
 </blockquote>
-<p>R can store spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> states layer will be used to define the study extent. This will require that it be converted to an <code>owin</code> formatted object for use with <code>spatstat</code>. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
+<p>R can work with spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> states layer will be used to define the study extent. This will require that it be converted to an <code>owin</code> formatted object for use with <code>spatstat</code>. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

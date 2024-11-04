@@ -304,16 +304,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="final-note" class="level2">
 <h2 class="anchored" data-anchor-id="final-note">Final note</h2>
-<p>While the histogram may imply that it’s the <em>observed</em> ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it’s really the <em>distribution</em> that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km is constant under both analyses!</p>
+<p>While the histogram may imply that it’s the <em>observed</em> ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it’s really the <em>distribution</em> of expected values under this <em>new</em> hypothesis that gets shifted along the x-axis; The observed ANN value has not changed. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km is constant under both analyses!</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in hist.default(ann.hom, breaks = 40, col = "bisque", main = NULL, :
-arguments 'col', 'main' are not made use of</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in hist.default(ann.het, breaks = 40, col = "green", main = NULL, :
-arguments 'col', 'main' are not made use of</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

@@ -73,7 +73,7 @@ plot(p.km, pch = 20, col=rgb(1,1,1,0.6), add=TRUE)
 par(OP)
 ```
 
-## Modeling point density as a function of two competing covariates: population density and income.
+## Modeling point density as a function of two competing covariates: population density and income
 
 We will first develop two different models that we think might define the Walmart's point intensity. Recall that *intensity* is a property of the underlying "process" (one being defined by the distribution of population density and the other being defined by the distribution of income)--this differs from *density* which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
 

@@ -114,10 +114,10 @@ Note that this is a smaller p-value than that computed under the homogeneous sce
 
 ## Final note
 
-While the histogram may imply that it's the *observed* ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it's really the *distribution* that gets shifted along the x-axis. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses!
+While the histogram may imply that it's the *observed* ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it's really the *distribution* of expected values under this *new* hypothesis that gets shifted along the x-axis; The observed ANN value has not changed. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses!
 
 
-```{r fig.height=3, fig.width=6, echo = FALSE}
+```{r fig.height=3, fig.width=6, echo = FALSE, warning=FALSE, message=FALSE}
 n     <- 1999       
 ann.hom <- vector()   
 
