@@ -219,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
-<p>We will make use of the following packages: <code>sf</code> for importing the shapefiles, <code>tmap</code> for creating choropleth maps and <code>spdep</code> for implementing the Moran’s I analysis. Note that you will probably need to install <code>spdep</code> since this package has not been used thus far in class.</p>
+<p>We will make use of the following packages: <code>sf</code> for importing the shapefiles, <code>spdep</code> for implementing the Moran’s I analysis, and <code>RColorBrewer</code> for defining color schemes.</p>
 <p>The functions in <code>spdep</code> use spatial formats that differ from those used with <code>spatstat</code>. As such, we will no longer need to rely on calls to <code>as.owin(s)</code> and <code>as.ppp(s)</code> as was the case with the <code>spatstat</code> functions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
@@ -250,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [25] 38239 42407</code></pre>
 </div>
 </div>
-<p>You can plot the attribute values as follows:</p>
+<p>You can use basic R plot functions to view the attribute distribution:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(s<span class="sc">$</span>Income, <span class="at">main=</span><span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>To generate a map by symbolizing the polygons using the <code>Income</code> attribute we will define the classification breaks (<code>breaks = quantile</code> with <code>n = 8</code> breaks) and the symbol colors (<code>palette="Greens"</code>). For the latter, the <code>tmap</code> package makes use of Cynthia Brewer’s color schemes (you are already familiar with her <a href="http://colorbrewer2.org/">website</a>).</p>
+<p>To generate a map by symbolizing the polygons using the <code>Income</code> attribute we will define the classification breaks (<code>breaks = quantile</code> with <code>n = 8</code> breaks) and the symbol colors (<code>palette="Greens"</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">8</span>, <span class="st">"Greens"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(s[<span class="st">"Income"</span>], <span class="at">key.pos =</span> <span class="dv">4</span>, <span class="at">nbreaks =</span> <span class="dv">8</span>, <span class="at">breaks =</span> <span class="st">"quantile"</span>, <span class="at">pal =</span> color)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -285,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>You can change the classification schemes by setting the <code>breaks</code> parameter to styles such as <code>"equal"</code>, <code>"jenks"</code> (ArcGIS’ default), <code>"sd"</code>, <code>"pretty"</code> to name a few.</p>
-<p>You can change the Brewer color palette to any one of the following sequential color schemes:</p>
+<p>You can change the color palette to any one of the following sequential color schemes:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">display.brewer.all</span>(<span class="at">type =</span> <span class="st">"seq"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">

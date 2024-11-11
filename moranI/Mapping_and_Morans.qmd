@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning=FALSE, tidy=FALSE )
 
 -----
 
-We will make use of the following packages: `sf` for importing the shapefiles, `tmap` for creating choropleth maps and `spdep` for implementing the Moran's I analysis. Note that you will probably need to install `spdep` since this package has not been used thus far in class.
+We will make use of the following packages: `sf` for importing the shapefiles, `spdep` for implementing the Moran's I analysis, and `RColorBrewer` for defining color schemes. 
 
 The functions in `spdep` use spatial formats that differ from those used with `spatstat`. As such, we will no longer need to rely on calls to `as.owin(s)` and `as.ppp(s)` as was the case with the `spatstat` functions.
 
@@ -52,7 +52,7 @@ To list the contents of an attribute, affix the dollar sign `$` to the object na
 s$Income
 ```
 
-You can plot the attribute values as follows:
+You can use basic R plot functions to view the attribute distribution:
 
 ```{r, fig.height=2, fig.width=3, echo=2}
 OP <- par(mar = c(4,4,1,1))
@@ -67,7 +67,7 @@ boxplot(s$Income, horizontal = TRUE)
 par(OP)
 ```
 
-To generate a map by symbolizing the polygons using the `Income` attribute we will define the classification breaks (`breaks = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`). For the latter, the `tmap` package makes use of Cynthia Brewer's color schemes (you are already familiar with her [website](http://colorbrewer2.org/)). 
+To generate a map by symbolizing the polygons using the `Income` attribute we will define the classification breaks (`breaks = quantile` with `n = 8` breaks) and the symbol colors (`palette="Greens"`).   
 
 ```{r fig.height=3}
 color <- brewer.pal(8, "Greens")
@@ -76,7 +76,7 @@ plot(s["Income"], key.pos = 4, nbreaks = 8, breaks = "quantile", pal = color)
 
 You can change the classification schemes by setting the `breaks` parameter to styles such as `"equal"`, `"jenks"` (ArcGIS' default), `"sd"`, `"pretty"` to name a few.
 
-You can change the Brewer color palette to any one of the following sequential color schemes:
+You can change the color palette to any one of the following sequential color schemes:
 
 ```{r fig.height=4}
 display.brewer.all(type = "seq")
