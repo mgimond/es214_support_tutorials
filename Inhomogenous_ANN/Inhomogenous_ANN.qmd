@@ -31,13 +31,13 @@ library(spatstat)
 library(terra)
 
 # Read state polygon data
-s  <- st_read("MA.shp")
-w  <- as.owin(s)
+s2  <- st_read("MA.shp")
+w  <- as.owin(s2)
 w.km <- rescale.owin(w, 1000)
 
 # Read Walmart point data
-s  <- st_read("Walmarts.shp")
-p  <- as.ppp(s)
+s1  <- st_read("Walmarts.shp")
+p  <- as.ppp(s1)
 marks(p) <- NULL
 p.km <- rescale.ppp(p, 1000)
 Window(p.km) <- w.km     

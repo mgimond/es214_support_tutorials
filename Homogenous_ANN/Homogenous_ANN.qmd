@@ -28,13 +28,13 @@ library(sf)
 library(spatstat)
 
 # Read state polygon data
-s  <- st_read("MA.shp")
-w  <- as.owin(s)
+s2  <- st_read("MA.shp")
+w  <- as.owin(s2)
 w.km <- rescale.owin(w, 1000)  # rescale map units to km
 
 # Read Walmart point data
-s  <- st_read("Walmarts.shp")
-p  <- as.ppp(s)
+s1  <- st_read("Walmarts.shp")
+p  <- as.ppp(s1)
 marks(p) <- NULL  # Remove attribute table (simplifies plot operations)
 p.km <- rescale.ppp(p, 1000) # Rescale map units to km
 Window(p.km) <- w.km      
