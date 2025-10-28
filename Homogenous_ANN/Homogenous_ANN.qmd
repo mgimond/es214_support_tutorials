@@ -98,12 +98,12 @@ p <- min(N.greater + 1, n + 1 - N.greater) / (n + 1)
 p
 ```
 
-About `r round(p, 2) * 100`% of the simulated ANN value were more extreme than our obserbved ANN value of `r round(ann.p, 2)` (Note that your p-value may be slightly different given that the p-value results from random events). Hence, the p-value suggests that we would be `r round(p, 2) * 100`% wrong in rejecting the null hypothesis that a random process *could* have generated a pattern that is *more dispersed* than our observed pattern.
+About `r round(p, 2) * 100`% of the simulated ANN value were more extreme than our observed ANN value of `r round(ann.p, 2)` (Note that your p-value may be slightly different given that the p-value results from random events). Hence, **the p-value suggests that there is a `r round(p, 2) * 100`% of observing an ANN value as extreme as ours if the null hypothesis (CRS) were true**.
 
 ::: {style="background:#FFE4C4;"}
 NOTES:
 
--   If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that *"... there is a `r round(p, 2) * 2 * 100`% chance of being wrong in rejecting the null hypothesis that a random process could have generated a point pattern similar to our observed pattern"*. Note the lack of reference to **greater than** or **less than**.
+-   If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that *"... there is a `r round(p, 2) * 2 * 100`% chance  that a random process could have generated an ANN statistic as extreme as ours"*. Note the lack of reference to **greater than** or **less than**.
 
 -   Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was **the** process behind the distribution of Walmart stores (in fact, it's quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of **many** other processes that generated the pattern observed in our dataset.
 :::
