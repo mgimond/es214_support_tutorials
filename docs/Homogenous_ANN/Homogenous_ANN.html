@@ -282,11 +282,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The test suggests that our observed ANN value may not be that different from the 1999 ANN values we simulated under the assumption that the stores are randomly distributed. Our observed values is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).</p>
+<p>The test suggests that our observed ANN value may not be that different from the 1999 ANN values we simulated under the assumption that the stores are randomly distributed. Our observed value is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).</p>
 </section>
 <section id="extracting-a-p-value-from-the-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-a-p-value-from-the-simulation">Extracting a p-value from the simulation</h3>
-<p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/hypothesis-testing.html#a-better-approach-a-monte-carlo-test">lecture notes</a> for more information.</p>
+<p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/chp15_0.html#extracting-a-p-value-from-a-monte-carlo-test">lecture notes</a> for more information.</p>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -295,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>
 <ul>
-<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that <em>“… there is a 64% chance that a random process could have generated an ANN statistic as extreme as ours”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
+<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value for a <strong>two-sided test</strong> and state that <em>“… there is a 64% chance that a random process could have generated an ANN statistic as extreme as ours”</em>. Note the lack of reference to <strong>greater than</strong> or <strong>less than</strong>.</p></li>
 <li><p>Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was <strong>the</strong> process behind the distribution of Walmart stores (in fact, it’s quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of <strong>many</strong> other processes that generated the pattern observed in our dataset.</p></li>
 </ul>
 </div>

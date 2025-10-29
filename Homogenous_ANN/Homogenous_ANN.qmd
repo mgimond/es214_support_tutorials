@@ -86,11 +86,11 @@ abline(v = ann.p, col = "blue", lw = 2)  # lw = 2 increases the line width
 par(OP)
 ```
 
-The test suggests that our observed ANN value may not be that different from the `r n` ANN values we simulated under the assumption that the stores are randomly distributed. Our observed values is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).
+The test suggests that our observed ANN value may not be that different from the `r n` ANN values we simulated under the assumption that the stores are randomly distributed. Our observed value is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).
 
 ### Extracting a p-value from the simulation
 
-We first need to find the end of the distribution that is *closest* to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called *one-sided* P-value. See [lecture notes](https://mgimond.github.io/Spatial/hypothesis-testing.html#a-better-approach-a-monte-carlo-test) for more information.
+We first need to find the end of the distribution that is *closest* to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called *one-sided* P-value. See [lecture notes](https://mgimond.github.io/Spatial/chp15_0.html#extracting-a-p-value-from-a-monte-carlo-test) for more information.
 
 ```{r results = 'asis'}
 N.greater <- sum(ann.r > ann.p)
@@ -103,7 +103,7 @@ About `r round(p, 2) * 100`% of the simulated ANN value were more extreme than o
 ::: {style="background:#FFE4C4;"}
 NOTES:
 
--   If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value and state that *"... there is a `r round(p, 2) * 2 * 100`% chance  that a random process could have generated an ANN statistic as extreme as ours"*. Note the lack of reference to **greater than** or **less than**.
+-   If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value for a **two-sided test** and state that *"... there is a `r round(p, 2) * 2 * 100`% chance  that a random process could have generated an ANN statistic as extreme as ours"*. Note the lack of reference to **greater than** or **less than**.
 
 -   Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was **the** process behind the distribution of Walmart stores (in fact, it's quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of **many** other processes that generated the pattern observed in our dataset.
 :::
