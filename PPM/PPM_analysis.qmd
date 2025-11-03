@@ -45,7 +45,7 @@ marks(p.km)  <- NULL
 Window(p.km) <- w.km
 
 # Read population density raster
-img     <- rast("log_pop_sqmile.tif")
+img     <- rast("pop_sqmile.tif")
 df      <- as.data.frame(img, xy = TRUE)
 pop     <- as.im(df)
 pop.km  <- rescale.im(pop, 1000)
@@ -64,7 +64,7 @@ Let's plot each raster with the Walmart point overlay. We'll use `R`'s base plot
 ```{r fig.height=3, small.mar = TRUE, fig.show='hold', echo = 2:7}
 OP <- par(mfrow = c(1,2), mar=c(2,0,2,0)) # This creates a two-pane plotting window
 
-plot(pop.km, ribside="bottom", main="Population (log)")
+plot(pop.km, ribside="bottom", main="Population")
 plot(p.km, pch = 20, col=rgb(1,1,1,0.5), add=TRUE)
 
 plot(inc.km, ribside="bottom", main="Income")
@@ -91,11 +91,11 @@ Let's explore the model parameters. First, we'll look at `Mpop`.
 Mpop
 ```
 
-The values of interest are the **intercept** (whose value is around `-10.1`) and the **coefficient** `pop.km` (whose value is around `0.63`). Using these values, we can construct the mathematical relationship (noting that we are using the logged population raster and not the original population raster values):
+The values of interest are the **intercept** (whose value is around `-10.1`) and the **coefficient** `pop.km` (whose value is around `0.63`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
 
 $$
-Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
-$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−10.1}$ which is very close to `0`. So for every unit increase of the *logged* population density (i.e. log of one person per square mile), there is an increase in Walmart intensity by a factor of $e^{0.63}$.
+Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
+$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−6.3}$ which is very close to `0`. So for every unit increase of the population density (i.e. one person per square mile), there is an increase in Walmart intensity by a factor of $e^{-6.3}$ stores per square kilometer.
 
 Likewise, we can extract the parameters from the `Minc` model and construct its equation.
 
@@ -135,7 +135,7 @@ plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
 par(OP) # This reverts our plot window back to a one-pane window
 ```
 
-Note the difference in relationships between the two models. In the first plot, we note an increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income---i.e. as an area's income increases, the Walmart intensity decreases.
+Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income---i.e. as an area's income increases, the Walmart intensity decreases.
 
 The grey envelopes encompass the 95% confidence interval; i.e. the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values--this suggests wide uncertainty in the estimated model.
 
@@ -143,7 +143,7 @@ To assess how well the above models explain the relationship between covariate a
 
 ## Testing for covariate effect
 
-Now, let's compare the non-homogeneous covariates to the null model using a technique called the *likelihood ratio* test. Remember that the null model assumes that the intensity is homogeneous across the entire study area; what we want to know is *"does the model with the covariate do a significantly better job in predicting Walmart densities than the null model?"*
+To formally assess whether the covariate-based model provides a significantly better fit than the null model, we use a **likelihood ratio test statistic (LRT)** which quantifies how much better the alternative model (`Mpop` or `Minc`) is at describing the observed pattern than the null model (`Mo`).
 
 ```{r}
 anova(Mo, Mpop, test = "LRT") # Compare null to population model
@@ -153,10 +153,12 @@ anova(Mo, Mpop, test = "LRT") # Compare null to population model
 anova(Mo, Minc, test = "LRT") # Compare null to income model
 ```
 
-What we are seeking is a small p-value (parameter `Pr(>Chi)` in the output). The smaller the value, the more confident we are in stating that the covariate does a better job in predicting Walmart intensity than the null model. For example, the p-value for the `Mpop` model (`Pr(>Chi) = 1.776e-08`) suggests that population density does a better job in predicting Walmart density than the null model `Mo`.
+The p-value is the **probability of observing the magnitude of fit improvement (as quantified by the LRT statistic) if that improvement were due entirely to random chance (as defined by CSR)**.
 
-The p-value for `Minc`, on the other hand, is higher with a value of `Pr = 0.247` indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.
+A resulting p-value of 0.039 (`Pr(>Chi) = 0.039`) indicates that if the null model were true (i.e., if Walmart locations were randomly distributed with constant intensity, unrelated to population density), there is only a 3.9% chance of observing an LRT statistic computed using `Mpop`.  This suggests that the  population density covariate does a better job in predicting Walmart distributions than CSR. 
 
-So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
+The p-value for `Minc`, on the other hand, is higher with a value of `Pr = 0.247` indicating that there is a 24.7% chance of observing a pattern that fits the covariate-based model this well. To many, that probability is too high to reject the null.
+
+So, to summarize, of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
 
 

@@ -262,7 +262,7 @@ window.Quarto = {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Read population density raster</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>img     <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"log_pop_sqmile.tif"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>img     <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.tif"</span>)</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>pop     <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>pop.km  <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(pop, <span class="dv">1000</span>)</span>
@@ -276,7 +276,7 @@ window.Quarto = {
 <p>Note that later in the script, we will make use of the <code>effectfun()</code> that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing <code>typeof(inc.km[])</code>, for example. If it’s not stored as a double, you can force it to a double using the <code>as.double()</code> function (e.g.&nbsp;<code>inc[] &lt;- as.double(inc[])</code>).</p>
 <p>Let’s plot each raster with the Walmart point overlay. We’ll use <code>R</code>’s base plotting environment.</p>
 <div class="cell" data-small.mar="true">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pop.km, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Population (log)"</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pop.km, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Population"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.5</span>), <span class="at">add=</span><span class="cn">TRUE</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inc.km, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Income"</span>)</span>
@@ -319,21 +319,24 @@ Fitted to point pattern dataset 'p.km'
 Log intensity:  ~pop.km
 
 Fitted trend coefficients:
-(Intercept)      pop.km 
- -10.111647    0.625803 
+  (Intercept)        pop.km 
+-6.2705211696  0.0001136109 
 
-              Estimate      S.E.     CI95.lo    CI95.hi Ztest       Zval
-(Intercept) -10.111647 0.7933272 -11.6665394 -8.5567540   *** -12.745872
-pop.km        0.625803 0.1127980   0.4047229  0.8468831   ***   5.547996
+                 Estimate         S.E.       CI95.lo       CI95.hi Ztest
+(Intercept) -6.2705211696 1.640539e-01 -6.592061e+00 -5.9489813892   ***
+pop.km       0.0001136109 4.366087e-05  2.803713e-05  0.0001991846    **
+                  Zval
+(Intercept) -38.222318
+pop.km        2.602121
 Problem:
  Values of the covariate 'pop.km' were NA or undefined at 3.4% (17 out of 504) 
 of the quadrature points</code></pre>
 </div>
 </div>
-<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-10.1</code>) and the <strong>coefficient</strong> <code>pop.km</code> (whose value is around <code>0.63</code>). Using these values, we can construct the mathematical relationship (noting that we are using the logged population raster and not the original population raster values):</p>
+<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-10.1</code>) and the <strong>coefficient</strong> <code>pop.km</code> (whose value is around <code>0.63</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
 <p><span class="math display">\[
-Walmart\ intensity(i)= e^{−10.1 + 0.63\ log(population\ density_i)}
-\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−10.1}\)</span> which is very close to <code>0</code>. So for every unit increase of the <em>logged</em> population density (i.e.&nbsp;log of one person per square mile), there is an increase in Walmart intensity by a factor of <span class="math inline">\(e^{0.63}\)</span>.</p>
+Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
+\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. So for every unit increase of the population density (i.e.&nbsp;one person per square mile), there is an increase in Walmart intensity by a factor of <span class="math inline">\(e^{-6.3}\)</span> stores per square kilometer.</p>
 <p>Likewise, we can extract the parameters from the <code>Minc</code> model and construct its equation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -398,13 +401,13 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </div>
 </div>
 </div>
-<p>Note the difference in relationships between the two models. In the first plot, we note an increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
+<p>Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
 <p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
 <p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
 </section>
 <section id="testing-for-covariate-effect" class="level2">
 <h2 class="anchored" data-anchor-id="testing-for-covariate-effect">Testing for covariate effect</h2>
-<p>Now, let’s compare the non-homogeneous covariates to the null model using a technique called the <em>likelihood ratio</em> test. Remember that the null model assumes that the intensity is homogeneous across the entire study area; what we want to know is <em>“does the model with the covariate do a significantly better job in predicting Walmart densities than the null model?”</em></p>
+<p>To formally assess whether the covariate-based model provides a significantly better fit than the null model, we use a <strong>likelihood ratio test statistic (LRT)</strong> which quantifies how much better the alternative model (<code>Mpop</code> or <code>Minc</code>) is at describing the observed pattern than the null model (<code>Mo</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -421,9 +424,9 @@ illegal under some of the models</code></pre>
 
 Model 1: ~1      Poisson
 Model 2: ~pop.km     Poisson
-  Npar Df Deviance  Pr(&gt;Chi)    
-1   18                          
-2   19  1   31.725 1.776e-08 ***
+  Npar Df Deviance Pr(&gt;Chi)  
+1   18                       
+2   19  1   4.2968  0.03819 *
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
@@ -449,9 +452,10 @@ Model 2: ~inc.km     Poisson
 2   18  1   1.3388   0.2473</code></pre>
 </div>
 </div>
-<p>What we are seeking is a small p-value (parameter <code>Pr(&gt;Chi)</code> in the output). The smaller the value, the more confident we are in stating that the covariate does a better job in predicting Walmart intensity than the null model. For example, the p-value for the <code>Mpop</code> model (<code>Pr(&gt;Chi) = 1.776e-08</code>) suggests that population density does a better job in predicting Walmart density than the null model <code>Mo</code>.</p>
-<p>The p-value for <code>Minc</code>, on the other hand, is higher with a value of <code>Pr = 0.247</code> indicating that there is a 24.7% chance that we would be wrong in stating that income does a better job in predicting Walmart densities. To many, that probability is too high to reject the null.</p>
-<p>So to summaries: of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.</p>
+<p>The p-value is the <strong>probability of observing the magnitude of fit improvement (as quantified by the LRT statistic) if that improvement were due entirely to random chance (as defined by CSR)</strong>.</p>
+<p>A resulting p-value of 0.039 (<code>Pr(&gt;Chi) = 0.039</code>) indicates that if the null model were true (i.e., if Walmart locations were randomly distributed with constant intensity, unrelated to population density), there is only a 3.9% chance of observing an LRT statistic computed using <code>Mpop</code>. This suggests that the population density covariate does a better job in predicting Walmart distributions than CSR.</p>
+<p>The p-value for <code>Minc</code>, on the other hand, is higher with a value of <code>Pr = 0.247</code> indicating that there is a 24.7% chance of observing a pattern that fits the covariate-based model this well. To many, that probability is too high to reject the null.</p>
+<p>So, to summarize, of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.</p>
 
 
 </section>
