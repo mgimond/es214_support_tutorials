@@ -91,7 +91,7 @@ Let's explore the model parameters. First, we'll look at `Mpop`.
 Mpop
 ```
 
-The values of interest are the **intercept** (whose value is around `-6.3`) and the **coefficient** `pop.km` (whose value is around `0.60001`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
+The values of interest are the **intercept** (whose value is around `-6.3`) and the **coefficient** `pop.km` (whose value is around `0.0001`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
 
 $$
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}

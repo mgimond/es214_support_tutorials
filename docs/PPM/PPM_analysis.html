@@ -333,7 +333,7 @@ Problem:
 of the quadrature points</code></pre>
 </div>
 </div>
-<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-6.3</code>) and the <strong>coefficient</strong> <code>pop.km</code> (whose value is around <code>0.60001</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
+<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-6.3</code>) and the <strong>coefficient</strong> <code>pop.km</code> (whose value is around <code>0.0001</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
 <p><span class="math display">\[
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
 \]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. So for every unit increase of the population density (i.e.&nbsp;one person per square mile), there is an increase in Walmart intensity by a factor of <span class="math inline">\(e^{0.0001}\)</span> stores per square kilometer.</p>
