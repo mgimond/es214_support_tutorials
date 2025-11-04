@@ -91,11 +91,11 @@ Let's explore the model parameters. First, we'll look at `Mpop`.
 Mpop
 ```
 
-The values of interest are the **intercept** (whose value is around `-10.1`) and the **coefficient** `pop.km` (whose value is around `0.63`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
+The values of interest are the **intercept** (whose value is around `-6.3`) and the **coefficient** `pop.km` (whose value is around `0.60001`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
 
 $$
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
-$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−6.3}$ which is very close to `0`. So for every unit increase of the population density (i.e. one person per square mile), there is an increase in Walmart intensity by a factor of $e^{-6.3}$ stores per square kilometer.
+$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−6.3}$ which is very close to `0`. So for every unit increase of the population density (i.e. one person per square mile), there is an increase in Walmart intensity by a factor of $e^{0.0001}$ stores per square kilometer.
 
 Likewise, we can extract the parameters from the `Minc` model and construct its equation.
 
