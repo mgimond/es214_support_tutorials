@@ -27,7 +27,8 @@ The following chunk of code loads the shapefiles into R. They are then converted
 library(sf)
 library(spatstat)
 
-# Read state polygon data
+# Read state polygon data (this layer defines the extent--defined by the outer 
+# boundary of the polygon layer--within which to generate random points)
 s2  <- st_read("MA.shp")
 w  <- as.owin(s2)
 w.km <- rescale.owin(w, 1000)  # rescale map units to km
@@ -65,7 +66,7 @@ for (i in 1:n){
 }
 ```
 
-In the above loop, the function `rpoint` is passed two parameters: `n = p.km$n` and `win = w.km`. The first tells the function how many points to randomly generate (i.e. the same number of points as that in the Walmart points layer which we can extract from the `p.km$n` object). The second tells the function to confine the randomly generated points to the extent defined by `w.km` (the `MA` polygon).
+In the above loop, the function `rpoint` is passed two parameters: `n = p.km$n` and `win = w.km`. The first tells the function how many points to randomly generate (i.e. the same number of points as that in the Walmart points layer which we can extract from the `p.km$n` object). The second tells the function to confine the randomly generated points to the extent defined by `w.km` (the `MA` polygon). Note that the `w.km` polygon layer **must only include polygon(s)** that define where points can occur.
 
 Note that after running the last simulation, you can view its set of randomly generated points via:
 
