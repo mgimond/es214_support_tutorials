@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 
 In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats that are readable by the `spatstat` functions. We will also convert the mapping units from meters to kilometers using the `rescale` function.
 
-Our earlier PPM analysis suggested that the population density distribution (expressed on a log scale), could help explain the observed distribution of Walmart stores. We therefore need to account for this *inhomogeneity* in the underlying 1^st^ order effect before tackling a distance based analysis which addresses the 2^nd^ order effect of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.
+Our earlier PPM analysis suggested that the population density distribution, could help explain the observed distribution of Walmart stores. We therefore need to account for this *inhomogeneity* in the underlying 1^st^ order effect before tackling a distance based analysis which addresses the 2^nd^ order effect of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 # Load packages
@@ -43,7 +43,7 @@ p.km <- rescale.ppp(p, 1000)
 Window(p.km) <- w.km     
 
 # Read population raster
-img      <- rast("log_pop_sqmile.tif") 
+img      <- rast("pop_sqmile.tif") 
 df       <- as.data.frame(img, xy = TRUE)
 rast     <- as.im(df)  
 rast.km  <- rescale.im(rast, 1000)
@@ -76,31 +76,21 @@ for (i in 1:n){
 
 ```
 
-The above loop is almost identical to that of the homogeneous case except with the addition of the `f = rast.km` argument which defines the intensity of the underlying process (`rast.km` represents the population density raster). The `rpoint` function rescales the raster values to a range of `[0,1]` where `1` designates maximum probability of a pixel receiving a point and `0` minimum (or no) probability of a pixel receiving a point. It's therefore important to remember that you want the large pixel values to be associated with a greater probability of receiving a point. If you want to reverse the relationship, in other words if you want to assign a greater probability of placing a point where you have a small pixel value, simply inverse the pixel values (this can be done in the GIS software or in R via `rast.km[] = max(rast.km[]) - rast.km[]`. Note that the covariate raster cannot have negative values, hence the values must still be greater than or equal to `0`.
-
-The following map shows an example of how the Walmart store distribution *could* look like *if* dictated by population distribution.
-
-```{r fig.height=1.5, echo=3}
-OP <- par(mar=c(0,0,0,0))
-Window(rand.p) <- w.km
-plot(rand.p, pch = 16, main = NULL)
-par(OP)
-```
-
-It may not look terribly different from the homogeneous ANN model, but if you were to tally all point distributions from each simulation, you would very likely find more points occurring in areas with higher population values (as expressed by the raster layer).
+The above loop is almost identical to that of the homogeneous case except with the addition of the `f = rast.km` argument which defines the intensity of the underlying process (`rast.km` represents the population density raster). The `rpoint` function rescales the raster values to a range of `[0,1]` where `1` designates maximum probability of a pixel receiving a point and `0` minimum (or no) probability of a pixel receiving a point. It's therefore important to remember that you want the large pixel values to be associated with a greater probability of receiving a point. If you want to reverse the relationship, in other words if you want to assign a greater probability of placing a point where you have a small pixel value, simply inverse the pixel values (this can be done in the GIS software or in R via `rast.km[] = max(rast.km[]) + min(rast.km[]) - rast.km[]`. Note that the covariate raster cannot have negative values, hence the values must still be greater than or equal to `0`.
 
 Now, let's plot the histogram of simulated ANN values:
 
 ```{r fig.height=2, echo=2:3}
 OP <- par(mar=c(4,4,0,0))
-hist(ann.het, breaks = 40, col = "bisque", xlim = range(ann.p, ann.het), main = NULL)
+hist(ann.het, breaks = 40, col = "bisque", 
+     xlim = range(ann.p, ann.het), main = NULL)
 abline(v = ann.p, col = "blue", lw = 2)
 par(OP)
 ```
 
-The histogram is displaying the range of expected ANN values when the placement of Walmart points are dictated by the population distribution.
+The histogram displays the range of expected ANN values when the placement of Walmart points are dictated by the population distribution.
 
-Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart may be more *dispersed* than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.
+Our observed ANN value lies to the right of the distribution center suggesting that our observed Walmart is more *dispersed* than expected under the current hypothesis. This makes sense since you would expect there to be a minimum distance between stores to avoid overlapping markets.
 
 The p-value is thus:
 
@@ -110,11 +100,11 @@ p <- min(N.greater + 1, n + 1 - N.greater) / (n +1)
 p
 ```
 
-Note that this is a smaller p-value than that computed under the homogeneous scenario. 
+Note that this is a much smaller p-value than that computed under the homogeneous scenario. 
 
 ## Final note
 
-While the histogram may imply that it's the *observed* ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it's really the *distribution* of expected values under this *new* hypothesis that gets shifted along the x-axis; The observed ANN value has not changed. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses!
+While the histogram may *seem* to imply that it's the *observed* ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it's really the *distribution* of expected values under this *new* hypothesis that gets shifted along the x-axis; **The observed ANN value has not changed**. The following plot overlays the expected ANN distribution given a homogeneous 1^st^ order process in red and the expected ANN distribution given the inhomogeneous 1^st^ order process in green. The observed ANN value of 13.3 km is constant under both analyses!
 
 
 ```{r fig.height=3, fig.width=6, echo = FALSE, warning=FALSE, message=FALSE}
