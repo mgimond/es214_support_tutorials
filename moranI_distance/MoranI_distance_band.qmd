@@ -133,7 +133,7 @@ We can extend this analysis by calculating a Moran's I index (and p.value) at di
 
 We first create a "for" loop that iterates across a range of distance band values.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 # Define the distance bands (note that each band is defined
 # by an annulus)
 start <- 0 # Starting distance in meters (the From)

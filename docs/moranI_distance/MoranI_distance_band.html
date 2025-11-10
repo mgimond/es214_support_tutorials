@@ -354,57 +354,36 @@ alternative hypothesis: greater</code></pre>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  s.mor <span class="ot">&lt;-</span> <span class="fu">moran.mc</span>(s<span class="sc">$</span>Income, s.lw, <span class="at">nsim=</span><span class="dv">599</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  sign.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>p.value</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  morI.mc[i] <span class="ot">&lt;-</span> s.mor<span class="sc">$</span>statistic</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-138 sub-graphs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-17 sub-graphs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-4 sub-graphs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-7 sub-graphs
-Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-7 sub-graphs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in dnearneigh(s.coord, incr.v[i - 1], incr.v[i]): neighbour object has
-6 sub-graphs</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify p-value to reflect extremes at each end</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span> <span class="sc">-</span> sign.mc, sign.mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify p-value to reflect extremes at each end</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>sign.mc <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span> <span class="sc">-</span> sign.mc, sign.mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, we plot the Moran’s I statistic as a function of distance band. We’ll also symbolize each point by a binary color scheme whereby “red” will be assigned to Moran’s I point symbols that meet a statistical threshold (let’s say 0.01 in this example) and a “grey” point otherwise.</p>
 <div class="cell" data-small.mar="true">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, generate an empty plot</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the background plot to grey then add white grids</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>) <span class="co"># Get plot are coordinates</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#EEEEEE"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">lab =</span> ((incr.v) <span class="sc">/</span> <span class="dv">1000</span>), <span class="at">at =</span> (incr.v), <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the theoretical "no autocorelation" line</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(s<span class="sc">$</span>Income)), <span class="at">col =</span> <span class="st">"grey20"</span>)</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the plot to the canvas</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>),</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance (km)"</span>, <span class="at">ylab =</span> <span class="st">"Moran's I"</span>)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), </span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="st">"red"</span>, <span class="st">"grey"</span>), </span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">2.0</span>)</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add numeric values to points</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), morI.mc, <span class="fu">round</span>(sign.mc,<span class="dv">3</span>), <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, generate an empty plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the background plot to grey then add white grids</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>) <span class="co"># Get plot are coordinates</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#EEEEEE"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">lab =</span> ((incr.v) <span class="sc">/</span> <span class="dv">1000</span>), <span class="at">at =</span> (incr.v), <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">tck =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#FFFFFF"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the theoretical "no autocorelation" line</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(s<span class="sc">$</span>Income)), <span class="at">col =</span> <span class="st">"grey20"</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the plot to the canvas</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance (km)"</span>, <span class="at">ylab =</span> <span class="st">"Moran's I"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(morI.mc <span class="sc">~</span> <span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">ifelse</span>(sign.mc <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="st">"red"</span>, <span class="st">"grey"</span>), </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">2.0</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add numeric values to points</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">eval</span>(incr.v <span class="sc">-</span> incr <span class="sc">*</span> <span class="fl">0.5</span>), morI.mc, <span class="fu">round</span>(sign.mc,<span class="dv">3</span>), <span class="at">pos =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
