@@ -174,14 +174,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link active" data-scroll-target="#loading-the-data">Loading the data</a></li>
-  <li><a href="#morans-i-analysis" id="toc-morans-i-analysis" class="nav-link" data-scroll-target="#morans-i-analysis">Moran’s I analysis</a>
+  <li><a href="#morans-i-statistic" id="toc-morans-i-statistic" class="nav-link" data-scroll-target="#morans-i-statistic">Moran’s I Statistic</a>
   <ul class="collapse">
   <li><a href="#step-1-define-neighboring-polygons" id="toc-step-1-define-neighboring-polygons" class="nav-link" data-scroll-target="#step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</a></li>
   <li><a href="#step-2-assign-weights-to-the-neighbors" id="toc-step-2-assign-weights-to-the-neighbors" class="nav-link" data-scroll-target="#step-2-assign-weights-to-the-neighbors">Step 2: Assign weights to the neighbors</a></li>
   <li><a href="#step-3-compute-the-weighted-neighbor-mean-income-values-optional-step" id="toc-step-3-compute-the-weighted-neighbor-mean-income-values-optional-step" class="nav-link" data-scroll-target="#step-3-compute-the-weighted-neighbor-mean-income-values-optional-step">Step 3: Compute the (weighted) neighbor mean income values (optional step)</a></li>
   <li><a href="#step-4-computing-the-morans-i-statistic" id="toc-step-4-computing-the-morans-i-statistic" class="nav-link" data-scroll-target="#step-4-computing-the-morans-i-statistic">Step 4: Computing the Moran’s I statistic</a></li>
-  <li><a href="#step-5-performing-a-hypothesis-test" id="toc-step-5-performing-a-hypothesis-test" class="nav-link" data-scroll-target="#step-5-performing-a-hypothesis-test">Step 5: Performing a hypothesis test</a></li>
   </ul></li>
+  <li><a href="#morans-i-test" id="toc-morans-i-test" class="nav-link" data-scroll-target="#morans-i-test">Moran’s I test</a></li>
   <li><a href="#another-example-florida-1980-homicide-rate-example" id="toc-another-example-florida-1980-homicide-rate-example" class="nav-link" data-scroll-target="#another-example-florida-1980-homicide-rate-example">Another example: Florida 1980 Homicide rate example</a></li>
   </ul>
 </nav>
@@ -299,8 +299,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="morans-i-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="morans-i-analysis">Moran’s I analysis</h2>
+<section id="morans-i-statistic" class="level2">
+<h2 class="anchored" data-anchor-id="morans-i-statistic">Moran’s I Statistic</h2>
 <section id="step-1-define-neighboring-polygons" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-define-neighboring-polygons">Step 1: Define neighboring polygons</h3>
 <p>The first step in a Moran’s I analysis requires that we define “neighboring” polygons. This could refer to contiguous polygons, polygons within a certain distance, or it could be non-spatial in nature and defined by social, political or cultural “neighbors”.</p>
@@ -494,8 +494,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Recall that the Moran’s <code>I</code> value is the slope of the line that best fits the relationship between neighboring income values and each polygon’s income in the dataset.</p>
 </section>
-<section id="step-5-performing-a-hypothesis-test" class="level3">
-<h3 class="anchored" data-anchor-id="step-5-performing-a-hypothesis-test">Step 5: Performing a hypothesis test</h3>
+</section>
+<section id="morans-i-test" class="level2">
+<h2 class="anchored" data-anchor-id="morans-i-test">Moran’s I test</h2>
 <p>The hypothesis we are testing states that <em>“the income values are randomly distributed across counties following a completely random process”</em>. There are two methods to testing this hypothesis: an analytical method and a Monte Carlo method. We’ll explore both approaches in the following example.</p>
 <section id="analytical-method" class="level4">
 <h4 class="anchored" data-anchor-id="analytical-method">Analytical method</h4>
@@ -564,7 +565,6 @@ alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The map on the left is our observed distribution. The three maps on the right are realizations of a completely random process.</p>
-</section>
 </section>
 </section>
 <section id="another-example-florida-1980-homicide-rate-example" class="level2">

@@ -82,7 +82,7 @@ You can change the color palette to any one of the following sequential color sc
 display.brewer.all(type = "seq")
 ```
 
-## Moran's I analysis
+## Moran's I Statistic
 
 ### Step 1: Define neighboring polygons
 
@@ -170,7 +170,7 @@ I
 Recall that the Moran's `I` value is the slope of the line that best fits the relationship between neighboring income values and each polygon's income in the dataset.
 
 
-### Step 5: Performing a hypothesis test
+## Moran's I test
 
 The hypothesis we are testing states that _"the income values are randomly distributed across counties following a completely random process"_. There are two methods to testing this hypothesis: an analytical method and a Monte Carlo method. We'll explore both approaches in the following example.
 

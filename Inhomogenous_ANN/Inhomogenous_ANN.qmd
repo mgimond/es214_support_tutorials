@@ -50,9 +50,9 @@ rast     <- as.im(df)
 rast.km  <- rescale.im(rast, 1000)
 ```
 
-## Average nearest neighbor analysis
+## Computing the ANN Statistic
 
-First, we'll compute the observed Walmart ANN statistic.
+The observed Walmart ANN statistic can be computed as follows.
 
 ```{r}
 ann.p <- mean(nndist(p.km, k=1))
@@ -61,9 +61,9 @@ ann.p
 
 The observed average nearest neighbor is `r round(ann.p, 2)` km.
 
-### Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?
+## Testing the ANN Hypothesis
 
-In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for [1^st^ order effects](https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects) of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?
+In the [homogenous  point pattern analysis section](../Homogenous_ANN/Homogenous_ANN.html), we calculated a (pseudo) p-value of around 0.32. The problem with our initial ANN analysis is that we did not account for [1^st^ order effects](https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects) of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?
 
 If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while **controlling** for population distribution influence. We do this by instructing the `rpoint()` function to increase point placement probability at locations with high covariate values (i.e. a high population density area is more likely to receive a random point than a low density area).
 

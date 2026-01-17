@@ -170,9 +170,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#load-and-prep-the-dataset" id="toc-load-and-prep-the-dataset" class="nav-link active" data-scroll-target="#load-and-prep-the-dataset">Load and prep the dataset</a></li>
-  <li><a href="#average-nearest-neighbor-analysis" id="toc-average-nearest-neighbor-analysis" class="nav-link" data-scroll-target="#average-nearest-neighbor-analysis">Average nearest neighbor analysis</a>
+  <li><a href="#computing-the-ann-statistic" id="toc-computing-the-ann-statistic" class="nav-link" data-scroll-target="#computing-the-ann-statistic">Computing the ANN Statistic</a></li>
+  <li><a href="#testing-the-ann-hypothesis" id="toc-testing-the-ann-hypothesis" class="nav-link" data-scroll-target="#testing-the-ann-hypothesis">Testing the ANN Hypothesis</a>
   <ul class="collapse">
-  <li><a href="#is-our-observed-ann-value-consistent-with-a-random-process" id="toc-is-our-observed-ann-value-consistent-with-a-random-process" class="nav-link" data-scroll-target="#is-our-observed-ann-value-consistent-with-a-random-process">Is our observed ANN value consistent with a random process?</a></li>
   <li><a href="#extracting-a-p-value-from-the-simulation" id="toc-extracting-a-p-value-from-the-simulation" class="nav-link" data-scroll-target="#extracting-a-p-value-from-the-simulation">Extracting a p-value from the simulation</a></li>
   </ul></li>
   </ul>
@@ -235,9 +235,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="average-nearest-neighbor-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
-<p>First, we’ll compute the observed Walmart ANN statistic.</p>
+<section id="computing-the-ann-statistic" class="level2">
+<h2 class="anchored" data-anchor-id="computing-the-ann-statistic">Computing the ANN Statistic</h2>
+<p>The observed Walmart ANN statistic can be computed as follows</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -246,8 +246,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The observed average nearest neighbor is 13.29 km.</p>
-<section id="is-our-observed-ann-value-consistent-with-a-random-process" class="level3">
-<h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process">Is our observed ANN value consistent with a random process?</h3>
+</section>
+<section id="testing-the-ann-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="testing-the-ann-hypothesis">Testing the ANN Hypothesis</h2>
 <p>In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our <strong>null hypothesis</strong>. We’ll therefore compare our observed ANN value to the <em>range</em> of ANN values we could expect to get <em>if</em> the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span>       <span class="co"># Number of times to run the simulation</span></span>
@@ -284,14 +285,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The test suggests that our observed ANN value may not be that different from the 1999 ANN values we simulated under the assumption that the stores are randomly distributed. Our observed value is a tad bit to the right of the center of the distribution suggesting that our observed ANN value might be on the dispersed side of the range of values (a larger than expected ANN value suggests a more dispersed set of points, and a smaller than expected ANN value suggests a more clustered set of points).</p>
-</section>
 <section id="extracting-a-p-value-from-the-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-a-p-value-from-the-simulation">Extracting a p-value from the simulation</h3>
 <p>We first need to find the end of the distribution that is <em>closest</em> to the observed ANN value. We then find the number of simulated ANN values more extreme than our observed ANN value. Finally, we divide that count by the total number of simulations. Note that this is a so-called <em>one-sided</em> P-value. See <a href="https://mgimond.github.io/Spatial/chp15_0.html#extracting-a-p-value-from-a-monte-carlo-test">lecture notes</a> for more information.</p>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>N.greater <span class="ot">&lt;-</span> <span class="fu">sum</span>(ann.r <span class="sc">&gt;</span> ann.p)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>[1] 0.3215</p>
+<p>[1] 0.3165</p>
 <p>About 32% of the simulated ANN value were more extreme than our observed ANN value of 13.29 (Note that your p-value may be slightly different given that the p-value results from random events). Hence, <strong>the p-value suggests that there is a 32% of observing an ANN value as extreme as ours if the null hypothesis (CRS) were true</strong>.</p>
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>

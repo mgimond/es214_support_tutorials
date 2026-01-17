@@ -1,6 +1,9 @@
 ---
 title: 'PPM: Exploring 1^st^ order effects'
 author: "Manny Gimond"
+output:
+  html_document:
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -73,7 +76,7 @@ plot(p.km, pch = 20, col=rgb(1,1,1,0.6), add=TRUE)
 par(OP)
 ```
 
-## Modeling point density as a function of two competing covariates: population density and income
+## Modeling the Covariate Effect
 
 We will first develop two different models that we think might define the Walmart's point intensity. Recall that *intensity* is a property of the underlying "process" (one being defined by the distribution of population density and the other being defined by the distribution of income)--this differs from *density* which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
 
@@ -121,7 +124,7 @@ $$
 
 which is nothing more than the number of stores per unit area (44 stores / 21,000km^2^ = 0.00209).
 
-## Plotting the competing models
+### Plotting the competing models
 
 ```{r fig.show='hold', fig.height=3, small.mar =TRUE}
 OP <- par(mfrow = c(1,2), mar = c(4,4,2,1))  # This creates a two-pane plotting window
@@ -132,7 +135,7 @@ plot(effectfun(Mpop, "pop.km", se.fit = TRUE), main = "Population",
 plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
      ylab = "Walmarts per km2", xlab = "Income", legend = FALSE)
 
-par(OP) # This reverts our plot window back to a one-pane window
+par(OP) # This reverts our plot window back to a one-panel window
 ```
 
 Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income---i.e. as an area's income increases, the Walmart intensity decreases.
@@ -141,24 +144,70 @@ The grey envelopes encompass the 95% confidence interval; i.e. the true estimate
 
 To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.
 
-## Testing for covariate effect
+----------------
 
-To formally assess whether the covariate-based model provides a significantly better fit than the null model, we use a **likelihood ratio test statistic (LRT)** which quantifies how much better the alternative model (`Mpop` or `Minc`) is at describing the observed pattern than the null model (`Mo`).
+## Testing the Covariate Effect
+
+To formally assess whether the covariate-based model provides a significantly better fit than the null model, we need a way to reduce that comparison to a single number. That number is called the **likelihood‑ratio test (LRT)  statistic**. 
+
+* A model that fits the data better gives a **higher likelihood** for the observed pattern.
+* The LRT statistic measures how much better the more complex model `Mpop` or `Minc` fit the data than the simpler "null" model `Mo`.
+
+Think of the LRT as a kind of **"distance"** between the two models’ explanations of the same point pattern.
+
+* Small LRT statistic -> the alternative model explains the pattern almost equally well
+* Large LRT statictic -> the alternative model explains the pattern noticeably better
+
+### The `Mpop` model test
+
+We'll first apply a LRT test for the `Mpop` model.
 
 ```{r}
 anova(Mo, Mpop, test = "LRT") # Compare null to population model
 ```
 
+In `spatstat`, the LRT statistic appears as the difference in **deviance** in the output. We compare this value to a **reference distribution**--a picture of how big the LRT statistic (i.e. the difference-in-deviance value in the output) would usually be if the null model really were adequate. The following figure shows this distribution with the observed statistic displayed as a veritcial blue line.
+
+```{r fig.width=5, fig.height= 3, echo = FALSE}
+OP <- par(mar=c(3.9,3.9,1,1))
+observed_deviance <- 4.2968
+df_value <- 1
+
+# Generate a sequence of values for the x-axis (LRT statistic range)
+x <- seq(0, 10, length.out = 500)
+
+# Calculate the density of the Chi-Squared distribution with 1 degree of freedom
+y <- dchisq(x, df = df_value)
+
+# Plot the analytical null distribution
+plot(x, y, type = "l", lwd = 2, col = "grey30",
+#     main = "Analytical Null Distribution (Chi-Squared, df=1)",
+     xlab = "LRT Statistic (Difference in Deviance)",
+     ylab = "Probability Density",
+     ylim = c(0, 1)) # Limit y-axis for better visibility near the tail
+
+# Add a vertical line at the observed Deviance value
+abline(v = observed_deviance, col = "blue", lwd = 2, lty = 2)
+
+# Shading the area representing the p-value (upper tail)
+x_tail <- seq(observed_deviance, 10, length.out = 100)
+y_tail <- dchisq(x_tail, df = df_value)
+polygon(c(observed_deviance, x_tail, 10), c(0, y_tail, 0), col = rgb(1, 0, 0, 0.2), border = NA)
+par(OP)
+```
+
+The reference distribution addresses the question **"If the null model were true, how likely is it that random noise alone would produce an LRT statistic (difference-in-deviance) this large (4.2968) or larger?**. The probability can be extracted from the plot or from the `anova()` output under the `pr` heading--this is the **p-value**. For the `Mpop` model, the p-value is **0.03819** or **3.8%**.
+
+This means that if the population density **had no real effect**, then a statistic as large as 4.2968 would occur only about **3.8%** of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.
+
+### The `Minc` model likelihood ratio test
+
 ```{r}
 anova(Mo, Minc, test = "LRT") # Compare null to income model
 ```
 
-The p-value is the **probability of observing the magnitude of fit improvement (as quantified by the LRT statistic) if that improvement were due entirely to random chance (as defined by CSR)**.
+The model using median income (`Minc`) shows a very different result. The LRT statistic for `Minc` is **1.3388**, yielding a **p‑value of 0.2473**--roughly 25%. This value is **well within the range of what we would expect just by chance** if the null model (constant intensity) were true. A statistic this small is not unusual under the null model, meaning that including income as a covariate does not provide strong evidence of improvement. From this, we can conclude that income does not significantly explain the observed point distribution, at least not in the way population density does. Together, these results suggest that population density is a more relevant predictor of point intensity than income in this dataset.
 
-A resulting p-value of 0.039 (`Pr(>Chi) = 0.039`) indicates that if the null model were true (i.e., if Walmart locations were randomly distributed with constant intensity, unrelated to population density), there is only a 3.9% chance of observing an LRT statistic computed using `Mpop`.  This suggests that the  population density covariate does a better job in predicting Walmart distributions than CSR. 
+### Additional Guidance on Interpreting p‑values
 
-The p-value for `Minc`, on the other hand, is higher with a value of `Pr = 0.247` indicating that there is a 24.7% chance of observing a pattern that fits the covariate-based model this well. To many, that probability is too high to reject the null.
-
-So, to summarize, of the two models we tested, it seems that population density does a better job at explaining the distribution of Walmarts (though not perfect) than the null model. Income distribution, on the other hand, does not improve on the null model.
-
-
+Finally, it’s important not to treat the **0.05 cutoff** as a strict “significant / not significant” decision rule. The value 0.05 has no theoretical justification, it is simply a historical convention—and relying on it too rigidly can lead to oversimplified or misleading interpretations. Instead, interpret the p‑value as a continuous measure of how surprising your data would be if the null model were true. A smaller p‑value means the observed improvement is less likely to be due to chance alone, while a larger p‑value means the improvement is more consistent with random variation. This perspective helps you think in terms of evidence and uncertainty, rather than treating statistical testing as a binary yes/no decision.

@@ -32,6 +32,7 @@ format:
       - custom.scss
     css: styles.css
     toc: true
+    number_sections: true
 
 execute:
   cache: true

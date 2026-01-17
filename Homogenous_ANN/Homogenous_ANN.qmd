@@ -41,9 +41,9 @@ p.km <- rescale.ppp(p, 1000) # Rescale map units to km
 Window(p.km) <- w.km      
 ```
 
-## Average nearest neighbor analysis
+## Computing the ANN Statistic
 
-First, we'll compute the observed Walmart ANN statistic.
+The observed Walmart ANN statistic can be computed as follows
 
 ```{r}
 ann.p <- mean(nndist(p.km, k=1))
@@ -52,7 +52,7 @@ ann.p
 
 The observed average nearest neighbor is `r round(ann.p, 2)` km.
 
-### Is our observed ANN value consistent with a random process?
+## Testing the ANN Hypothesis
 
 In this hypothesis test, we are hypothesizing that the process that generated the observed distribution of Walmart stores was completely random. This is our **null hypothesis**. We'll therefore compare our observed ANN value to the *range* of ANN values we could expect to get *if* the Walmart stores were randomly distributed. This will involve randomly shuffling the Walmart store locations, then computing the average distance between the randomly distributed stores. This process is repeated many times such that a distribution of ANN values under the assumption of complete randomness (the null hypothesis) is generated.
 

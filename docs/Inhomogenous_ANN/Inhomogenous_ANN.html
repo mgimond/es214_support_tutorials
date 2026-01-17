@@ -170,10 +170,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#load-and-prep-the-dataset" id="toc-load-and-prep-the-dataset" class="nav-link active" data-scroll-target="#load-and-prep-the-dataset">Load and prep the dataset</a></li>
-  <li><a href="#average-nearest-neighbor-analysis" id="toc-average-nearest-neighbor-analysis" class="nav-link" data-scroll-target="#average-nearest-neighbor-analysis">Average nearest neighbor analysis</a>
-  <ul class="collapse">
-  <li><a href="#is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" id="toc-is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" class="nav-link" data-scroll-target="#is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</a></li>
-  </ul></li>
+  <li><a href="#computing-the-ann-statistic" id="toc-computing-the-ann-statistic" class="nav-link" data-scroll-target="#computing-the-ann-statistic">Computing the ANN Statistic</a></li>
+  <li><a href="#testing-the-ann-hypothesis" id="toc-testing-the-ann-hypothesis" class="nav-link" data-scroll-target="#testing-the-ann-hypothesis">Testing the ANN Hypothesis</a></li>
   <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final note</a></li>
   </ul>
 </nav>
@@ -243,9 +241,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>rast.km  <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(rast, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="average-nearest-neighbor-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="average-nearest-neighbor-analysis">Average nearest neighbor analysis</h2>
-<p>First, we’ll compute the observed Walmart ANN statistic.</p>
+<section id="computing-the-ann-statistic" class="level2">
+<h2 class="anchored" data-anchor-id="computing-the-ann-statistic">Computing the ANN Statistic</h2>
+<p>The observed Walmart ANN statistic can be computed as follows.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ann.p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -254,9 +252,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The observed average nearest neighbor is 13.29 km.</p>
-<section id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process" class="level3">
-<h3 class="anchored" data-anchor-id="is-our-observed-ann-value-consistent-with-a-random-process-when-controlled-for-population-distribution-inhomogeneous-process">Is our observed ANN value consistent with a random process when controlled for population distribution (inhomogeneous process)?</h3>
-<p>In our earlier analysis of the point pattern, we calculated a (pseudo) p-value of around 0.33. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
+</section>
+<section id="testing-the-ann-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="testing-the-ann-hypothesis">Testing the ANN Hypothesis</h2>
+<p>In the <a href="../Homogenous_ANN/Homogenous_ANN.html">homogenous point pattern analysis section</a>, we calculated a (pseudo) p-value of around 0.32. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects">1<sup>st</sup> order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
 <p>If we are to assume that population distribution will influence the distribution of Walmart stores, we need to rerun the ANN analysis while <strong>controlling</strong> for population distribution influence. We do this by instructing the <code>rpoint()</code> function to increase point placement probability at locations with high covariate values (i.e.&nbsp;a high population density area is more likely to receive a random point than a low density area).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n     <span class="ot">&lt;-</span> <span class="dv">1999</span></span>
@@ -288,11 +287,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span><span class="dv">1</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.001</code></pre>
+<pre><code>[1] 0.0025</code></pre>
 </div>
 </div>
 <p>Note that this is a much smaller p-value than that computed under the homogeneous scenario.</p>
-</section>
 </section>
 <section id="final-note" class="level2">
 <h2 class="anchored" data-anchor-id="final-note">Final note</h2>

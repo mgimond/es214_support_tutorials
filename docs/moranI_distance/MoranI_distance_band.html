@@ -320,12 +320,12 @@ data:  s$Income
 weights: lw  
 number of simulations + 1: 600 
 
-statistic = -0.012984, observed rank = 12, p-value = 0.98
+statistic = -0.012984, observed rank = 14, p-value = 0.9767
 alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The output differs from that shown earlier. Here, the Moran’s I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away.</p>
-<p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.98 = 0.02 (or 2 if reported as a percentage).</p>
+<p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.9766667 = 0.0233333 (or 2.3333333 if reported as a percentage).</p>
 </section>
 <section id="morans-i-as-a-function-of-multiple-distance-bands" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-multiple-distance-bands">Moran’s I as a function of multiple distance bands</h2>
