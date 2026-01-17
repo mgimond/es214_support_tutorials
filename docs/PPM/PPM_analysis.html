@@ -206,7 +206,7 @@ window.Quarto = {
   <li><a href="#testing-the-covariate-effect" id="toc-testing-the-covariate-effect" class="nav-link" data-scroll-target="#testing-the-covariate-effect">Testing the Covariate Effect</a>
   <ul class="collapse">
   <li><a href="#the-mpop-model-test" id="toc-the-mpop-model-test" class="nav-link" data-scroll-target="#the-mpop-model-test">The <code>Mpop</code> model test</a></li>
-  <li><a href="#the-minc-model-likelihood-ratio-test" id="toc-the-minc-model-likelihood-ratio-test" class="nav-link" data-scroll-target="#the-minc-model-likelihood-ratio-test">The <code>Minc</code> model likelihood ratio test</a></li>
+  <li><a href="#the-minc-model-test" id="toc-the-minc-model-test" class="nav-link" data-scroll-target="#the-minc-model-test">The <code>Minc</code> model test</a></li>
   <li><a href="#additional-guidance-on-interpreting-pvalues" id="toc-additional-guidance-on-interpreting-pvalues" class="nav-link" data-scroll-target="#additional-guidance-on-interpreting-pvalues">Additional Guidance on Interpreting p‑values</a></li>
   </ul></li>
   </ul>
@@ -464,8 +464,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>The reference distribution addresses the question <strong>“If the null model were true, how likely is it that random noise alone would produce an LRT statistic (difference-in-deviance) this large (4.2968) or larger?</strong>. The probability can be extracted from the plot or from the <code>anova()</code> output under the <code>pr</code> heading–this is the <strong>p-value</strong>. For the <code>Mpop</code> model, the p-value is <strong>0.03819</strong> or <strong>3.8%</strong>.</p>
 <p>This means that if the population density <strong>had no real effect</strong>, then a statistic as large as 4.2968 would occur only about <strong>3.8%</strong> of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.</p>
 </section>
-<section id="the-minc-model-likelihood-ratio-test" class="level3">
-<h3 class="anchored" data-anchor-id="the-minc-model-likelihood-ratio-test">The <code>Minc</code> model likelihood ratio test</h3>
+<section id="the-minc-model-test" class="level3">
+<h3 class="anchored" data-anchor-id="the-minc-model-test">The <code>Minc</code> model test</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">

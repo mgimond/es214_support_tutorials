@@ -200,7 +200,7 @@ The reference distribution addresses the question **"If the null model were true
 
 This means that if the population density **had no real effect**, then a statistic as large as 4.2968 would occur only about **3.8%** of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.
 
-### The `Minc` model likelihood ratio test
+### The `Minc` model test
 
 ```{r}
 anova(Mo, Minc, test = "LRT") # Compare null to income model
