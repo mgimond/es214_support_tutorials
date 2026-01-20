@@ -50,6 +50,15 @@ rast     <- as.im(df)
 rast.km  <- rescale.im(rast, 1000)
 ```
 
+## Generate the PPM layer
+
+The following generates the modeled PPM surface used later when simulating points
+
+```{r}
+M1 <- ppm(p.km ~ rast.km)
+M1.layer <- predict(M1, type = "trend")
+```
+
 ## Computing the ANN Statistic
 
 The observed Walmart ANN statistic can be computed as follows.
@@ -71,7 +80,7 @@ If we are to assume that population distribution will influence the distribution
 n     <- 1999
 ann.het <- vector()
 for (i in 1:n){
-  rand.p   <- rpoint(n = p.km$n, f = rast.km) 
+  rand.p   <- rpoint(n = p.km$n, f = M1.layer) 
   ann.het[i] <- mean(nndist(rand.p, k = 1))
 }
 
