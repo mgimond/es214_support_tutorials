@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Loading and visualizing data in R – ES214 R tutorials</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -72,10 +75,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-9d74862c3f69d131e70dc25078ed522c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-882166eb2819743775bb922c7315ff16.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -225,9 +228,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 <section id="launching-the-rstudio-software" class="level1">
 <h1>Launching the RStudio software</h1>
-<p>RStudio software comes in two flavors: a server based application and a desktop based application. Some of you may have already used the server based version of RStudio that you access via a web browser. In this course, we will make use of the desktop version of the software (i.e.&nbsp;an installed version of RStudio and R). Note that you can install R and RStudio on your personal computer if you want to tackle these exercises independent of the computer lab. For instructions on installing R and RStudio, see <a href="https://posit.co/download/rstudio-desktop/">here</a>.</p>
-<p>Click on the windows icon and launch RStudio.</p>
-<p><img src="img/rstudio.png" class="img-fluid" width="244"></p>
+<ul>
+<li>RStudio is available in two forms: a <strong>server-based</strong> application and a <strong>desktop</strong> based application. Some of you may have already used the server-based version of RStudio which is accessed through a web browser. In this course, we will make use of the desktop version of the software (i.e.&nbsp;an installed version of RStudio and R). Note that you can install <a href="https://cran.r-project.org/">R</a> and <a href="https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads">RStudio</a> on your personal computer if you want to tackle these exercises independent of the computer lab.</li>
+</ul>
+<p>To start RStudio on the lab computers, click in the Windows Search field and type “RStudio”. When the RStudio application appears in the list of search results, click it to launch the program.</p>
+<p><img src="img/rstudio.png" class="img-fluid" width="544"></p>
 <hr>
 </section>
 <section id="setting-up-the-r-environment" class="level1">
@@ -240,10 +245,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="option-1-command-line">Option 1: Command line</h3>
 <p>If you choose to install the packages via the command line, type the following lines of code in the console, one line at a time.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"spatstat"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"terra"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"spdep"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"spdep"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="option-2-rstudio-interface" class="level3">
@@ -251,31 +256,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you choose to install the packages via RStudio’s pull-down menu, click on the <strong>Packages &gt;&gt; Install</strong> tab and list the packages to be installed in the <em>Packages</em> field separated by commas.</p>
 <p><img src="img/image1.jpg" class="img-fluid"></p>
 <blockquote class="blockquote">
-<p>If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option.</p>
+<p>If you are given the option to either compile the packages from source or install the precompiled binaries, choose the <strong>binary installation</strong> option.</p>
 </blockquote>
 </section>
 </section>
 <section id="opening-a-new-r-script" class="level2">
 <h2 class="anchored" data-anchor-id="opening-a-new-r-script">Opening a new R script</h2>
-<p>If an empty R script file is not open in RStudio open a new one now.</p>
-<p><img src="img/image2.jpg" class="img-fluid" width="242"></p>
-<p>R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script <em>r_intro.R</em>. Make sure to save this script on a regular basis as you add/modify pieces of code.</p>
+<p>If an empty R script is not already open in RStudio, open a new one now.</p>
+<p><img src="img/image2.jpg" class="img-fluid" width="300"></p>
+<p>R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script <em>r_intro.R</em>. Be sure to save the script regularly as you add or modify code.</p>
 </section>
 <section id="setting-an-r-sessions-work-space" class="level2">
 <h2 class="anchored" data-anchor-id="setting-an-r-sessions-work-space">Setting an R session’s work space</h2>
-<p>If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session’s project folder. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the sample dataset.</p>
+<p>If you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the sample dataset.</p>
 <p><img src="img/image3.jpg" class="img-fluid" width="409"></p>
 </section>
 <section id="loading-activating-packages" class="level2">
 <h2 class="anchored" data-anchor-id="loading-activating-packages">Loading (activating) packages</h2>
-<p>Installing packages under your user profile is a one-time process, but to access the package contents in a current R session you must explicitly load its contents via the <code>library</code> function.</p>
+<p>Installing a package is typically a one-time process. However, to use the package in the current R session, you must load it with the <code>library()</code> function.</p>
 <p>In this exercise, we will load and prep the data for a point pattern analysis using the <code>spatstat</code> package. We will therefore not need to load the <code>spdep</code> package which won’t be used until we tackle spatial autocorrelation in later exercises.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Note that you might see <code>Warning</code> messages and red text in the output console when loading the above packages. This should not be a problem.</p>
+<p>You may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored.</p>
 <hr>
 </section>
 </section>
@@ -283,13 +288,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Loading GIS data into R</h1>
 <section id="loading-shapefiles" class="level2">
 <h2 class="anchored" data-anchor-id="loading-shapefiles">Loading shapefiles</h2>
-<p>Note that R will recognize vector data models stored as shapefiles, but it will <em>not</em> recognize GIS files stored in geodatabases.</p>
+<p>R can readily read shapefiles, but it does not automatically read all geodatabase formats without additional tools or packages.</p>
 <p>First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile to an object called <code>s2</code>. Note the use of the assignment operator <code>&lt;-</code> which <em>assigns</em> the output to its right to the object to its left. The name of the shapefile must end with the <code>*.shp</code> extension, but note that the function understands that the shapefile consists of <em>multiple</em> files.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `MA' from data source 
-  `C:\Users\mgimo\Documents\github\es214_support_tutorials\Getting_started_with_R\MA.shp' 
+  `C:\Users\mgimond\Documents\es214_support_tutorials\Getting_started_with_R\MA.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 4 fields
 Geometry type: MULTIPOLYGON
@@ -301,21 +306,21 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <blockquote class="blockquote">
 <p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory (see earlier step) or, you have a syntax error in the file name.</p>
 </blockquote>
-<p>R can work with spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> states layer will be used to define the study extent. This will require that it be converted to an <code>owin</code> formatted object for use with <code>spatstat</code>. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
+<p>R can work with spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> layer will be used to define the study extent. This will require that it be converted to an <code>owin</code> formatted object for use with <code>spatstat</code>. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The coordinate unit associated with the spatial object inherits the underlying coordinate system’s map units–<code>meters</code> in this example. Such small units may make it difficult to interpret the output of some operations given that some analyses may generate very small values (i.e.&nbsp;density based analyses) or very large values (i.e.&nbsp;distance based analyses). We will therefore convert the map units from meters to kilometers using the <code>rescale.owin()</code> function. Note that 1000 m = 1 km.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The second parameter in the <code>rescale.owin()</code> function, <code>1000</code>, tells R to divide the planar unit by 1000.</p>
 <p>Next we will load the Walmart stores shapefile (<code>Walmarts.shp</code>) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a <code>ppp</code> formatted point object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `Walmarts' from data source 
-  `C:\Users\mgimo\Documents\github\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
+  `C:\Users\mgimond\Documents\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 44 features and 40 fields
 Geometry type: POINT
@@ -323,30 +328,30 @@ Dimension:     XY
 Bounding box:  xmin: 640627.2 ymin: 4614803 xmax: 869353.2 ymax: 4738331
 Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s1)  <span class="co"># creates a ppp object</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s1)  <span class="co"># creates a ppp object</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>By default, R will adopt a rectangular extent for the point data.</p>
 <p><img src="img/image5.jpg" class="img-fluid" width="220"></p>
 <p>Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object.</p>
 <p><img src="img/image6.jpg" class="img-fluid" width="220"></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note the uppercase <code>W</code> in the function <code>Window()</code>!</p>
 <p>There is one more thing that we will need to do that will make the data behave with <code>spatstats</code> tools: remove the layer’s attribute information (attributes are also known as <em>marks</em> in the point pattern analysis world). The point attributes will not be needed here since our interest is in the pattern generated by the points and not by their attribute values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="loading-raster-files" class="level2">
 <h2 class="anchored" data-anchor-id="loading-raster-files">Loading Raster Files</h2>
 <p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>rast()</code> function from the <code>terra</code> package, then we’ll convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.img"</span>) <span class="co"># Load raster file</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.img"</span>) <span class="co"># Load raster file</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>) <span class="co"># Convert to XYZ data table</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)             <span class="co"># Convert XYZ table to im object</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(r, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(r, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 </section>
@@ -356,7 +361,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <p>We can plot the raster and overlay it with the point layer. Several plotting options are available including the base <code>plot</code> function which will be used in this tutorial. However, there are many R packages that will help improve the “look” of a map including <code>tmap</code> and <code>ggplot2</code>.</p>
 <p>In the following code chunk, we will plot the point data. We’ll assign a yellow fill color to the point symbol. The point symbol type is defined by the <code>pch = 21</code> parameter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"yellow"</span>, <span class="at">main =</span> <span class="st">"Walmart stores"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"yellow"</span>, <span class="at">main =</span> <span class="st">"Walmart stores"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -377,7 +382,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 <p>To plot a raster, you can use the <code>image</code> function (as well as the <code>plot</code> function). Here, we’ll adopt a built-in color scheme using the <code>hcl.colors</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -388,8 +393,8 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 <p>In the following chunk of code, we will plot both the raster and point layers. To add a “layer” to an existing map, include the <code>add = TRUE</code> parameter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -455,13 +460,14 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

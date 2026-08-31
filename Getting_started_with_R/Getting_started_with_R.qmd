@@ -20,12 +20,12 @@ R is a data analysis environment. RStudio is a desktop interface to R (sometimes
 ------------------------------------------------------------------------
 
 # Launching the RStudio software
+*
+RStudio is available in two forms: a **server-based** application and a **desktop** based application. Some of you may have already used the server-based version of RStudio which is accessed through a web browser. In this course, we will make use of the desktop version of the software (i.e. an installed version of RStudio and R). Note that you can install [R](https://cran.r-project.org/) and [RStudio](https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads) on your personal computer if you want to tackle these exercises independent of the computer lab.
 
-RStudio software comes in two flavors: a server based application and a desktop based application. Some of you may have already used the server based version of RStudio that you access via a web browser. In this course, we will make use of the desktop version of the software (i.e. an installed version of RStudio and R). Note that you can install R and RStudio on your personal computer if you want to tackle these exercises independent of the computer lab. For instructions on installing R and RStudio, see [here](https://posit.co/download/rstudio-desktop/).
+To start RStudio on the lab computers, click in the Windows Search field and type "RStudio". When the RStudio application appears in the list of search results, click it to launch the program.
 
-Click on the windows icon and launch RStudio.
-
-![](img/rstudio.png){width="244"}
+![](img/rstudio.png){width="544"}
 
 ------------------------------------------------------------------------
 
@@ -54,25 +54,25 @@ If you choose to install the packages via RStudio's pull-down menu, click on the
 
 ![](img/image1.jpg)
 
-> If you are given the option to either have R compile some of the libraries or to accept the binaries, opt for the compilation option.
+> If you are given the option to either compile the packages from source or install the precompiled binaries, choose the **binary installation** option.
 
 ## Opening a new R script
 
-If an empty R script file is not open in RStudio open a new one now.
+If an empty R script is not already open in RStudio, open a new one now.
 
-![](img/image2.jpg){width="242"}
+![](img/image2.jpg){width="300"}
 
-R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script *r_intro.R*. Make sure to save this script on a regular basis as you add/modify pieces of code.
+R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script *r_intro.R*. Be sure to save the script regularly as you add or modify code.
 
 ## Setting an R session's work space
 
-If you plan to read or write files from/to a directory, you might find it beneficial to explicitly define the R session's project folder. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the sample dataset.
+If you plan to read or write files in a specific directory, it is helpful to explicitly define the R session's working directory. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the sample dataset.
 
 ![](img/image3.jpg){width="409"}
 
 ## Loading (activating) packages
 
-Installing packages under your user profile is a one-time process, but to access the package contents in a current R session you must explicitly load its contents via the `library` function.
+Installing a package is typically a one-time process. However, to use the package in the current R session, you must load it with the `library()` function.
 
 In this exercise, we will load and prep the data for a point pattern analysis using the `spatstat` package. We will therefore not need to load the `spdep` package which won't be used until we tackle spatial autocorrelation in later exercises.
 
@@ -82,15 +82,15 @@ library(spatstat)
 library(terra)
 ```
 
-Note that you might see `Warning` messages and red text in the output console when loading the above packages. This should not be a problem.
-
+You may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored.
+ 
 ------------------------------------------------------------------------
 
 # Loading GIS data into R
 
 ## Loading shapefiles
 
-Note that R will recognize vector data models stored as shapefiles, but it will *not* recognize GIS files stored in geodatabases.
+R can readily read shapefiles, but it does not automatically read all geodatabase formats without additional tools or packages.
 
 First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile to an object called `s2`. Note the use of the assignment operator `<-` which *assigns* the output to its right to the object to its left. The name of the shapefile must end with the `*.shp` extension, but note that the function understands that the shapefile consists of *multiple* files.
 
@@ -100,7 +100,7 @@ s2 <- st_read("MA.shp")
 
 > NOTE: if you get the error message `Error: Cannot open "MA.shp"; The file doesn't seem to exist.`, then you probably did not properly set the working directory (see earlier step) or, you have a syntax error in the file name.
 
-R can work with spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` states layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
+R can work with spatial objects in different internal formats. `spatstat`'s functions require that a specific spatial format be used. The `MA` layer will be used to define the study extent. This will require that it be converted to an `owin` formatted object for use with `spatstat`. We will make use of the `as.owin` function to convert the `s2` object to an `owin` object.
 
 ```{r}
 w  <- as.owin(s2)
