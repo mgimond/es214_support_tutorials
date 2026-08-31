@@ -241,23 +241,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="morans-i-as-a-function-of-a-distance-band" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-a-distance-band">Moran’s I as a function of a distance band</h2>
-<p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest <em>if</em> its centroid (defined as a point) falls within the distance of the polygon of interest’s centroid. This will therefore require that we compute the centroid of each census tract polygon using <code>st_point_on_surface</code>. The centroids’ coordinate pairs will then be extracted using the <code>st_coordinate</code> function.</p>
+<p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as any polygon whose centroid lies within a specified distance of the centroid of the polygon of interest. This will therefore require that we compute the centroid of each census tract polygon using <code>st_point_on_surface</code>. The centroids’ coordinate pairs will then be extracted using the <code>st_coordinates</code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s.center <span class="ot">&lt;-</span> <span class="fu">st_point_on_surface</span>(s)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s.coord <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(s.center)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The object <code>s.coord</code> stores all pairs of coordinate values from the census tracts’ centroids.</p>
-<p>Next, we will define a neighbor as including all polygon centers that are within 5 km (or 5,000 map units in this example) of each polygon.</p>
+<p>Next, we will define a neighbor as any polygon whose centroid lies within 5 km (or 5,000 map units in this example) of each polygon.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s.dist  <span class="ot">&lt;-</span>  <span class="fu">dnearneigh</span>(s.coord, <span class="dv">0</span>, <span class="dv">5000</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dnearneigh(s.coord, 0, 5000): neighbour object has 138 sub-graphs</code></pre>
 </div>
 </div>
-<p>The <code>dnearneigh</code> function takes three parameters: the coordinate values <code>s.coord</code>, the radius for the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is <code>0</code> and the outer annulus radius is <code>5000</code> which implies that all polygon centers up to 5 km are considered neighbors (i.e.&nbsp;the current example creates a full circle search radius).</p>
+<p>The warning simply indicates that many polygons do not share neighbors within the specified distance band and therefore form disconnected groups.</p>
+<p>The <code>dnearneigh</code> function takes three parameters: the coordinate values <code>s.coord</code>, the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is <code>0</code> and the outer annulus radius is <code>5000</code> which implies that all polygon centers up to 5 km are considered neighbors (i.e.&nbsp;the current example creates a full circle search radius).</p>
 <p>An example of polygons (in white) falling within 5 km of one MA census tract (in dark green) is shown in the following figure:</p>
 <p><img src="img/an_0_5km.jpg" class="img-fluid" style="width:75.0%"></p>
-<p>Note that large polygons will have fewer neighbors given the increased distance between their centroids and neighboring centroids as seen in the following example:</p>
+<p>Note that large polygons may have fewer neighbors because the distances between their centroids and the centroids of adjacent polygons tend to be greater. For example:</p>
 <p><img src="img/an_0_5km_b.jpg" class="img-fluid" style="width:75.0%"></p>
 <p>As another example, if we chose to restrict the neighbors to all polygon centers between 40 km and 45 km, then we would define a search annulus (instead of a circle) as:</p>
 <div class="cell">
@@ -328,7 +329,7 @@ alternative hypothesis: greater</code></pre>
 </div>
 </div>
 <p>The output differs from that shown earlier. Here, the Moran’s I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away.</p>
-<p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.985 = 0.015 (or 1.5 if reported as a percentage).</p>
+<p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.985 = 0.015 (or 1.5% if reported as a percentage).</p>
 </section>
 <section id="morans-i-as-a-function-of-multiple-distance-bands" class="level2">
 <h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-multiple-distance-bands">Moran’s I as a function of multiple distance bands</h2>

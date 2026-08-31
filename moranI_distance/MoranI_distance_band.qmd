@@ -43,7 +43,7 @@ plot(s["Income"], nbreaks = 8, breaks = "quantile", pal = color, border = NA)
 
 ## Moran's I as a function of a distance band
 
-We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as falling within a certain distance of a polygon of interest *if* its centroid (defined as a point) falls within the distance of the polygon of interest's centroid. This will therefore require that we compute the centroid of each census tract polygon using `st_point_on_surface`. The centroids' coordinate pairs will then be extracted using the `st_coordinate` function.
+We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as any polygon whose centroid lies within a specified distance of the centroid of the polygon of interest. This will therefore require that we compute the centroid of each census tract polygon using `st_point_on_surface`. The centroids' coordinate pairs will then be extracted using the `st_coordinates` function.
 
 ```{r, warning=FALSE}
 s.center <- st_point_on_surface(s)
@@ -52,19 +52,21 @@ s.coord <- st_coordinates(s.center)
 
 The object `s.coord` stores all pairs of coordinate values from the census tracts' centroids.
 
-Next, we will define a neighbor as including all polygon centers that are within 5 km (or 5,000 map units in this example) of each polygon.
+Next, we will define a neighbor as any polygon whose centroid lies within 5 km (or 5,000 map units in this example) of each polygon.
 
 ```{r}
 s.dist  <-  dnearneigh(s.coord, 0, 5000)  
 ```
 
-The `dnearneigh` function takes three parameters: the coordinate values `s.coord`, the radius for the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is `0` and the outer annulus radius is `5000` which implies that all polygon centers up to 5 km are considered neighbors (i.e. the current example creates a full circle search radius).
+The warning simply indicates that many polygons do not share neighbors within the specified distance band and therefore form disconnected groups.
+
+The `dnearneigh` function takes three parameters: the coordinate values `s.coord`, the inner radius of the annulus band (first number in the function), and the radius for the outer annulus band (second number in the function). In our example, the inner annulus radius is `0` and the outer annulus radius is `5000` which implies that all polygon centers up to 5 km are considered neighbors (i.e. the current example creates a full circle search radius).
 
 An example of polygons (in white) falling within 5 km of one MA census tract (in dark green) is shown in the following figure:
 
 ![](img/an_0_5km.jpg){width="75%"}
 
-Note that large polygons will have fewer neighbors given the increased distance between their centroids and neighboring centroids as seen in the following example:
+Note that large polygons may have fewer neighbors because the distances between their centroids and the centroids of adjacent polygons tend to be greater. For example:
 
 ![](img/an_0_5km_b.jpg){width="75%"}
 
@@ -122,7 +124,7 @@ par(OP)
 
 The output differs from that shown earlier. Here, the Moran's I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away. 
 
-Note the high p-value! Recall that by default, the `moran.mc` function reports the fraction of simulated values that are `greater` than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e. more dispersed), we can subtract the reported value from `1` or, we can rerun the `moran.mc` function with `alternative="less"`. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - `r MI$p.value` = `r 1 - MI$p.value` (or `r (1 - MI$p.value) * 100` if reported as a percentage).
+Note the high p-value! Recall that by default, the `moran.mc` function reports the fraction of simulated values that are `greater` than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e. more dispersed), we can subtract the reported value from `1` or, we can rerun the `moran.mc` function with `alternative="less"`. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - `r MI$p.value` = `r 1 - MI$p.value` (or `r round((1 - MI$p.value) * 100,2)`% if reported as a percentage).
 
 
 ## Moran's I as a function of multiple distance bands
