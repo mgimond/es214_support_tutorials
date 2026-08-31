@@ -204,7 +204,8 @@ window.Quarto = {
   <li><a href="#loading-the-data-into-r" id="toc-loading-the-data-into-r" class="nav-link active" data-scroll-target="#loading-the-data-into-r">Loading the data into R</a></li>
   <li><a href="#modeling-the-covariate-effect" id="toc-modeling-the-covariate-effect" class="nav-link" data-scroll-target="#modeling-the-covariate-effect">Modeling the Covariate Effect</a></li>
   <li><a href="#plotting-the-competing-models" id="toc-plotting-the-competing-models" class="nav-link" data-scroll-target="#plotting-the-competing-models">Plotting the competing models</a></li>
-  <li><a href="#testing-the-covariate-effect" id="toc-testing-the-covariate-effect" class="nav-link" data-scroll-target="#testing-the-covariate-effect">Testing the Covariate Effect</a>
+  <li><a href="#mapping-the-modeled-intensity" id="toc-mapping-the-modeled-intensity" class="nav-link" data-scroll-target="#mapping-the-modeled-intensity">Mapping the modeled intensity</a></li>
+  <li><a href="#hypothesis-testing-for-covariate-effect" id="toc-hypothesis-testing-for-covariate-effect" class="nav-link" data-scroll-target="#hypothesis-testing-for-covariate-effect">Hypothesis testing for covariate effect</a>
   <ul class="collapse">
   <li><a href="#the-mpop-model-test" id="toc-the-mpop-model-test" class="nav-link" data-scroll-target="#the-mpop-model-test">The <code>Mpop</code> model test</a></li>
   <li><a href="#the-minc-model-test" id="toc-the-minc-model-test" class="nav-link" data-scroll-target="#the-minc-model-test">The <code>Minc</code> model test</a></li>
@@ -414,10 +415,39 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <p>Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
 <p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
 <p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
+</section>
+<section id="mapping-the-modeled-intensity" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-the-modeled-intensity">Mapping the modeled intensity</h2>
+<p>Of interest in a subsequent tutorial will be the modeled intensity of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the <code>predict()</code> function. For example, to create a raster of the modeled intensity <code>Mpop</code>, type:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Mpop.trend <span class="ot">&lt;-</span> <span class="fu">predict</span>(Mpop, <span class="at">type =</span> <span class="st">"trend"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To plot the raster, type:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the values for display puropses by setting <code>log = TRUE</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
-<section id="testing-the-covariate-effect" class="level2">
-<h2 class="anchored" data-anchor-id="testing-the-covariate-effect">Testing the Covariate Effect</h2>
+<section id="hypothesis-testing-for-covariate-effect" class="level2">
+<h2 class="anchored" data-anchor-id="hypothesis-testing-for-covariate-effect">Hypothesis testing for covariate effect</h2>
 <p>To formally assess whether the covariate-based model provides a significantly better fit than the null model, we need a way to reduce that comparison to a single number. That number is called the <strong>likelihood‑ratio test (LRT) statistic</strong>.</p>
 <ul>
 <li>A model that fits the data better gives a <strong>higher likelihood</strong> for the observed pattern.</li>
@@ -432,7 +462,7 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <h3 class="anchored" data-anchor-id="the-mpop-model-test">The <code>Mpop</code> model test</h3>
 <p>We’ll first apply a LRT test for the <code>Mpop</code> model.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Values of the covariate 'pop.km' were NA or undefined at 3.4% (17 out
 of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
@@ -459,7 +489,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -470,7 +500,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="the-minc-model-test" class="level3">
 <h3 class="anchored" data-anchor-id="the-minc-model-test">The <code>Minc</code> model test</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
 of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,

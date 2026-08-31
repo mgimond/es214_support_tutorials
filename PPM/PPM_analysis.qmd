@@ -148,9 +148,30 @@ The grey envelopes encompass the 95% confidence interval; i.e. the true estimate
 
 To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.
 
+## Mapping the modeled intensity
+
+Of interest in a subsequent tutorial will be the modeled intensity of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the `predict()` function. For example, to create a raster of the modeled intensity `Mpop`, type:
+
+```{r}
+Mpop.trend <- predict(Mpop, type = "trend")
+```
+
+To plot the raster, type:
+
+```{r}
+plot(Mpop.trend, col = hcl.colors(50, rev=TRUE))
+```
+
+Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the values for display puropses by setting `log = TRUE`.
+
+```{r}
+plot(Mpop.trend, col = hcl.colors(50, rev=TRUE), log = TRUE)
+```
+
+
 ----------------
 
-## Testing the Covariate Effect
+## Hypothesis testing for covariate effect
 
 To formally assess whether the covariate-based model provides a significantly better fit than the null model, we need a way to reduce that comparison to a single number. That number is called the **likelihood‑ratio test (LRT)  statistic**. 
 
