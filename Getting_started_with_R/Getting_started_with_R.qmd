@@ -60,7 +60,7 @@ If you choose to install the packages via RStudio's pull-down menu, click on the
 
 If an empty R script is not already open in RStudio, open a new one now.
 
-![](img/image2.jpg){width="300"}
+![](img/image2.jpg)
 
 R scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script *r_intro.R*. Be sure to save the script regularly as you add or modify code.
 
