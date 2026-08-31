@@ -64,7 +64,8 @@ If an empty R script is not already open in RStudio, open a new one now.
 
 R scripts are usually saved using the **.R** extension. For this tutorial, you may choose to name the script **r_intro.R**. Be sure to save the script regularly as you add or modify code.
 
-![](img/image4.jpg)
+![](img/image4.jpg) 
+
 ## Setting an R session's work space
 
 If you plan to read or write files in a specific directory, it is helpful to explicitly define the R session's working directory. To set a session's working directory, go to **Session \>\> Set Working Directory \>\> Choose Directory**. In this example, you will want to set the working directory to the folder that houses the sample dataset.

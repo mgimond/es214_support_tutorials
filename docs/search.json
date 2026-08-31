@@ -109,7 +109,14 @@
     "href": "Getting_started_with_R/Getting_started_with_R.html#opening-a-new-r-script",
     "title": "Loading and visualizing data in R",
     "section": "Opening a new R script",
-    "text": "Opening a new R script\nIf an empty R script is not already open in RStudio, open a new one now.\n\nR scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script r_intro.R. Be sure to save the script regularly as you add or modify code.\n ## Setting an R session’s work space\nIf you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory. In this example, you will want to set the working directory to the folder that houses the sample dataset."
+    "text": "Opening a new R script\nIf an empty R script is not already open in RStudio, open a new one now.\n\nR scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script r_intro.R. Be sure to save the script regularly as you add or modify code."
+  },
+  {
+    "objectID": "Getting_started_with_R/Getting_started_with_R.html#setting-an-r-sessions-work-space",
+    "href": "Getting_started_with_R/Getting_started_with_R.html#setting-an-r-sessions-work-space",
+    "title": "Loading and visualizing data in R",
+    "section": "Setting an R session’s work space",
+    "text": "Setting an R session’s work space\nIf you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory. In this example, you will want to set the working directory to the folder that houses the sample dataset."
   },
   {
     "objectID": "Getting_started_with_R/Getting_started_with_R.html#loading-activating-packages",
