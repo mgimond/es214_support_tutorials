@@ -109,21 +109,14 @@
     "href": "Getting_started_with_R/Getting_started_with_R.html#opening-a-new-r-script",
     "title": "Loading and visualizing data in R",
     "section": "Opening a new R script",
-    "text": "Opening a new R script\nIf an empty R script is not already open in RStudio, open a new one now.\n\nR scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script r_intro.R. Be sure to save the script regularly as you add or modify code."
-  },
-  {
-    "objectID": "Getting_started_with_R/Getting_started_with_R.html#setting-an-r-sessions-work-space",
-    "href": "Getting_started_with_R/Getting_started_with_R.html#setting-an-r-sessions-work-space",
-    "title": "Loading and visualizing data in R",
-    "section": "Setting an R session’s work space",
-    "text": "Setting an R session’s work space\nIf you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory. In this example, you will want to set the working directory to the folder that houses the sample dataset."
+    "text": "Opening a new R script\nIf an empty R script is not already open in RStudio, open a new one now.\n\nR scripts are usually saved using the .R extension. For this tutorial, you may choose to name the script r_intro.R. Be sure to save the script regularly as you add or modify code.\n ## Setting an R session’s work space\nIf you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory. In this example, you will want to set the working directory to the folder that houses the sample dataset."
   },
   {
     "objectID": "Getting_started_with_R/Getting_started_with_R.html#loading-activating-packages",
     "href": "Getting_started_with_R/Getting_started_with_R.html#loading-activating-packages",
     "title": "Loading and visualizing data in R",
     "section": "Loading (activating) packages",
-    "text": "Loading (activating) packages\nInstalling a package is typically a one-time process. However, to use the package in the current R session, you must load it with the library() function.\nIn this exercise, we will load and prep the data for a point pattern analysis using the spatstat package. We will therefore not need to load the spdep package which won’t be used until we tackle spatial autocorrelation in later exercises.\n\nlibrary(sf)\nlibrary(spatstat)\nlibrary(terra)\n\nYou may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored."
+    "text": "Loading (activating) packages\nInstalling a package is typically a one-time process. However, to use the package in the current R session, you must load it with the library() function.\nIn this exercise, we will load and prep the data for a point pattern analysis using the spatstat package. We will therefore not need to load the spdep package which won’t be used until we tackle spatial autocorrelation in later exercises.\nType the following in the script:\n\nlibrary(sf)\nlibrary(spatstat)\nlibrary(terra)\n\n\nRunning commands from an R script\nWhen you type commands in an R script, the code is not executed automatically. To run a command, place the cursor anywhere on the line and press Ctrl+Enter (Windows) or Cmd+Return (Mac). RStudio will send that line of code to the Console and execute it.\nAlternatively, you can click the Run button at the top of the script window to execute the current line or selected lines.\nPlace the cursor on the first line and press Ctrl+Enter. Repeat for the remaining lines. The result of the execution will appear in the Console pane.\nYou can also highlight multiple lines of code and press Ctrl+Enter to execute all selected lines at once.\n\nNOTE: You may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored."
   },
   {
     "objectID": "Getting_started_with_R/Getting_started_with_R.html#loading-shapefiles",

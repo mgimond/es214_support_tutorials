@@ -181,8 +181,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#option-2-rstudio-interface" id="toc-option-2-rstudio-interface" class="nav-link" data-scroll-target="#option-2-rstudio-interface">Option 2: RStudio interface</a></li>
   </ul></li>
   <li><a href="#opening-a-new-r-script" id="toc-opening-a-new-r-script" class="nav-link" data-scroll-target="#opening-a-new-r-script">Opening a new R script</a></li>
-  <li><a href="#setting-an-r-sessions-work-space" id="toc-setting-an-r-sessions-work-space" class="nav-link" data-scroll-target="#setting-an-r-sessions-work-space">Setting an R session’s work space</a></li>
-  <li><a href="#loading-activating-packages" id="toc-loading-activating-packages" class="nav-link" data-scroll-target="#loading-activating-packages">Loading (activating) packages</a></li>
+  <li><a href="#loading-activating-packages" id="toc-loading-activating-packages" class="nav-link" data-scroll-target="#loading-activating-packages">Loading (activating) packages</a>
+  <ul class="collapse">
+  <li><a href="#running-commands-from-an-r-script" id="toc-running-commands-from-an-r-script" class="nav-link" data-scroll-target="#running-commands-from-an-r-script">Running commands from an R script</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#loading-gis-data-into-r" id="toc-loading-gis-data-into-r" class="nav-link" data-scroll-target="#loading-gis-data-into-r">Loading GIS data into R</a>
   <ul class="collapse">
@@ -265,10 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If an empty R script is not already open in RStudio, open a new one now.</p>
 <p><img src="img/image2.jpg" class="img-fluid"></p>
 <p>R scripts are usually saved using the <strong>.R</strong> extension. For this tutorial, you may choose to name the script <strong>r_intro.R</strong>. Be sure to save the script regularly as you add or modify code.</p>
-<p><img src="img/image4.jpg" class="img-fluid"></p>
-</section>
-<section id="setting-an-r-sessions-work-space" class="level2">
-<h2 class="anchored" data-anchor-id="setting-an-r-sessions-work-space">Setting an R session’s work space</h2>
+<p><img src="img/image4.jpg" class="img-fluid"> ## Setting an R session’s work space</p>
 <p>If you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the sample dataset.</p>
 <p><img src="img/image3.jpg" class="img-fluid" width="409"></p>
 </section>
@@ -276,13 +275,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="loading-activating-packages">Loading (activating) packages</h2>
 <p>Installing a package is typically a one-time process. However, to use the package in the current R session, you must load it with the <code>library()</code> function.</p>
 <p>In this exercise, we will load and prep the data for a point pattern analysis using the <code>spatstat</code> package. We will therefore not need to load the <code>spdep</code> package which won’t be used until we tackle spatial autocorrelation in later exercises.</p>
+<p>Type the following in the script:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored.</p>
+<section id="running-commands-from-an-r-script" class="level3">
+<h3 class="anchored" data-anchor-id="running-commands-from-an-r-script">Running commands from an R script</h3>
+<p>When you type commands in an R script, the code is not executed automatically. To run a command, place the cursor anywhere on the line and press <strong>Ctrl+Enter</strong> (Windows) or <strong>Cmd+Return</strong> (Mac). RStudio will send that line of code to the <em>Console</em> and execute it.</p>
+<p>Alternatively, you can click the <strong>Run</strong> button at the top of the script window to execute the current line or selected lines.</p>
+<p>Place the cursor on the first line and press <strong>Ctrl+Enter</strong>. Repeat for the remaining lines. The result of the execution will appear in the <em>Console</em> pane.</p>
+<p>You can also highlight multiple lines of code and press <strong>Ctrl+Enter</strong> to execute all selected lines at once.</p>
+<blockquote class="blockquote">
+<p>NOTE: You may see warning messages and red text in the Console when loading these packages. In most cases, these messages can be safely ignored.</p>
+</blockquote>
 <hr>
+</section>
 </section>
 </section>
 <section id="loading-gis-data-into-r" class="level1">
