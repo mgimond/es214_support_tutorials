@@ -8,7 +8,7 @@
 
 <meta name="author" content="Manny Gimond">
 
-<title>PPM: Exploring 1st order effects – ES214 R tutorials</title>
+<title>PPM: Exploring First-Order effects – ES214 R tutorials</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -220,7 +220,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">PPM: Exploring 1<sup>st</sup> order effects</h1>
+<h1 class="title">PPM: Exploring First-Order effects</h1>
 </div>
 
 
@@ -252,7 +252,7 @@ window.Quarto = {
 <hr>
 <section id="loading-the-data-into-r" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data-into-r">Loading the data into R</h2>
-<p>First, we’ll load the point pattern dataset, then we’ll load two different raster datasets that will represent two separate 1<sup>st</sup> order effects we suspect may help explain the distribution of stores within the study extent.</p>
+<p>First, we’ll load the point pattern dataset. Next, we’ll load two raster datasets that represent separate <strong>first-order effects</strong> that may help explain the distribution of stores within the study extent.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
@@ -283,8 +283,8 @@ window.Quarto = {
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>inc      <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>inc.km   <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(inc, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Note that later in the script, we will make use of the <code>effectfun()</code> that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing <code>typeof(inc.km[])</code>, for example. If it’s not stored as a double, you can force it to a double using the <code>as.double()</code> function (e.g.&nbsp;<code>inc[] &lt;- as.double(inc[])</code>).</p>
-<p>Let’s plot each raster with the Walmart point overlay. We’ll use <code>R</code>’s base plotting environment.</p>
+<p>Later in the script, we will use the <code>effectfun()</code> function, which requires the raster values to be stored as the double data type. You can tell if your raster is stored as a double by typing <code>typeof(inc.km[])</code>, for example. If it’s not stored as a double, you can force it to a double using the <code>as.double()</code> function (e.g.&nbsp;<code>inc[] &lt;- as.double(inc[])</code>).</p>
+<p>Let’s plot each raster with the Walmart locations overlaid. We’ll use <code>R</code>’s base plotting environment.</p>
 <div class="cell" data-small.mar="true">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pop.km, <span class="at">ribside=</span><span class="st">"bottom"</span>, <span class="at">main=</span><span class="st">"Population"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="fl">0.5</span>), <span class="at">add=</span><span class="cn">TRUE</span>)</span>
@@ -302,8 +302,8 @@ window.Quarto = {
 </section>
 <section id="modeling-the-covariate-effect" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-the-covariate-effect">Modeling the Covariate Effect</h2>
-<p>We will first develop two different models that we think might define the Walmart’s point intensity. Recall that <em>intensity</em> is a property of the underlying “process” (one being defined by the distribution of population density and the other being defined by the distribution of income)–this differs from <em>density</em> which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be <strong>alternate</strong> models that we’ll denote as <code>Mpop</code> and <code>Minc</code> in the script. The models’ structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.</p>
-<p>We’ll also create the null model, <code>Mo</code>, which will assume a <strong>spatially uniform</strong> (homogeneous) covariate. In other words, <code>Mo</code> will define the model where the intensity of the process is assumed to be the same across the entire study extent.</p>
+<p>We will first develop two models that may explain the spatial intensity of Walmart locations. Recall that <em>intensity</em> is a property of the underlying process. One model is defined by population density, and the other is defined by income. This differs from <em>density</em>, which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be <strong>alternate</strong> models that we’ll denote as <code>Mpop</code> and <code>Minc</code> in the script. The models’ structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.</p>
+<p>We’ll also create the null model, <code>Mo</code>, which will assume a <strong>spatially uniform</strong> (homogeneous) covariate. In other words, <code>Mo</code> represents a model in which the process intensity is assumed to be constant across the entire study extent.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Mpop <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> pop.km) <span class="co"># Population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -343,10 +343,10 @@ Problem:
 of the quadrature points</code></pre>
 </div>
 </div>
-<p>The values of interest are the <strong>intercept</strong> (whose value is around <code>-6.3</code>) and the <strong>coefficient</strong> <code>pop.km</code> (whose value is around <code>0.0001</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
+<p>The parameters of interest are the <strong>intercept</strong> (approximately <code>-6.3</code>) and the <strong>coefficient</strong> for <code>pop.km</code> (approximately <code>0.0001</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
 <p><span class="math display">\[
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
-\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. So for every unit increase of the population density (i.e.&nbsp;one person per square mile), there is an increase in Walmart intensity by a factor of <span class="math inline">\(e^{0.0001}\)</span> stores per square kilometer.</p>
+\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. Thus, for every one-unit increase in population density (one person per square mile), the expected Walmart intensity is multiplied by a factor of <span class="math inline">\(e^{0.0001}\)</span>.</p>
 <p>Likewise, we can extract the parameters from the <code>Minc</code> model and construct its equation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

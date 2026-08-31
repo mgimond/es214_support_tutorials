@@ -1,5 +1,5 @@
 ---
-title: 'PPM: Exploring 1^st^ order effects'
+title: 'PPM: Exploring First-Order effects'
 author: "Manny Gimond"
 output:
   html_document:
@@ -27,7 +27,7 @@ knitr::knit_hooks$set(small.mar = function(before, options, envir) {
 
 ## Loading the data into R
 
-First, we'll load the point pattern dataset, then we'll load two different raster datasets that will represent two separate 1^st^  order effects we suspect may help explain the distribution of stores within the study extent.
+First, we'll load the point pattern dataset. Next, we'll load two raster datasets that represent separate **first-order effects** that may help explain the distribution of stores within the study extent.
 
 ```{r results='hide', warning=FALSE, message=FALSE}
 # Load packages
@@ -60,9 +60,9 @@ inc      <- as.im(df)
 inc.km   <- rescale.im(inc, 1000)
 ```
 
-Note that later in the script, we will make use of the `effectfun()` that requires that the raster layer be stored as a double data type. You can tell if your raster is stored as a double by typing `typeof(inc.km[])`, for example. If it's not stored as a double, you can force it to a double using the `as.double()` function (e.g. `inc[] <- as.double(inc[])`). 
+Later in the script, we will use the `effectfun()` function, which requires the raster values to be stored as the double data type. You can tell if your raster is stored as a double by typing `typeof(inc.km[])`, for example. If it's not stored as a double, you can force it to a double using the `as.double()` function (e.g. `inc[] <- as.double(inc[])`). 
 
-Let's plot each raster with the Walmart point overlay. We'll use `R`'s base plotting environment.
+Let's plot each raster with the Walmart locations overlaid. We'll use `R`'s base plotting environment.
 
 ```{r fig.height=3, small.mar = TRUE, fig.show='hold', echo = 2:7}
 OP <- par(mfrow = c(1,2), mar=c(2,0,2,0)) # This creates a two-pane plotting window
@@ -78,9 +78,9 @@ par(OP)
 
 ## Modeling the Covariate Effect
 
-We will first develop two different models that we think might define the Walmart's point intensity. Recall that *intensity* is a property of the underlying "process" (one being defined by the distribution of population density and the other being defined by the distribution of income)--this differs from *density* which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
+We will first develop two models that may explain the spatial intensity of Walmart locations. Recall that *intensity* is a property of the underlying process. One model is defined by population density, and the other is defined by income. This differs from *density*, which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be  **alternate** models that we'll denote as `Mpop` and `Minc` in the script. The models' structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.
 
-We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` will define the model where the intensity of the process is assumed to be the same across the entire study extent.
+We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` represents a model in which the process intensity is assumed to be constant across the entire study extent.
 
 ```{r}
 Mpop <- ppm(p.km ~ pop.km) # Population model
@@ -94,11 +94,11 @@ Let's explore the model parameters. First, we'll look at `Mpop`.
 Mpop
 ```
 
-The values of interest are the **intercept** (whose value is around `-6.3`) and the **coefficient** `pop.km` (whose value is around `0.0001`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
+The parameters of interest are the **intercept** (approximately `-6.3`) and the **coefficient** for `pop.km` (approximately `0.0001`). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):
 
 $$
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
-$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−6.3}$ which is very close to `0`. So for every unit increase of the population density (i.e. one person per square mile), there is an increase in Walmart intensity by a factor of $e^{0.0001}$ stores per square kilometer.
+$$ The above equation can be interpreted as follows: if the population density is `0`, then the Walmart intensity is $e^{−6.3}$ which is very close to `0`. Thus, for every one-unit increase in population density (one person per square mile), the expected Walmart intensity is multiplied by a factor of $e^{0.0001}$.
 
 Likewise, we can extract the parameters from the `Minc` model and construct its equation.
 
