@@ -202,10 +202,8 @@ window.Quarto = {
    
   <ul>
   <li><a href="#loading-the-data-into-r" id="toc-loading-the-data-into-r" class="nav-link active" data-scroll-target="#loading-the-data-into-r">Loading the data into R</a></li>
-  <li><a href="#modeling-the-covariate-effect" id="toc-modeling-the-covariate-effect" class="nav-link" data-scroll-target="#modeling-the-covariate-effect">Modeling the Covariate Effect</a>
-  <ul class="collapse">
+  <li><a href="#modeling-the-covariate-effect" id="toc-modeling-the-covariate-effect" class="nav-link" data-scroll-target="#modeling-the-covariate-effect">Modeling the Covariate Effect</a></li>
   <li><a href="#plotting-the-competing-models" id="toc-plotting-the-competing-models" class="nav-link" data-scroll-target="#plotting-the-competing-models">Plotting the competing models</a></li>
-  </ul></li>
   <li><a href="#testing-the-covariate-effect" id="toc-testing-the-covariate-effect" class="nav-link" data-scroll-target="#testing-the-covariate-effect">Testing the Covariate Effect</a>
   <ul class="collapse">
   <li><a href="#the-mpop-model-test" id="toc-the-mpop-model-test" class="nav-link" data-scroll-target="#the-mpop-model-test">The <code>Mpop</code> model test</a></li>
@@ -343,10 +341,11 @@ Problem:
 of the quadrature points</code></pre>
 </div>
 </div>
-<p>The parameters of interest are the <strong>intercept</strong> (approximately <code>-6.3</code>) and the <strong>coefficient</strong> for <code>pop.km</code> (approximately <code>0.0001</code>). Using these values, we can construct the mathematical relationship (noting that we are using the population raster and not the original population raster values):</p>
+<p>The parameters of interest are the <strong>intercept</strong> (approximately <code>-6.3</code>) and the <strong>coefficient</strong> for <code>pop.km</code> (approximately <code>0.0001</code>). Using these values, we can construct the mathematical relationship:</p>
 <p><span class="math display">\[
 Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
-\]</span> The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. Thus, for every one-unit increase in population density (one person per square mile), the expected Walmart intensity is multiplied by a factor of <span class="math inline">\(e^{0.0001}\)</span>.</p>
+\]</span></p>
+<p>The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart point process intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. Thus, for every one-unit increase in population density (one person per square mile), the expected Walmart intensity is multiplied by a factor of <span class="math inline">\(e^{0.0001}\)</span>.</p>
 <p>Likewise, we can extract the parameters from the <code>Minc</code> model and construct its equation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -390,8 +389,10 @@ log(lambda) -6.172361 0.1507557 -6.467836 -5.876885   *** -40.94281</code></pre>
 Walmart\ intensity(i) = e^{−6.17} = 0.00209
 \]</span></p>
 <p>which is nothing more than the number of stores per unit area (44 stores / 21,000km<sup>2</sup> = 0.00209).</p>
-<section id="plotting-the-competing-models" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-the-competing-models">Plotting the competing models</h3>
+</section>
+<section id="plotting-the-competing-models" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-the-competing-models">Plotting the competing models</h2>
+<p>Next, we will plot the relationship between modeled intensity and the covariates.</p>
 <div class="cell" data-small.mar="true">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))  <span class="co"># This creates a two-pane plotting window</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -414,7 +415,6 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
 <p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
 <hr>
-</section>
 </section>
 <section id="testing-the-covariate-effect" class="level2">
 <h2 class="anchored" data-anchor-id="testing-the-covariate-effect">Testing the Covariate Effect</h2>
