@@ -25,3 +25,20 @@ h4, h4~p, h5 {
 .divh3{
   margin-left: 30px !important; 
 }
+
+/* Console output */
+.cell-output pre {
+  color: #787878;
+  border: 1px solid #bdbdbd;
+  background-color: #f7f7f7;
+  padding: 0.75em;
+  border-radius: 4px;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
+/* Optional: thin left accent bar */
+.cell-output {
+  border-left: 4px solid #989898;
+  padding-left: 0.5em;
+}
