@@ -8,10 +8,10 @@ title: "ES214 R Tutorials"
 
 ## Point pattern analysis
 
-### 1^st^ order analysis
+### First order analysis
 - [Poisson point process model](PPM/PPM_analysis.html)
 
-### 2^nd^ order analysis
+### Second order analysis
 - [ANN Hypothesis Testing: homogeneous case](Homogenous_ANN/Homogenous_ANN.html)
 - [ANN Hypothesis Testing: inhomogeneous case](Inhomogenous_ANN/Inhomogenous_ANN.html)
 

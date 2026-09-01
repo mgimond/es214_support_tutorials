@@ -172,27 +172,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#launching-the-rstudio-software" id="toc-launching-the-rstudio-software" class="nav-link active" data-scroll-target="#launching-the-rstudio-software">Launching the RStudio software</a></li>
-  <li><a href="#setting-up-the-r-environment" id="toc-setting-up-the-r-environment" class="nav-link" data-scroll-target="#setting-up-the-r-environment">Setting up the R environment</a>
+  <li><a href="#launching-the-rstudio-software" id="toc-launching-the-rstudio-software" class="nav-link active" data-scroll-target="#launching-the-rstudio-software"><span class="header-section-number">1</span> Launching the RStudio software</a></li>
+  <li><a href="#setting-up-the-r-environment" id="toc-setting-up-the-r-environment" class="nav-link" data-scroll-target="#setting-up-the-r-environment"><span class="header-section-number">2</span> Setting up the R environment</a>
   <ul class="collapse">
-  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages">Installing packages</a>
+  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages"><span class="header-section-number">2.1</span> Installing packages</a>
   <ul class="collapse">
-  <li><a href="#option-1-command-line" id="toc-option-1-command-line" class="nav-link" data-scroll-target="#option-1-command-line">Option 1: Command line</a></li>
-  <li><a href="#option-2-rstudio-interface" id="toc-option-2-rstudio-interface" class="nav-link" data-scroll-target="#option-2-rstudio-interface">Option 2: RStudio interface</a></li>
+  <li><a href="#option-1-command-line" id="toc-option-1-command-line" class="nav-link" data-scroll-target="#option-1-command-line"><span class="header-section-number">2.1.1</span> Option 1: Command line</a></li>
+  <li><a href="#option-2-rstudio-interface" id="toc-option-2-rstudio-interface" class="nav-link" data-scroll-target="#option-2-rstudio-interface"><span class="header-section-number">2.1.2</span> Option 2: RStudio interface</a></li>
   </ul></li>
-  <li><a href="#opening-a-new-r-script" id="toc-opening-a-new-r-script" class="nav-link" data-scroll-target="#opening-a-new-r-script">Opening a new R script</a></li>
-  <li><a href="#setting-an-r-sessions-work-space" id="toc-setting-an-r-sessions-work-space" class="nav-link" data-scroll-target="#setting-an-r-sessions-work-space">Setting an R session’s work space</a></li>
-  <li><a href="#loading-activating-packages" id="toc-loading-activating-packages" class="nav-link" data-scroll-target="#loading-activating-packages">Loading (activating) packages</a>
+  <li><a href="#opening-a-new-r-script" id="toc-opening-a-new-r-script" class="nav-link" data-scroll-target="#opening-a-new-r-script"><span class="header-section-number">2.2</span> Opening a new R script</a></li>
+  <li><a href="#setting-an-r-sessions-work-space" id="toc-setting-an-r-sessions-work-space" class="nav-link" data-scroll-target="#setting-an-r-sessions-work-space"><span class="header-section-number">2.3</span> Setting an R session’s work space</a></li>
+  <li><a href="#loading-activating-packages" id="toc-loading-activating-packages" class="nav-link" data-scroll-target="#loading-activating-packages"><span class="header-section-number">2.4</span> Loading (activating) packages</a>
   <ul class="collapse">
-  <li><a href="#running-commands-from-an-r-script" id="toc-running-commands-from-an-r-script" class="nav-link" data-scroll-target="#running-commands-from-an-r-script">Running commands from an R script</a></li>
+  <li><a href="#running-commands-from-an-r-script" id="toc-running-commands-from-an-r-script" class="nav-link" data-scroll-target="#running-commands-from-an-r-script"><span class="header-section-number">2.4.1</span> Running commands from an R script</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#loading-gis-data-into-r" id="toc-loading-gis-data-into-r" class="nav-link" data-scroll-target="#loading-gis-data-into-r">Loading GIS data into R</a>
+  <li><a href="#loading-gis-data-into-r" id="toc-loading-gis-data-into-r" class="nav-link" data-scroll-target="#loading-gis-data-into-r"><span class="header-section-number">3</span> Loading GIS data into R</a>
   <ul class="collapse">
-  <li><a href="#loading-shapefiles" id="toc-loading-shapefiles" class="nav-link" data-scroll-target="#loading-shapefiles">Loading shapefiles</a></li>
-  <li><a href="#loading-raster-files" id="toc-loading-raster-files" class="nav-link" data-scroll-target="#loading-raster-files">Loading Raster Files</a></li>
+  <li><a href="#loading-shapefiles" id="toc-loading-shapefiles" class="nav-link" data-scroll-target="#loading-shapefiles"><span class="header-section-number">3.1</span> Loading shapefiles</a></li>
+  <li><a href="#loading-raster-files" id="toc-loading-raster-files" class="nav-link" data-scroll-target="#loading-raster-files"><span class="header-section-number">3.2</span> Loading Raster Files</a></li>
   </ul></li>
-  <li><a href="#visualizing-spatial-objects" id="toc-visualizing-spatial-objects" class="nav-link" data-scroll-target="#visualizing-spatial-objects">Visualizing Spatial Objects</a></li>
+  <li><a href="#visualizing-spatial-objects" id="toc-visualizing-spatial-objects" class="nav-link" data-scroll-target="#visualizing-spatial-objects"><span class="header-section-number">4</span> Visualizing Spatial Objects</a></li>
   </ul>
 </nav>
     </div>
@@ -229,8 +229,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 <p>R is a data analysis environment. RStudio is a desktop interface to R (sometimes referred to as an integrated development environment-or IDE for short). Unlike most desktop environments you have been exposed to so far, R does not take instructions from a point-and-click environment, its instructions are provided by simple lines of text.</p>
 <hr>
-<section id="launching-the-rstudio-software" class="level1">
-<h1>Launching the RStudio software</h1>
+<section id="launching-the-rstudio-software" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Launching the RStudio software</h1>
 <ul>
 <li>RStudio is available in two forms: a <strong>server-based</strong> application and a <strong>desktop</strong> based application. Some of you may have already used the server-based version of RStudio which is accessed through a web browser. In this course, we will make use of the desktop version of the software (i.e.&nbsp;an installed version of RStudio and R). Note that you can install <a href="https://cran.r-project.org/">R</a> and <a href="https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads">RStudio</a> on your personal computer if you want to tackle these exercises independent of the computer lab.</li>
 </ul>
@@ -238,14 +238,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="img/rstudio.png" class="img-fluid" width="544"></p>
 <hr>
 </section>
-<section id="setting-up-the-r-environment" class="level1">
-<h1>Setting up the R environment</h1>
-<section id="installing-packages" class="level2">
-<h2 class="anchored" data-anchor-id="installing-packages">Installing packages</h2>
+<section id="setting-up-the-r-environment" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Setting up the R environment</h1>
+<section id="installing-packages" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="installing-packages"><span class="header-section-number">2.1</span> Installing packages</h2>
 <p>This course will make use of four packages: <code>sf</code> which is used to load, manipulate and visualize vector files; <code>terra</code> which is used to load, manipulate and visualize raster files; <code>spatstat</code> which will be used for point pattern analysis; <code>spdep</code> which will be used to analyze spatial autocorrelation in the data.</p>
 <p>You can install packages in one of two ways: via command line or via the RStudio interface.</p>
-<section id="option-1-command-line" class="level3">
-<h3 class="anchored" data-anchor-id="option-1-command-line">Option 1: Command line</h3>
+<section id="option-1-command-line" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="option-1-command-line"><span class="header-section-number">2.1.1</span> Option 1: Command line</h3>
 <p>If you choose to install the packages via the command line, type the following lines of code in the console, one line at a time.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
@@ -254,8 +254,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"spdep"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="option-2-rstudio-interface" class="level3">
-<h3 class="anchored" data-anchor-id="option-2-rstudio-interface">Option 2: RStudio interface</h3>
+<section id="option-2-rstudio-interface" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="option-2-rstudio-interface"><span class="header-section-number">2.1.2</span> Option 2: RStudio interface</h3>
 <p>If you choose to install the packages via RStudio’s pull-down menu, click on the <strong>Packages &gt;&gt; Install</strong> tab and list the packages to be installed in the <em>Packages</em> field separated by commas.</p>
 <p><img src="img/image1.jpg" class="img-fluid"></p>
 <blockquote class="blockquote">
@@ -263,20 +263,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 </section>
 </section>
-<section id="opening-a-new-r-script" class="level2">
-<h2 class="anchored" data-anchor-id="opening-a-new-r-script">Opening a new R script</h2>
+<section id="opening-a-new-r-script" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="opening-a-new-r-script"><span class="header-section-number">2.2</span> Opening a new R script</h2>
 <p>If an empty R script is not already open in RStudio, open a new one now.</p>
 <p><img src="img/image2.jpg" class="img-fluid"></p>
 <p>R scripts are usually saved using the <strong>.R</strong> extension. For this tutorial, you may choose to name the script <strong>r_intro.R</strong>. Be sure to save the script regularly as you add or modify code.</p>
 <p><img src="img/image4.jpg" class="img-fluid"></p>
 </section>
-<section id="setting-an-r-sessions-work-space" class="level2">
-<h2 class="anchored" data-anchor-id="setting-an-r-sessions-work-space">Setting an R session’s work space</h2>
+<section id="setting-an-r-sessions-work-space" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="setting-an-r-sessions-work-space"><span class="header-section-number">2.3</span> Setting an R session’s work space</h2>
 <p>If you plan to read or write files in a specific directory, it is helpful to explicitly define the R session’s working directory. To set a session’s working directory, go to <strong>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</strong>. In this example, you will want to set the working directory to the folder that houses the sample dataset.</p>
 <p><img src="img/image3.jpg" class="img-fluid" width="409"></p>
 </section>
-<section id="loading-activating-packages" class="level2">
-<h2 class="anchored" data-anchor-id="loading-activating-packages">Loading (activating) packages</h2>
+<section id="loading-activating-packages" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="loading-activating-packages"><span class="header-section-number">2.4</span> Loading (activating) packages</h2>
 <p>Installing a package is typically a one-time process. However, to use the package in the current R session, you must load it with the <code>library()</code> function.</p>
 <p>In this exercise, we will load and prep the data for a point pattern analysis using the <code>spatstat</code> package. We will therefore not need to load the <code>spdep</code> package which won’t be used until we tackle spatial autocorrelation in later exercises.</p>
 <p>Type the following in the script:</p>
@@ -285,8 +285,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="running-commands-from-an-r-script" class="level3">
-<h3 class="anchored" data-anchor-id="running-commands-from-an-r-script">Running commands from an R script</h3>
+<section id="running-commands-from-an-r-script" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="running-commands-from-an-r-script"><span class="header-section-number">2.4.1</span> Running commands from an R script</h3>
 <p>When you type commands in an R script, the code is not executed automatically. To run a command, place the cursor anywhere on the line and press <strong>Ctrl+Enter</strong> (Windows) or <strong>Cmd+Return</strong> (Mac). RStudio will send that line of code to the <em>Console</em> and execute it.</p>
 <p>Alternatively, you can click the <strong>Run</strong> button at the top of the script window to execute the current line or selected lines.</p>
 <p>Place the cursor on the first line and press <strong>Ctrl+Enter</strong>. Repeat for the remaining lines. The result of the execution will appear in the <em>Console</em> pane.</p>
@@ -298,10 +298,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 </section>
-<section id="loading-gis-data-into-r" class="level1">
-<h1>Loading GIS data into R</h1>
-<section id="loading-shapefiles" class="level2">
-<h2 class="anchored" data-anchor-id="loading-shapefiles">Loading shapefiles</h2>
+<section id="loading-gis-data-into-r" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Loading GIS data into R</h1>
+<section id="loading-shapefiles" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="loading-shapefiles"><span class="header-section-number">3.1</span> Loading shapefiles</h2>
 <p>R can readily read shapefiles, but it does not automatically read all geodatabase formats without additional tools or packages.</p>
 <p>First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile to an object called <code>s2</code>. Note the use of the assignment operator <code>&lt;-</code> which <em>assigns</em> the output to its right to the object to its left. The name of the shapefile must end with the <code>*.shp</code> extension, but note that the function understands that the shapefile consists of <em>multiple</em> files.</p>
 <div class="cell">
@@ -358,8 +358,8 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="loading-raster-files" class="level2">
-<h2 class="anchored" data-anchor-id="loading-raster-files">Loading Raster Files</h2>
+<section id="loading-raster-files" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="loading-raster-files"><span class="header-section-number">3.2</span> Loading Raster Files</h2>
 <p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>rast()</code> function from the <code>terra</code> package, then we’ll convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.img"</span>) <span class="co"># Load raster file</span></span>
@@ -370,8 +370,8 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <hr>
 </section>
 </section>
-<section id="visualizing-spatial-objects" class="level1">
-<h1>Visualizing Spatial Objects</h1>
+<section id="visualizing-spatial-objects" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Visualizing Spatial Objects</h1>
 <p>We can plot the raster and overlay it with the point layer. Several plotting options are available including the base <code>plot</code> function which will be used in this tutorial. However, there are many R packages that will help improve the “look” of a map including <code>tmap</code> and <code>ggplot2</code>.</p>
 <p>In the following code chunk, we will plot the point data. We’ll assign a yellow fill color to the point symbol. The point symbol type is defined by the <code>pch = 21</code> parameter.</p>
 <div class="cell">

@@ -201,15 +201,15 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#loading-the-data-into-r" id="toc-loading-the-data-into-r" class="nav-link active" data-scroll-target="#loading-the-data-into-r">Loading the data into R</a></li>
-  <li><a href="#modeling-the-covariate-effect" id="toc-modeling-the-covariate-effect" class="nav-link" data-scroll-target="#modeling-the-covariate-effect">Modeling the Covariate Effect</a></li>
-  <li><a href="#plotting-the-competing-models" id="toc-plotting-the-competing-models" class="nav-link" data-scroll-target="#plotting-the-competing-models">Plotting the competing models</a></li>
-  <li><a href="#mapping-the-modeled-intensity" id="toc-mapping-the-modeled-intensity" class="nav-link" data-scroll-target="#mapping-the-modeled-intensity">Mapping the modeled intensity</a></li>
-  <li><a href="#hypothesis-testing-for-covariate-effect" id="toc-hypothesis-testing-for-covariate-effect" class="nav-link" data-scroll-target="#hypothesis-testing-for-covariate-effect">Hypothesis testing for covariate effect</a>
+  <li><a href="#loading-the-data-into-r" id="toc-loading-the-data-into-r" class="nav-link active" data-scroll-target="#loading-the-data-into-r"><span class="header-section-number">1</span> Loading the data into R</a></li>
+  <li><a href="#modeling-the-covariate-effect" id="toc-modeling-the-covariate-effect" class="nav-link" data-scroll-target="#modeling-the-covariate-effect"><span class="header-section-number">2</span> Modeling the Covariate Effect</a></li>
+  <li><a href="#plotting-the-competing-models" id="toc-plotting-the-competing-models" class="nav-link" data-scroll-target="#plotting-the-competing-models"><span class="header-section-number">3</span> Plotting the competing models</a></li>
+  <li><a href="#mapping-the-modeled-intensity" id="toc-mapping-the-modeled-intensity" class="nav-link" data-scroll-target="#mapping-the-modeled-intensity"><span class="header-section-number">4</span> Mapping the modeled intensity</a></li>
+  <li><a href="#hypothesis-testing-for-covariate-effect" id="toc-hypothesis-testing-for-covariate-effect" class="nav-link" data-scroll-target="#hypothesis-testing-for-covariate-effect"><span class="header-section-number">5</span> Hypothesis testing for covariate effect</a>
   <ul class="collapse">
-  <li><a href="#the-mpop-model-test" id="toc-the-mpop-model-test" class="nav-link" data-scroll-target="#the-mpop-model-test">The <code>Mpop</code> model test</a></li>
-  <li><a href="#the-minc-model-test" id="toc-the-minc-model-test" class="nav-link" data-scroll-target="#the-minc-model-test">The <code>Minc</code> model test</a></li>
-  <li><a href="#additional-guidance-on-interpreting-pvalues" id="toc-additional-guidance-on-interpreting-pvalues" class="nav-link" data-scroll-target="#additional-guidance-on-interpreting-pvalues">Additional Guidance on Interpreting p‑values</a></li>
+  <li><a href="#the-mpop-model-test" id="toc-the-mpop-model-test" class="nav-link" data-scroll-target="#the-mpop-model-test"><span class="header-section-number">5.1</span> The <code>Mpop</code> model test</a></li>
+  <li><a href="#the-minc-model-test" id="toc-the-minc-model-test" class="nav-link" data-scroll-target="#the-minc-model-test"><span class="header-section-number">5.2</span> The <code>Minc</code> model test</a></li>
+  <li><a href="#additional-guidance-on-interpreting-pvalues" id="toc-additional-guidance-on-interpreting-pvalues" class="nav-link" data-scroll-target="#additional-guidance-on-interpreting-pvalues"><span class="header-section-number">5.3</span> Additional Guidance on Interpreting p‑values</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -249,8 +249,8 @@ window.Quarto = {
 <p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
-<section id="loading-the-data-into-r" class="level2">
-<h2 class="anchored" data-anchor-id="loading-the-data-into-r">Loading the data into R</h2>
+<section id="loading-the-data-into-r" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="loading-the-data-into-r"><span class="header-section-number">1</span> Loading the data into R</h2>
 <p>First, we’ll load the point pattern dataset. Next, we’ll load two raster datasets that represent separate <strong>first-order effects</strong> that may help explain the distribution of stores within the study extent.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
@@ -299,8 +299,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="modeling-the-covariate-effect" class="level2">
-<h2 class="anchored" data-anchor-id="modeling-the-covariate-effect">Modeling the Covariate Effect</h2>
+<section id="modeling-the-covariate-effect" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="modeling-the-covariate-effect"><span class="header-section-number">2</span> Modeling the Covariate Effect</h2>
 <p>We will first develop two models that may explain the spatial intensity of Walmart locations. Recall that <em>intensity</em> is a property of the underlying process. One model is defined by population density, and the other is defined by income. This differs from <em>density</em>, which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be <strong>alternate</strong> models that we’ll denote as <code>Mpop</code> and <code>Minc</code> in the script. The models’ structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.</p>
 <p>We’ll also create the null model, <code>Mo</code>, which will assume a <strong>spatially uniform</strong> (homogeneous) covariate. In other words, <code>Mo</code> represents a model in which the process intensity is assumed to be constant across the entire study extent.</p>
 <div class="cell">
@@ -391,8 +391,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 \]</span></p>
 <p>which is nothing more than the number of stores per unit area (44 stores / 21,000km<sup>2</sup> = 0.00209).</p>
 </section>
-<section id="plotting-the-competing-models" class="level2">
-<h2 class="anchored" data-anchor-id="plotting-the-competing-models">Plotting the competing models</h2>
+<section id="plotting-the-competing-models" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="plotting-the-competing-models"><span class="header-section-number">3</span> Plotting the competing models</h2>
 <p>Next, we will plot the relationship between modeled intensity and the covariates.</p>
 <div class="cell" data-small.mar="true">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))  <span class="co"># This creates a two-pane plotting window</span></span>
@@ -416,8 +416,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
 <p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
 </section>
-<section id="mapping-the-modeled-intensity" class="level2">
-<h2 class="anchored" data-anchor-id="mapping-the-modeled-intensity">Mapping the modeled intensity</h2>
+<section id="mapping-the-modeled-intensity" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="mapping-the-modeled-intensity"><span class="header-section-number">4</span> Mapping the modeled intensity</h2>
 <p>Of interest in a subsequent tutorial will be the modeled intensity of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the <code>predict()</code> function. For example, to create a raster of the modeled intensity <code>Mpop</code>, type:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Mpop.trend <span class="ot">&lt;-</span> <span class="fu">predict</span>(Mpop, <span class="at">type =</span> <span class="st">"trend"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -446,8 +446,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </div>
 <hr>
 </section>
-<section id="hypothesis-testing-for-covariate-effect" class="level2">
-<h2 class="anchored" data-anchor-id="hypothesis-testing-for-covariate-effect">Hypothesis testing for covariate effect</h2>
+<section id="hypothesis-testing-for-covariate-effect" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="hypothesis-testing-for-covariate-effect"><span class="header-section-number">5</span> Hypothesis testing for covariate effect</h2>
 <p>To formally assess whether the covariate-based model provides a significantly better fit than the null model, we need a way to reduce that comparison to a single number. That number is called the <strong>likelihood‑ratio test (LRT) statistic</strong>.</p>
 <ul>
 <li>A model that fits the data better gives a <strong>higher likelihood</strong> for the observed pattern.</li>
@@ -458,8 +458,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <li>Small LRT statistic -&gt; the alternative model explains the pattern almost equally well</li>
 <li>Large LRT statictic -&gt; the alternative model explains the pattern noticeably better</li>
 </ul>
-<section id="the-mpop-model-test" class="level3">
-<h3 class="anchored" data-anchor-id="the-mpop-model-test">The <code>Mpop</code> model test</h3>
+<section id="the-mpop-model-test" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="the-mpop-model-test"><span class="header-section-number">5.1</span> The <code>Mpop</code> model test</h3>
 <p>We’ll first apply a LRT test for the <code>Mpop</code> model.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -497,8 +497,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>The reference distribution addresses the question <strong>“If the null model were true, how likely is it that random noise alone would produce an LRT statistic (difference-in-deviance) this large (4.2968) or larger?</strong>. The probability can be extracted from the plot or from the <code>anova()</code> output under the <code>pr</code> heading–this is the <strong>p-value</strong>. For the <code>Mpop</code> model, the p-value is <strong>0.03819</strong> or <strong>3.8%</strong>.</p>
 <p>This means that if the population density <strong>had no real effect</strong>, then a statistic as large as 4.2968 would occur only about <strong>3.8%</strong> of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.</p>
 </section>
-<section id="the-minc-model-test" class="level3">
-<h3 class="anchored" data-anchor-id="the-minc-model-test">The <code>Minc</code> model test</h3>
+<section id="the-minc-model-test" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="the-minc-model-test"><span class="header-section-number">5.2</span> The <code>Minc</code> model test</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -522,8 +522,8 @@ Model 2: ~inc.km     Poisson
 </div>
 <p>The model using median income (<code>Minc</code>) shows a very different result. The LRT statistic for <code>Minc</code> is <strong>1.3388</strong>, yielding a <strong>p‑value of 0.2473</strong>–roughly 25%. This value is <strong>well within the range of what we would expect just by chance</strong> if the null model (constant intensity) were true. A statistic this small is not unusual under the null model, meaning that including income as a covariate does not provide strong evidence of improvement. From this, we can conclude that income does not significantly explain the observed point distribution, at least not in the way population density does. Together, these results suggest that population density is a more relevant predictor of point intensity than income in this dataset.</p>
 </section>
-<section id="additional-guidance-on-interpreting-pvalues" class="level3">
-<h3 class="anchored" data-anchor-id="additional-guidance-on-interpreting-pvalues">Additional Guidance on Interpreting p‑values</h3>
+<section id="additional-guidance-on-interpreting-pvalues" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="additional-guidance-on-interpreting-pvalues"><span class="header-section-number">5.3</span> Additional Guidance on Interpreting p‑values</h3>
 <p>Finally, it’s important not to treat the <strong>0.05 cutoff</strong> as a strict “significant / not significant” decision rule. The value 0.05 has no theoretical justification, it is simply a historical convention—and relying on it too rigidly can lead to oversimplified or misleading interpretations. Instead, interpret the p‑value as a continuous measure of how surprising your data would be if the null model were true. A smaller p‑value means the observed improvement is less likely to be due to chance alone, while a larger p‑value means the improvement is more consistent with random variation. This perspective helps you think in terms of evidence and uncertainty, rather than treating statistical testing as a binary yes/no decision.</p>
 
 

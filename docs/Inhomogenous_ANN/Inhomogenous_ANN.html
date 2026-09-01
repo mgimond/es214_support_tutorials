@@ -172,11 +172,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#load-and-prep-the-dataset" id="toc-load-and-prep-the-dataset" class="nav-link active" data-scroll-target="#load-and-prep-the-dataset">Load and prep the dataset</a></li>
-  <li><a href="#generate-the-ppm-layer" id="toc-generate-the-ppm-layer" class="nav-link" data-scroll-target="#generate-the-ppm-layer">Generate the PPM layer</a></li>
-  <li><a href="#computing-the-ann-statistic" id="toc-computing-the-ann-statistic" class="nav-link" data-scroll-target="#computing-the-ann-statistic">Computing the ANN Statistic</a></li>
-  <li><a href="#testing-the-ann-hypothesis" id="toc-testing-the-ann-hypothesis" class="nav-link" data-scroll-target="#testing-the-ann-hypothesis">Testing the ANN Hypothesis</a></li>
-  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final note</a></li>
+  <li><a href="#load-and-prep-the-dataset" id="toc-load-and-prep-the-dataset" class="nav-link active" data-scroll-target="#load-and-prep-the-dataset"><span class="header-section-number">1</span> Load and prep the dataset</a></li>
+  <li><a href="#generate-the-ppm-layer" id="toc-generate-the-ppm-layer" class="nav-link" data-scroll-target="#generate-the-ppm-layer"><span class="header-section-number">2</span> Generate the PPM layer</a></li>
+  <li><a href="#computing-the-ann-statistic" id="toc-computing-the-ann-statistic" class="nav-link" data-scroll-target="#computing-the-ann-statistic"><span class="header-section-number">3</span> Computing the ANN Statistic</a></li>
+  <li><a href="#testing-the-ann-hypothesis" id="toc-testing-the-ann-hypothesis" class="nav-link" data-scroll-target="#testing-the-ann-hypothesis"><span class="header-section-number">4</span> Testing the ANN Hypothesis</a></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note"><span class="header-section-number">5</span> Final note</a></li>
   </ul>
 </nav>
     </div>
@@ -215,8 +215,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Don’t forget to set the R session to the project folder via <em>Session &gt;&gt; Set Working Directory &gt;&gt; Choose Directory</em>.</p>
 </blockquote>
 <hr>
-<section id="load-and-prep-the-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="load-and-prep-the-dataset">Load and prep the dataset</h2>
+<section id="load-and-prep-the-dataset" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="load-and-prep-the-dataset"><span class="header-section-number">1</span> Load and prep the dataset</h2>
 <p>In the following chunk of code, we will load the shapefiles into R, then we will convert the spatial objects into formats recognized by the <code>spatstat</code> functions. We will also convert the mapping units from meters to kilometers using the <code>rescale</code> function.</p>
 <p>Our earlier PPM analysis suggested that population density could help explain the observed distribution of Walmart stores. We therefore need to account for this <em>inhomogeneity</em> in the underlying <strong>first-order effect</strong> before conducting a <strong>distance-based</strong> analysis that addresses the <strong>second-order effect</strong> of the underlying process. In other words, we want to make sure that any clustering or dispersion observed in our data is not a result of a varying population distribution.</p>
 <div class="cell">
@@ -244,16 +244,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>rast.km  <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(rast, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="generate-the-ppm-layer" class="level2">
-<h2 class="anchored" data-anchor-id="generate-the-ppm-layer">Generate the PPM layer</h2>
+<section id="generate-the-ppm-layer" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="generate-the-ppm-layer"><span class="header-section-number">2</span> Generate the PPM layer</h2>
 <p>The following generates the modeled point pattern intensity used later when simulating points.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> rast.km)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>M1.trend <span class="ot">&lt;-</span> <span class="fu">predict</span>(M1, <span class="at">type =</span> <span class="st">"trend"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="computing-the-ann-statistic" class="level2">
-<h2 class="anchored" data-anchor-id="computing-the-ann-statistic">Computing the ANN Statistic</h2>
+<section id="computing-the-ann-statistic" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="computing-the-ann-statistic"><span class="header-section-number">3</span> Computing the ANN Statistic</h2>
 <p>The observed Walmart ANN statistic can be computed as follows.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ann.p <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">nndist</span>(p.km, <span class="at">k=</span><span class="dv">1</span>))</span>
@@ -264,8 +264,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The observed average nearest-neighbor is 13.29 km.</p>
 </section>
-<section id="testing-the-ann-hypothesis" class="level2">
-<h2 class="anchored" data-anchor-id="testing-the-ann-hypothesis">Testing the ANN Hypothesis</h2>
+<section id="testing-the-ann-hypothesis" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="testing-the-ann-hypothesis"><span class="header-section-number">4</span> Testing the ANN Hypothesis</h2>
 <p>In the <a href="../Homogenous_ANN/Homogenous_ANN.html#testing-the-ann-hypothesis">homogeneous point pattern analysis tutorial</a>, we calculated a (pseudo) p-value of around 0.32. The problem with our initial ANN analysis is that we did not account for <a href="https://mgimond.github.io/Spatial/chp11_0.html#first-and-second-order-effects">first-order effects</a> of the underlying process such as population distribution (a possible covariate). In other words, is the distance observed between Walmart stores a reflection of the attractive/repulsive forces at play when positioning the stores within the state of Massachusetts or is their proximity to one another dictated by some underlying process such as population density distribution?</p>
 <p>If we assume that population distribution influences the distribution of Walmart stores, we need to rerun the ANN analysis while <strong>controlling</strong> for population distribution influence. We do this by instructing the <code>rpoint()</code> function to increase point placement probability at locations with high covariate values (i.e.&nbsp;a high population density area is more likely to receive a random point than a low density area).</p>
 <div class="cell">
@@ -303,8 +303,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that this is a much smaller p-value than that computed under the <a href="../Homogenous_ANN/Homogenous_ANN.html#extracting-a-p-value-from-the-simulation">homogeneous scenario</a>.</p>
 </section>
-<section id="final-note" class="level2">
-<h2 class="anchored" data-anchor-id="final-note">Final note</h2>
+<section id="final-note" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="final-note"><span class="header-section-number">5</span> Final note</h2>
 <p>While the histogram may <em>seem</em> to imply that it’s the <em>observed</em> ANN value that has shifted rightward along the x-axis relative to the hypothesized distribution, it’s really the <em>distribution</em> of expected values under this <em>new</em> hypothesis that gets shifted along the x-axis; <strong>the observed ANN value has not changed</strong>. The following plot overlays the expected ANN distribution given a homogeneous 1<sup>st</sup> order process in red and the expected ANN distribution given the inhomogeneous 1<sup>st</sup> order process in green. The observed ANN value of 13.3 km remains unchanged under both analyses.</p>
 <div class="cell">
 <div class="cell-output-display">

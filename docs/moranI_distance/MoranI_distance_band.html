@@ -172,9 +172,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#loading-and-visualizing-the-data" id="toc-loading-and-visualizing-the-data" class="nav-link active" data-scroll-target="#loading-and-visualizing-the-data">Loading and visualizing the data</a></li>
-  <li><a href="#morans-i-as-a-function-of-a-distance-band" id="toc-morans-i-as-a-function-of-a-distance-band" class="nav-link" data-scroll-target="#morans-i-as-a-function-of-a-distance-band">Moran’s I as a function of a distance band</a></li>
-  <li><a href="#morans-i-as-a-function-of-multiple-distance-bands" id="toc-morans-i-as-a-function-of-multiple-distance-bands" class="nav-link" data-scroll-target="#morans-i-as-a-function-of-multiple-distance-bands">Moran’s I as a function of multiple distance bands</a></li>
+  <li><a href="#loading-and-visualizing-the-data" id="toc-loading-and-visualizing-the-data" class="nav-link active" data-scroll-target="#loading-and-visualizing-the-data"><span class="header-section-number">1</span> Loading and visualizing the data</a></li>
+  <li><a href="#morans-i-as-a-function-of-a-distance-band" id="toc-morans-i-as-a-function-of-a-distance-band" class="nav-link" data-scroll-target="#morans-i-as-a-function-of-a-distance-band"><span class="header-section-number">2</span> Moran’s I as a function of a distance band</a></li>
+  <li><a href="#morans-i-as-a-function-of-multiple-distance-bands" id="toc-morans-i-as-a-function-of-multiple-distance-bands" class="nav-link" data-scroll-target="#morans-i-as-a-function-of-multiple-distance-bands"><span class="header-section-number">3</span> Moran’s I as a function of multiple distance bands</a></li>
   </ul>
 </nav>
     </div>
@@ -219,8 +219,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="loading-and-visualizing-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="loading-and-visualizing-the-data">Loading and visualizing the data</h2>
+<section id="loading-and-visualizing-the-data" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="loading-and-visualizing-the-data"><span class="header-section-number">1</span> Loading and visualizing the data</h2>
 <p>Load the Massachusetts income data (values are aggregated at the census tract level).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the shapefile</span></span>
@@ -239,8 +239,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="morans-i-as-a-function-of-a-distance-band" class="level2">
-<h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-a-distance-band">Moran’s I as a function of a distance band</h2>
+<section id="morans-i-as-a-function-of-a-distance-band" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="morans-i-as-a-function-of-a-distance-band"><span class="header-section-number">2</span> Moran’s I as a function of a distance band</h2>
 <p>We will explore spatial autocorrelation as a function of distance bands. Instead of defining neighbors as contiguous polygons, we will define neighbors based on distances to polygon centers. A neighboring polygon will be defined as any polygon whose centroid lies within a specified distance of the centroid of the polygon of interest. This will therefore require that we compute the centroid of each census tract polygon using <code>st_point_on_surface</code>. The centroids’ coordinate pairs will then be extracted using the <code>st_coordinates</code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s.center <span class="ot">&lt;-</span> <span class="fu">st_point_on_surface</span>(s)</span>
@@ -331,8 +331,8 @@ alternative hypothesis: greater</code></pre>
 <p>The output differs from that shown earlier. Here, the Moran’s I analysis suggests a slightly more dispersed pattern than expected when comparing income values that are 40 to 45 km away.</p>
 <p>Note the high p-value! Recall that by default, the <code>moran.mc</code> function reports the fraction of simulated values that are <code>greater</code> than the observed value. If we are interested in knowing the fraction that is less than the observed value (i.e.&nbsp;more dispersed), we can subtract the reported value from <code>1</code> or, we can rerun the <code>moran.mc</code> function with <code>alternative="less"</code>. In our example, the probability that a random process could have generated a pattern as dispersed as ours is 1 - 0.985 = 0.015 (or 1.5% if reported as a percentage).</p>
 </section>
-<section id="morans-i-as-a-function-of-multiple-distance-bands" class="level2">
-<h2 class="anchored" data-anchor-id="morans-i-as-a-function-of-multiple-distance-bands">Moran’s I as a function of multiple distance bands</h2>
+<section id="morans-i-as-a-function-of-multiple-distance-bands" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="morans-i-as-a-function-of-multiple-distance-bands"><span class="header-section-number">3</span> Moran’s I as a function of multiple distance bands</h2>
 <blockquote class="blockquote">
 <p>Note that you will not be expected to run this script in your final exam. But you should be able to interpret the output if asked.</p>
 </blockquote>
