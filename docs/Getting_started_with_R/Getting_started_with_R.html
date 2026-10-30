@@ -277,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="loading-activating-packages" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="loading-activating-packages"><span class="header-section-number">2.4</span> Loading (activating) packages</h2>
-<p>Installing a package is typically a one-time process. However, to use the package in the current R session, you must load it with the <code>library()</code> function.</p>
+<p>Installing a package on your computer is typically a one-time process. However, to use the package in the current R session, you must load it with the <code>library()</code> function.</p>
 <p>In this exercise, we will load and prep the data for a point pattern analysis using the <code>spatstat</code> package. We will therefore not need to load the <code>spdep</code> package which won’t be used until we tackle spatial autocorrelation in later exercises.</p>
 <p>Type the following in the script:</p>
 <div class="cell">
@@ -306,66 +306,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>First, we will load the Massachusetts polygon shapefile into R and save the contents of that shapefile to an object called <code>s2</code>. Note the use of the assignment operator <code>&lt;-</code> which <em>assigns</em> the output to its right to the object to its left. The name of the shapefile must end with the <code>*.shp</code> extension, but note that the function understands that the shapefile consists of <em>multiple</em> files.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"MA.shp"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `MA' from data source 
-  `C:\Users\mgimond\Documents\es214_support_tutorials\Getting_started_with_R\MA.shp' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 1 feature and 4 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: 623157.2 ymin: 4577879 xmax: 922141 ymax: 4756659
-Projected CRS: NAD83 / UTM zone 18N</code></pre>
-</div>
 </div>
 <blockquote class="blockquote">
 <p>NOTE: if you get the error message <code>Error: Cannot open "MA.shp"; The file doesn't seem to exist.</code>, then you probably did not properly set the working directory (see earlier step) or, you have a syntax error in the file name.</p>
 </blockquote>
-<p>R can work with spatial objects in different internal formats. <code>spatstat</code>’s functions require that a specific spatial format be used. The <code>MA</code> layer will be used to define the study extent. This will require that it be converted to an <code>owin</code> formatted object for use with <code>spatstat</code>. We will make use of the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
+<p>R can work with spatial objects in different internal formats (or object classes). For example, <code>spatstat</code>’s functions require that specific object classes be used. Throughout this tutorial, we will convert GIS data into several object classes used by <code>spatstat.</code> Polygons defining the study area will be stored as <code>owin</code> objects, point locations as <code>ppp</code> objects, and raster-like surfaces as <code>im</code> objects.</p>
+<p>The <code>MA</code> layer will be used to define the study extent. In <code>spatstat</code>, study areas are represented as <code>owin</code> objects. We will therefore use the <code>as.owin</code> function to convert the <code>s2</code> object to an <code>owin</code> object.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>w  <span class="ot">&lt;-</span> <span class="fu">as.owin</span>(s2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The coordinate unit associated with the spatial object inherits the underlying coordinate system’s map units–<code>meters</code> in this example. Such small units may make it difficult to interpret the output of some operations given that some analyses may generate very small values (i.e.&nbsp;density based analyses) or very large values (i.e.&nbsp;distance based analyses). We will therefore convert the map units from meters to kilometers using the <code>rescale.owin()</code> function. Note that 1000 m = 1 km.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w.km <span class="ot">&lt;-</span> <span class="fu">rescale.owin</span>(w, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The second parameter in the <code>rescale.owin()</code> function, <code>1000</code>, tells R to divide the planar unit by 1000.</p>
 <p>Next we will load the Walmart stores shapefile (<code>Walmarts.shp</code>) using the same functions, but instead of storing the shapefile as a polygon boundary, we will convert the point shapefile to a <code>ppp</code> formatted point object.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `Walmarts' from data source 
-  `C:\Users\mgimond\Documents\es214_support_tutorials\Getting_started_with_R\Walmarts.shp' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 44 features and 40 fields
-Geometry type: POINT
-Dimension:     XY
-Bounding box:  xmin: 640627.2 ymin: 4614803 xmax: 869353.2 ymax: 4738331
-Projected CRS: NAD83 / UTM zone 18N</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p  <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s1)  <span class="co"># creates a ppp object</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s1   <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Walmarts.shp"</span>)  </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p    <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(s1)  <span class="co"># creates a ppp object</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p.km <span class="ot">&lt;-</span> <span class="fu">rescale.ppp</span>(p, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>By default, R will adopt a rectangular extent for the point data.</p>
 <p><img src="img/image5.jpg" class="img-fluid" width="220"></p>
-<p>Given that we will be defining the extent to match that of the Massachusetts boundaries, we will need to explicitly define the study extent for the point object.</p>
+<p>As you will learn in subsequent classes, point patter analyses require an explicitly defined study area. If none is provided, a simple rectangle is assumed as is the current case.</p>
+<p>If, however, an explicitly defined study area is desired, the study area should be defined in the point patter. For example, if the State of Massachusetts is to define the study area, then the <code>Window()</code> function should be used to assign the <code>w.km</code> object created earlier to the <code>p.km</code> object.</p>
 <p><img src="img/image6.jpg" class="img-fluid" width="220"></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Window</span>(p.km) <span class="ot">&lt;-</span> w.km</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note the uppercase <code>W</code> in the function <code>Window()</code>!</p>
-<p>There is one more thing that we will need to do that will make the data behave with <code>spatstats</code> tools: remove the layer’s attribute information (attributes are also known as <em>marks</em> in the point pattern analysis world). The point attributes will not be needed here since our interest is in the pattern generated by the points and not by their attribute values.</p>
+<p>In point pattern analysis, a point’s attributes are called <strong>marks</strong>. Since we will be only interested the spatial arrangement of Walmart locations and not in any store characteristics, we remove the marks. Replacing the points’ marks with <code>NULL</code> removes the attributes.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marks</span>(p.km) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="loading-raster-files" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="loading-raster-files"><span class="header-section-number">3.2</span> Loading Raster Files</h2>
-<p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>rast()</code> function from the <code>terra</code> package, then we’ll convert it to an <code>im</code> object recognized by spatstat and name the object <code>r.km</code> once re-scaled.</p>
+<p>Next, we will load the population density raster file <code>pop_sqmile.img</code> using the <code>rast()</code> function from the <code>terra</code> package, then we’ll convert it to an <code>im</code> object that is recognized by <code>spatstat</code> and name the object <code>r.km</code> once re-scaled.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.img"</span>) <span class="co"># Load raster file</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>) <span class="co"># Convert to XYZ data table</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)             <span class="co"># Convert XYZ table to im object</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(r, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>img  <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"pop_sqmile.img"</span>) <span class="co"># Load raster file</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df   <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(img, <span class="at">xy =</span> <span class="cn">TRUE</span>) <span class="co"># Convert to XYZ data table</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>r    <span class="ot">&lt;-</span> <span class="fu">as.im</span>(df)             <span class="co"># Convert XYZ table to im object</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>r.km <span class="ot">&lt;-</span> <span class="fu">rescale.im</span>(r, <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 </section>
@@ -375,7 +357,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 <p>We can plot the raster and overlay it with the point layer. Several plotting options are available including the base <code>plot</code> function which will be used in this tutorial. However, there are many R packages that will help improve the “look” of a map including <code>tmap</code> and <code>ggplot2</code>.</p>
 <p>In the following code chunk, we will plot the point data. We’ll assign a yellow fill color to the point symbol. The point symbol type is defined by the <code>pch = 21</code> parameter.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"yellow"</span>, <span class="at">main =</span> <span class="st">"Walmart stores"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="st">"yellow"</span>, <span class="at">main =</span> <span class="st">"Walmart stores"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -396,7 +378,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 <p>To plot a raster, you can use the <code>image</code> function (as well as the <code>plot</code> function). Here, we’ll adopt a built-in color scheme using the <code>hcl.colors</code> function.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -407,8 +389,8 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
 </div>
 <p>In the following chunk of code, we will plot both the raster and point layers. To add a “layer” to an existing map, include the <code>add = TRUE</code> parameter.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(r.km, <span class="at">main =</span> <span class="st">"Population density"</span>, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p.km, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -833,7 +815,7 @@ Projected CRS: NAD83 / UTM zone 18N</code></pre>
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Creative Commons License, Manny Gimond, 2024</p>
+<p>Creative Commons License, Manny Gimond, 2026</p>
 </div>
   </div>
 </footer>
