@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-882166eb2819743775bb922c7315ff16.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -295,14 +295,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">min</span>(N.greater <span class="sc">+</span> <span class="dv">1</span>, n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> N.greater) <span class="sc">/</span> (n <span class="sc">+</span> <span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3165</code></pre>
+<pre><code>[1] 0.3075</code></pre>
 </div>
 </div>
-<p>About 32% of the simulated ANN values were at least as extreme as the observed ANN value of 13.29 on the side of the distribution closest to the observed value. Hence, the p-value suggests that <strong>if Walmart stores were distributed according to complete spatial randomness (CSR), we would expect an ANN value at least as extreme as the one observed about 32% of the time.</strong></p>
+<p>About 31% of the simulated ANN values were at least as extreme as the observed ANN value of 13.29 on the side of the distribution closest to the observed value. Hence, the p-value suggests that <strong>if Walmart stores were distributed according to complete spatial randomness (CSR), we would expect an ANN value at least as extreme as the one observed about 31% of the time.</strong></p>
 <div style="background:#FFE4C4;">
 <p>NOTES:</p>
 <ul>
-<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value for a <strong>two-sided test</strong> and state that <em>“… Under CSR, approximately 64% of simulated patterns produced an ANN statistic at least as extreme as the observed value (two-sided).”</em> Note the lack of reference to <strong>larger than</strong> or <strong>smaller than</strong> (looking for departures in either direction, not just one).</p></li>
+<li><p>If you are familiar with the concepts of a one-sided and two-sided test, you could double the p-value for a <strong>two-sided test</strong> and state that <em>“… Under CSR, approximately 62% of simulated patterns produced an ANN statistic at least as extreme as the observed value (two-sided).”</em> Note the lack of reference to <strong>larger than</strong> or <strong>smaller than</strong> (looking for departures in either direction, not just one).</p></li>
 <li><p>Just because our hypothesis test suggests that our observed ANN value is consistent with a random process does not imply that a random process was responsible for the distribution of Walmart stores (in fact, it’s quite doubtful that Walmart executives assign store location at random). All that a hypothesis test can do is state whether a hypothesized process could be one of <strong>many</strong> other processes that generated the pattern observed in our dataset.</p></li>
 </ul>
 </div>

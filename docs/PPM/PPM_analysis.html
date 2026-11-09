@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-882166eb2819743775bb922c7315ff16.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -395,15 +395,11 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <h2 data-number="3" class="anchored" data-anchor-id="plotting-the-competing-models"><span class="header-section-number">3</span> Plotting the competing models</h2>
 <p>Next, we will plot the relationship between modeled intensity and the covariates.</p>
 <div class="cell" data-small.mar="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>OP <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))  <span class="co"># This creates a two-pane plotting window</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(OP) <span class="co"># This reverts our plot window back to a one-panel window</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km"</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -412,9 +408,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </div>
 </div>
 </div>
-<p>Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
-<p>The grey envelopes encompass the 95% confidence interval; i.e.&nbsp;the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model.</p>
-<p>To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.</p>
+<p>Note the difference in relationships between the two models. In the first plot, we note an increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income—i.e.&nbsp;as an area’s income increases, the Walmart intensity decreases.</p>
+<p>In section 5, we will assess how well the above models explain the relationship between covariate and Walmart intensity.</p>
 </section>
 <section id="mapping-the-modeled-intensity" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="mapping-the-modeled-intensity"><span class="header-section-number">4</span> Mapping the modeled intensity</h2>
@@ -433,7 +428,8 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </div>
 </div>
 </div>
-<p>Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the values for display puropses by setting <code>log = TRUE</code>.</p>
+<p>The resulting map is a raster where each pixel represents the expected point intensity in units of <strong>(expected # of points)/(mapping area unit)</strong>. Since we re-scaled the map units from meters to kilometers, the map represents the expected number of Walmart stores per square kilometer.</p>
+<p>Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the pixel values for display purposes by setting <code>log = TRUE</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -444,6 +440,10 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </div>
 </div>
 </div>
+<p>Note that the pixels now represent the <strong>logged expected intensity</strong>. This can be expressed mathematically as:</p>
+<p><span class="math display">\[
+log(Walmart\ intensity(i))= −6.3 + 0.0001\ population\ density_i
+\]</span></p>
 <hr>
 </section>
 <section id="hypothesis-testing-for-covariate-effect" class="level2" data-number="5">
@@ -484,7 +484,7 @@ Model 2: ~pop.km     Poisson
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>In <code>spatstat</code>, the LRT statistic appears as the difference in <strong>deviance</strong> in the output. We compare this value to a <strong>reference distribution</strong>–a picture of how big the LRT statistic (i.e.&nbsp;the difference-in-deviance value in the output) would usually be if the null model really were adequate. The following figure shows this distribution with the observed statistic displayed as a veritcial blue line.</p>
+<p>In <code>spatstat</code>, the LRT statistic appears as the difference in <strong>deviance</strong> in the output. We compare this value to a <strong>reference distribution</strong>–a picture of how big the LRT statistic (i.e.&nbsp;the difference-in-deviance value in the output) would usually be if the null model really were adequate. The following figure shows this distribution with the observed statistic displayed as a vertical blue dashed line.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -496,11 +496,24 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>The reference distribution addresses the question <strong>“If the null model were true, how likely is it that random noise alone would produce an LRT statistic (difference-in-deviance) this large (4.2968) or larger?</strong>. The probability can be extracted from the plot or from the <code>anova()</code> output under the <code>pr</code> heading–this is the <strong>p-value</strong>. For the <code>Mpop</code> model, the p-value is <strong>0.03819</strong> or <strong>3.8%</strong>.</p>
 <p>This means that if the population density <strong>had no real effect</strong>, then a statistic as large as 4.2968 would occur only about <strong>3.8%</strong> of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.</p>
+<p>To visualize the nature and magnitude of this effect, the fitted intensity curve can be plotted alongside a 95% pointwise confidence envelope using the <code>se.fit</code> parameter to <code>TRUE</code> in the <code>effectfun</code> function.</p>
+<div class="cell" data-small.mar="true">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The grey envelopes encompass the 95% confidence interval. This reveals where our estimates are precise and where uncertainty expands. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model for this region.</p>
 </section>
 <section id="the-minc-model-test" class="level3" data-number="5.2">
 <h3 data-number="5.2" class="anchored" data-anchor-id="the-minc-model-test"><span class="header-section-number">5.2</span> The <code>Minc</code> model test</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
 of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
@@ -521,6 +534,18 @@ Model 2: ~inc.km     Poisson
 </div>
 </div>
 <p>The model using median income (<code>Minc</code>) shows a very different result. The LRT statistic for <code>Minc</code> is <strong>1.3388</strong>, yielding a <strong>p‑value of 0.2473</strong>–roughly 25%. This value is <strong>well within the range of what we would expect just by chance</strong> if the null model (constant intensity) were true. A statistic this small is not unusual under the null model, meaning that including income as a covariate does not provide strong evidence of improvement. From this, we can conclude that income does not significantly explain the observed point distribution, at least not in the way population density does. Together, these results suggest that population density is a more relevant predictor of point intensity than income in this dataset.</p>
+<p>To visualize the nature and magnitude of this effect, we add the 95% pointwise confidence envelope to the plot.</p>
+<div class="cell" data-small.mar="true">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PPM_analysis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="additional-guidance-on-interpreting-pvalues" class="level3" data-number="5.3">
 <h3 data-number="5.3" class="anchored" data-anchor-id="additional-guidance-on-interpreting-pvalues"><span class="header-section-number">5.3</span> Additional Guidance on Interpreting p‑values</h3>

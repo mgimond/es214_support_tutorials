@@ -130,23 +130,19 @@ which is nothing more than the number of stores per unit area (44 stores / 21,00
 
 Next, we will plot the relationship between modeled intensity and the covariates.
 
-```{r fig.show='hold', fig.height=3, small.mar =TRUE}
+```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2:4}
 OP <- par(mfrow = c(1,2), mar = c(4,4,2,1))  # This creates a two-pane plotting window
-
-plot(effectfun(Mpop, "pop.km", se.fit = TRUE), main = "Population",
+plot(effectfun(Mpop, "pop.km"), main = "Population",
      ylab = "Walmarts per km2", xlab = "Population density", legend = FALSE)
 
-plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
+plot(effectfun(Minc, "inc.km"), main = "Income",
      ylab = "Walmarts per km2", xlab = "Income", legend = FALSE)
-
 par(OP) # This reverts our plot window back to a one-panel window
 ```
 
-Note the difference in relationships between the two models. In the first plot, we note a slightly increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income---i.e. as an area's income increases, the Walmart intensity decreases.
+Note the difference in relationships between the two models. In the first plot, we note an increasing relationship between Walmart intensity and population density; this is to be expected since you would not expect to see Walmart stores in underpopulated areas. In the second plot, we note an inverse relationship between Walmart intensity and income---i.e. as an area's income increases, the Walmart intensity decreases.
 
-The grey envelopes encompass the 95% confidence interval; i.e. the true estimate (black line) can fall anywhere within this envelope. Note how the envelope broadens near the upper end of the population density values--this suggests wide uncertainty in the estimated model.
-
-To assess how well the above models explain the relationship between covariate and Walmart intensity, we will turn to hypothesis testing.
+In section 5, we will assess how well the above models explain the relationship between covariate and Walmart intensity.
 
 ## Mapping the modeled intensity
 
@@ -158,16 +154,27 @@ Mpop.trend <- predict(Mpop, type = "trend")
 
 To plot the raster, type:
 
-```{r}
+```{r echo=2, fig.height=3}
+OP <- par(mar = c(0,0,0,1))
 plot(Mpop.trend, col = hcl.colors(50, rev=TRUE))
+par(OP)
 ```
 
-Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the values for display puropses by setting `log = TRUE`.
+The resulting map is a raster where each pixel represents the expected point intensity in units of **(expected # of points)/(mapping area unit)**. Since we re-scaled the map units from meters to kilometers, the map represents the expected number of Walmart stores per square kilometer.
 
-```{r}
+Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the pixel values for display purposes by setting `log = TRUE`.
+
+```{r echo=2, fig.height=3}
+OP <- par(mar = c(0,0,0,1))
 plot(Mpop.trend, col = hcl.colors(50, rev=TRUE), log = TRUE)
+par(OP)
 ```
 
+Note that the pixels now represent the **logged expected intensity**. This can be expressed mathematically as:
+
+$$
+log(Walmart\ intensity(i))= −6.3 + 0.0001\ population\ density_i
+$$ 
 
 ----------------
 
@@ -191,7 +198,7 @@ We'll first apply a LRT test for the `Mpop` model.
 anova(Mo, Mpop, test = "LRT") # Compare null to population model
 ```
 
-In `spatstat`, the LRT statistic appears as the difference in **deviance** in the output. We compare this value to a **reference distribution**--a picture of how big the LRT statistic (i.e. the difference-in-deviance value in the output) would usually be if the null model really were adequate. The following figure shows this distribution with the observed statistic displayed as a veritcial blue line.
+In `spatstat`, the LRT statistic appears as the difference in **deviance** in the output. We compare this value to a **reference distribution**--a picture of how big the LRT statistic (i.e. the difference-in-deviance value in the output) would usually be if the null model really were adequate. The following figure shows this distribution with the observed statistic displayed as a vertical blue dashed line.
 
 ```{r fig.width=5, fig.height= 3, echo = FALSE}
 OP <- par(mar=c(3.9,3.9,1,1))
@@ -225,6 +232,17 @@ The reference distribution addresses the question **"If the null model were true
 
 This means that if the population density **had no real effect**, then a statistic as large as 4.2968 would occur only about **3.8%** of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.
 
+To visualize the nature and magnitude of this effect, the fitted intensity curve can be plotted alongside a 95% pointwise confidence envelope using the `se.fit` parameter to `TRUE` in the `effectfun` function.
+
+```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2}
+OP <- par(mar = c(4,4,2,1))  # This creates a two-pane plotting window
+plot(effectfun(Mpop, "pop.km", se.fit = TRUE), main = "Population",
+     ylab = "Walmarts per km2", xlab = "Population density", legend = FALSE)
+par(OP)
+```
+
+The grey envelopes encompass the 95% confidence interval. This reveals where our estimates are precise and where uncertainty expands. Note how the envelope broadens near the upper end of the population density values–this suggests wide uncertainty in the estimated model for this region.
+
 ### The `Minc` model test
 
 ```{r}
@@ -232,6 +250,15 @@ anova(Mo, Minc, test = "LRT") # Compare null to income model
 ```
 
 The model using median income (`Minc`) shows a very different result. The LRT statistic for `Minc` is **1.3388**, yielding a **p‑value of 0.2473**--roughly 25%. This value is **well within the range of what we would expect just by chance** if the null model (constant intensity) were true. A statistic this small is not unusual under the null model, meaning that including income as a covariate does not provide strong evidence of improvement. From this, we can conclude that income does not significantly explain the observed point distribution, at least not in the way population density does. Together, these results suggest that population density is a more relevant predictor of point intensity than income in this dataset.
+
+To visualize the nature and magnitude of this effect, we add the 95% pointwise confidence envelope to the plot.
+
+```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2}
+OP <- par(mar = c(4,4,2,1))  # This creates a two-pane plotting window
+plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
+     ylab = "Walmarts per km2", xlab = "Income", legend = FALSE)
+par(OP)
+```
 
 ### Additional Guidance on Interpreting p‑values
 
