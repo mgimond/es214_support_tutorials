@@ -82,7 +82,7 @@ We will first develop two models that may explain the spatial intensity of Walma
 
 We'll also create the null model, `Mo`, which will assume a **spatially uniform** (homogeneous) covariate. In other words, `Mo` represents a model in which the process intensity is assumed to be constant across the entire study extent.
 
-```{r}
+```{r results='hide', warning=FALSE}
 Mpop <- ppm(p.km ~ pop.km) # Population model
 Minc <- ppm(p.km ~ inc.km) # Income model
 Mo   <- ppm(p.km ~ 1)      # Null model
@@ -109,7 +109,7 @@ Minc
 ```
 
 $$
-Walmart\ intensity(i) = e^{−5.58\ −1.66e^{−5}\ Income(i)}
+Walmart\ intensity(i) = e^{−5.58\ −1.65e^{−5}\ Income(i)}
 $$ Note the negative (decreasing) relationship between income distribution and Walmart density.
 
 Next, we'll extract the null model results:
@@ -128,15 +128,15 @@ which is nothing more than the number of stores per unit area (44 stores / 21,00
 
 ## Plotting the competing models
 
-Next, we will plot the relationship between modeled intensity and the covariates.
+Next, let's plot the relationship between modeled intensity and the covariates.
 
 ```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2:4}
 OP <- par(mfrow = c(1,2), mar = c(4,4,2,1))  # This creates a two-pane plotting window
-plot(effectfun(Mpop, "pop.km"), main = "Population",
-     ylab = "Walmarts per km2", xlab = "Population density", legend = FALSE)
+plot(effectfun(Mpop), legend = FALSE, 
+     xlab = "Population density", ylab = "Walmarts per km2", main = "Population",)
 
-plot(effectfun(Minc, "inc.km"), main = "Income",
-     ylab = "Walmarts per km2", xlab = "Income", legend = FALSE)
+plot(effectfun(Minc),  legend = FALSE,  
+     xlab = "Income", ylab = "Walmarts per km2", main = "Income")
 par(OP) # This reverts our plot window back to a one-panel window
 ```
 
@@ -146,7 +146,7 @@ In section 5, we will assess how well the above models explain the relationship 
 
 ## Mapping the modeled intensity
 
-Of interest in a subsequent tutorial will be the modeled intensity of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the `predict()` function. For example, to create a raster of the modeled intensity `Mpop`, type:
+Of interest in a subsequent tutorial will be the **modeled intensity** of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the `predict()` function. For example, to create a raster of the modeled intensity `Mpop`, type:
 
 ```{r}
 Mpop.trend <- predict(Mpop, type = "trend")
@@ -194,7 +194,7 @@ Think of the LRT as a kind of **"distance"** between the two models’ explanati
 
 We'll first apply a LRT test for the `Mpop` model.
 
-```{r}
+```{r warning=FALSE}
 anova(Mo, Mpop, test = "LRT") # Compare null to population model
 ```
 
@@ -236,7 +236,7 @@ To visualize the nature and magnitude of this effect, the fitted intensity curve
 
 ```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2}
 OP <- par(mar = c(4,4,2,1))  # This creates a two-pane plotting window
-plot(effectfun(Mpop, "pop.km", se.fit = TRUE), main = "Population",
+plot(effectfun(Mpop, se.fit = TRUE), main = "Population",
      ylab = "Walmarts per km2", xlab = "Population density", legend = FALSE)
 par(OP)
 ```
@@ -245,7 +245,7 @@ The grey envelopes encompass the 95% confidence interval. This reveals where our
 
 ### The `Minc` model test
 
-```{r}
+```{r warning=FALSE}
 anova(Mo, Minc, test = "LRT") # Compare null to income model
 ```
 
@@ -255,7 +255,7 @@ To visualize the nature and magnitude of this effect, we add the 95% pointwise c
 
 ```{r fig.show='hold', fig.height=3, small.mar =TRUE, echo=2}
 OP <- par(mar = c(4,4,2,1))  # This creates a two-pane plotting window
-plot(effectfun(Minc, "inc.km", se.fit = TRUE), main = "Income",
+plot(effectfun(Minc, se.fit = TRUE), main = "Income",
      ylab = "Walmarts per km2", xlab = "Income", legend = FALSE)
 par(OP)
 ```

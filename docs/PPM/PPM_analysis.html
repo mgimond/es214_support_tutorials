@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-882166eb2819743775bb922c7315ff16.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -304,23 +304,13 @@ window.Quarto = {
 <p>We will first develop two models that may explain the spatial intensity of Walmart locations. Recall that <em>intensity</em> is a property of the underlying process. One model is defined by population density, and the other is defined by income. This differs from <em>density</em>, which is associated with the observed pattern. These models are represented in our R script by two raster layers: a population raster and an income raster. These models will be <strong>alternate</strong> models that we’ll denote as <code>Mpop</code> and <code>Minc</code> in the script. The models’ structure will follow the form of a logistics model, but note that the models can take on many different forms and different levels of complexity.</p>
 <p>We’ll also create the null model, <code>Mo</code>, which will assume a <strong>spatially uniform</strong> (homogeneous) covariate. In other words, <code>Mo</code> represents a model in which the process intensity is assumed to be constant across the entire study extent.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Mpop <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> pop.km) <span class="co"># Population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Values of the covariate 'pop.km' were NA or undefined at 3.4% (17 out
-of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
-trend = ~pop.km, data = NULL, interaction = NULL)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Minc <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> inc.km) <span class="co"># Income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
-of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
-trend = ~inc.km, data = NULL, interaction = NULL)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Mo   <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> <span class="dv">1</span>)      <span class="co"># Null model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Mpop <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> pop.km) <span class="co"># Population model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Minc <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> inc.km) <span class="co"># Income model</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Mo   <span class="ot">&lt;-</span> <span class="fu">ppm</span>(p.km <span class="sc">~</span> <span class="dv">1</span>)      <span class="co"># Null model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s explore the model parameters. First, we’ll look at <code>Mpop</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Mpop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Mpop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Nonstationary Poisson process
 Fitted to point pattern dataset 'p.km'
@@ -349,7 +339,7 @@ Walmart\ intensity(i)= e^{−6.3 + 0.0001\ population\ density_i}
 <p>The above equation can be interpreted as follows: if the population density is <code>0</code>, then the Walmart point process intensity is <span class="math inline">\(e^{−6.3}\)</span> which is very close to <code>0</code>. Thus, for every one-unit increase in population density (one person per square mile), the expected Walmart intensity is multiplied by a factor of <span class="math inline">\(e^{0.0001}\)</span>.</p>
 <p>Likewise, we can extract the parameters from the <code>Minc</code> model and construct its equation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Minc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Nonstationary Poisson process
 Fitted to point pattern dataset 'p.km'
@@ -372,11 +362,11 @@ of the quadrature points</code></pre>
 </div>
 </div>
 <p><span class="math display">\[
-Walmart\ intensity(i) = e^{−5.58\ −1.66e^{−5}\ Income(i)}
+Walmart\ intensity(i) = e^{−5.58\ −1.65e^{−5}\ Income(i)}
 \]</span> Note the negative (decreasing) relationship between income distribution and Walmart density.</p>
 <p>Next, we’ll extract the null model results:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Mo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Mo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Stationary Poisson process
 Fitted to point pattern dataset 'p.km'
@@ -393,13 +383,13 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </section>
 <section id="plotting-the-competing-models" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="plotting-the-competing-models"><span class="header-section-number">3</span> Plotting the competing models</h2>
-<p>Next, we will plot the relationship between modeled intensity and the covariates.</p>
+<p>Next, let’s plot the relationship between modeled intensity and the covariates.</p>
 <div class="cell" data-small.mar="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km"</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop), <span class="at">legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">main =</span> <span class="st">"Population"</span>,)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc),  <span class="at">legend =</span> <span class="cn">FALSE</span>,  </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">main =</span> <span class="st">"Income"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -413,13 +403,13 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 </section>
 <section id="mapping-the-modeled-intensity" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="mapping-the-modeled-intensity"><span class="header-section-number">4</span> Mapping the modeled intensity</h2>
-<p>Of interest in a subsequent tutorial will be the modeled intensity of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the <code>predict()</code> function. For example, to create a raster of the modeled intensity <code>Mpop</code>, type:</p>
+<p>Of interest in a subsequent tutorial will be the <strong>modeled intensity</strong> of the point process and not the raster covariate. We can view the modeled intensity by first generating a raster of the modeled intensity using the <code>predict()</code> function. For example, to create a raster of the modeled intensity <code>Mpop</code>, type:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Mpop.trend <span class="ot">&lt;-</span> <span class="fu">predict</span>(Mpop, <span class="at">type =</span> <span class="st">"trend"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Mpop.trend <span class="ot">&lt;-</span> <span class="fu">predict</span>(Mpop, <span class="at">type =</span> <span class="st">"trend"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To plot the raster, type:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -431,7 +421,7 @@ Walmart\ intensity(i) = e^{−6.17} = 0.00209
 <p>The resulting map is a raster where each pixel represents the expected point intensity in units of <strong>(expected # of points)/(mapping area unit)</strong>. Since we re-scaled the map units from meters to kilometers, the map represents the expected number of Walmart stores per square kilometer.</p>
 <p>Given that the data are strongly skewed, much of the map shares the same pixel color. You can log transform the pixel values for display purposes by setting <code>log = TRUE</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Mpop.trend, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">50</span>, <span class="at">rev=</span><span class="cn">TRUE</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -462,16 +452,7 @@ log(Walmart\ intensity(i))= −6.3 + 0.0001\ population\ density_i
 <h3 data-number="5.1" class="anchored" data-anchor-id="the-mpop-model-test"><span class="header-section-number">5.1</span> The <code>Mpop</code> model test</h3>
 <p>We’ll first apply a LRT test for the <code>Mpop</code> model.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Values of the covariate 'pop.km' were NA or undefined at 3.4% (17 out
-of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
-trend = ~pop.km, data = NULL, interaction = NULL,</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Models were re-fitted after discarding quadrature points that were
-illegal under some of the models</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Mpop, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to population model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
@@ -498,8 +479,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>This means that if the population density <strong>had no real effect</strong>, then a statistic as large as 4.2968 would occur only about <strong>3.8%</strong> of the time. Because this is fairly unlikely, we interpret the result as evidence that including population density does help explain where points occur.</p>
 <p>To visualize the nature and magnitude of this effect, the fitted intensity curve can be plotted alongside a 95% pointwise confidence envelope using the <code>se.fit</code> parameter to <code>TRUE</code> in the <code>effectfun</code> function.</p>
 <div class="cell" data-small.mar="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="st">"pop.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Mpop, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Population"</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Population density"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -513,16 +494,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="the-minc-model-test" class="level3" data-number="5.2">
 <h3 data-number="5.2" class="anchored" data-anchor-id="the-minc-model-test"><span class="header-section-number">5.2</span> The <code>Minc</code> model test</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Values of the covariate 'inc.km' were NA or undefined at 3.2% (16 out
-of 504) of the quadrature points. Occurred while executing: ppm.ppp(Q = p.km,
-trend = ~inc.km, data = NULL, interaction = NULL,</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Models were re-fitted after discarding quadrature points that were
-illegal under some of the models</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(Mo, Minc, <span class="at">test =</span> <span class="st">"LRT"</span>) <span class="co"># Compare null to income model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
@@ -536,8 +508,8 @@ Model 2: ~inc.km     Poisson
 <p>The model using median income (<code>Minc</code>) shows a very different result. The LRT statistic for <code>Minc</code> is <strong>1.3388</strong>, yielding a <strong>p‑value of 0.2473</strong>–roughly 25%. This value is <strong>well within the range of what we would expect just by chance</strong> if the null model (constant intensity) were true. A statistic this small is not unusual under the null model, meaning that including income as a covariate does not provide strong evidence of improvement. From this, we can conclude that income does not significantly explain the observed point distribution, at least not in the way population density does. Together, these results suggest that population density is a more relevant predictor of point intensity than income in this dataset.</p>
 <p>To visualize the nature and magnitude of this effect, we add the 95% pointwise confidence envelope to the plot.</p>
 <div class="cell" data-small.mar="true">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="st">"inc.km"</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">effectfun</span>(Minc, <span class="at">se.fit =</span> <span class="cn">TRUE</span>), <span class="at">main =</span> <span class="st">"Income"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Walmarts per km2"</span>, <span class="at">xlab =</span> <span class="st">"Income"</span>, <span class="at">legend =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
