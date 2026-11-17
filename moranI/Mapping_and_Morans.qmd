@@ -88,7 +88,7 @@ display.brewer.all(type = "seq")
 
 The first step in a Moran's I analysis requires that we define "neighboring" polygons. This could refer to contiguous polygons, polygons within a certain distance, or even non-spatial relationships defined by social, political, or cultural “neighbors.”
 
-Here, we'll adopt a contiguous neighbor definition. We'll accept any contiguous polygons that share at least one vertex; this is known as the "queen" case in the chess analogy and it is parameterized as `queen = TRUE` in the call to `poly2nb`. If we required that just *edges* be shared between polygons then we would set `queen = FALSE` (the *rook* case).
+Here, we'll adopt a contiguous neighbor definition. We'll accept any contiguous polygons that share at least one vertex; this is known as the "queen" case in the chess analogy and it is parameterized as `queen = TRUE` in the call to `poly2nb`. If we required that just *edges* be shared between polygons then we would set `queen = FALSE` (the *rook* case in the chess analogy).
  
 ```{r}
 #| class-output: divh3
@@ -172,7 +172,7 @@ Recall that the Moran's `I` value is the slope of the line that best fits the re
 
 ## Moran's I test
 
-The null hypothesis states that the income values are randomly distributed across counties. There are two methods for testing this hypothesis: an analytical method and a Monte Carlo method. We'll explore both approaches in the following example.
+The null hypothesis states that the income values are randomly distributed across counties. There are two methods for testing this hypothesis: an **analytical method** and a **Monte Carlo method**. We'll explore both approaches in the following example.
 
 #### Analytical method
 
@@ -276,13 +276,4 @@ M1
 M1
 ```
 
-About 4.3% of the simulated values are more extreme than our observed Moran's I value, giving us a permutation-based p-value of 0.04 (note that your simulated p-value may differ from the one shown here--the number of simulations may need to be increased to reach a more stable convergence). Recall that this is a one-sided test. ArcGIS's analytical solution adopts a two-sided test. To compare its p-value to ours, we need to divide its p-value by 2 (i.e. `0.0588 / 2`) which gives us a one-sided p-value of `0.0294`--about 25% smaller than our simulated p-value.
-
-```{r fig.width=5, fig.height=5,echo=FALSE}
-library(png)
-library(grid)
-img <- readPNG("img/HR80_arcmap_output.PNG")
- grid.raster(img)
-```
-
-The wording adopted by ArcGIS under the infographic (highlighted in yellow in the above figure) is unfortunate. It seems to suggest a one-sided test by explicitly describing the nature of the pattern (i.e. *clustered*). A more appropriate statement would have been  _"There is less than a 6% likelihood that the observed pattern could be the result of random chance"_ (note the omission of the word _clustered_).
+About 4.3% of the simulated values are more extreme than our observed Moran's I value, giving us a permutation-based p-value of 0.04 (note that your simulated p-value may differ from the one shown here--the number of simulations may need to be increased to reach a more stable convergence). Recall that this is a one-sided test. 
